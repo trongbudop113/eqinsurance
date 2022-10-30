@@ -6,8 +6,12 @@ import 'package:eqinsurance/page/forget_sc/controller/forget_sc_controller.dart'
 import 'package:eqinsurance/page/forget_sc/ui/forget_sc_page.dart';
 import 'package:eqinsurance/page/home/controller/home_controller.dart';
 import 'package:eqinsurance/page/home/ui/home_page.dart';
+import 'package:eqinsurance/page/input_code/controller/input_code_controller.dart';
+import 'package:eqinsurance/page/input_code/ui/input_code_page.dart';
 import 'package:eqinsurance/page/login/controller/login_controller.dart';
 import 'package:eqinsurance/page/login/ui/login_page.dart';
+import 'package:eqinsurance/page/notification/controller/notification_controller.dart';
+import 'package:eqinsurance/page/notification/ui/notification_page.dart';
 import 'package:eqinsurance/page/partner/controller/partner_controller.dart';
 import 'package:eqinsurance/page/partner/ui/partner_page.dart';
 import 'package:eqinsurance/page/public_user/controller/public_user_controller.dart';
@@ -27,16 +31,17 @@ class GetListPages{
 
   GetListPages._internal();
 
-  static String HOME = '/home';
-  static String LOGIN = '/login';
-  static String REGISTER = '/register';
-  static String PARTNER = '/partner';
-  static String CONTACT_US = '/contact_us';
-  static String FORGET_SC = '/forget_sc';
-  static String PUBLIC_USER = '/public_user';
-  static String SETTINGS = '/settings';
-  static String NOTIFICATION = '/notification';
-  static String CHANGE_SC = '/change_sc';
+  String HOME = '/home';
+  String LOGIN = '/login';
+  String REGISTER = '/register';
+  String PARTNER = '/partner';
+  String CONTACT_US = '/contact_us';
+  String FORGET_SC = '/forget_sc';
+  String PUBLIC_USER = '/public_user';
+  String SETTINGS = '/settings';
+  String NOTIFICATION = '/notification';
+  String CHANGE_SC = '/change_sc';
+  String INPUT_CODE = '/input_code';
 
   List<GetPage> listPage(){
     return [
@@ -82,13 +87,18 @@ class GetListPages{
       ),
       GetPage(
         name: NOTIFICATION,
-        page: () => SettingsPage(),
-        binding: SettingsBinding(),
+        page: () => NotificationPage(),
+        binding: NotificationBinding(),
       ),
       GetPage(
         name: CHANGE_SC,
         page: () => ChangeSCPage(),
         binding: ChangeSCBinding(),
+      ),
+      GetPage(
+        name: INPUT_CODE,
+        page: () => InputCodePage(),
+        binding: InputCodeBinding(),
       )
     ];
   }
