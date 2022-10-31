@@ -7,7 +7,6 @@ import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 
 class HomePage extends GetView<HomeController>{
   const HomePage({Key? key}) : super(key: key);
@@ -76,7 +75,7 @@ class HomePage extends GetView<HomeController>{
             }),
             SizedBox(height: 10),
             ButtonWidget.buttonNormal(context, "Partner Customer", onTap: (){
-              Get.toNamed(GetListPages.singleton.PARTNER);
+              Get.toNamed(GetListPages.singleton.PARTNER_CUSTOMER);
             })
           ],
         ),

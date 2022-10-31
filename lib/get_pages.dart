@@ -11,16 +11,23 @@ import 'package:eqinsurance/page/input_code/ui/input_code_page.dart';
 import 'package:eqinsurance/page/login/controller/login_controller.dart';
 import 'package:eqinsurance/page/login/ui/login_page.dart';
 import 'package:eqinsurance/page/notification/controller/notification_controller.dart';
+import 'package:eqinsurance/page/notification/controller/notification_detail_controller.dart';
+import 'package:eqinsurance/page/notification/ui/notification_detail_page.dart';
 import 'package:eqinsurance/page/notification/ui/notification_page.dart';
 import 'package:eqinsurance/page/partner/controller/partner_controller.dart';
 import 'package:eqinsurance/page/partner/ui/partner_page.dart';
+import 'package:eqinsurance/page/partner_customer/controller/partner_customer_controller.dart';
+import 'package:eqinsurance/page/partner_customer/ui/partner_customer_page.dart';
 import 'package:eqinsurance/page/public_user/controller/public_user_controller.dart';
 import 'package:eqinsurance/page/public_user/ui/public_user_page.dart';
 import 'package:eqinsurance/page/register/controller/register_controller.dart';
 import 'package:eqinsurance/page/register/ui/register_page.dart';
 import 'package:eqinsurance/page/settings/controller/settings_controller.dart';
 import 'package:eqinsurance/page/settings/ui/settings_page.dart';
+import 'package:eqinsurance/page/term_and_privacy/controller/term_controller.dart';
 import 'package:get/get.dart';
+
+import 'page/term_and_privacy/ui/term_page.dart';
 
 class GetListPages{
   static final GetListPages singleton = GetListPages._internal();
@@ -40,8 +47,11 @@ class GetListPages{
   String PUBLIC_USER = '/public_user';
   String SETTINGS = '/settings';
   String NOTIFICATION = '/notification';
+  String NOTIFICATION_DETAIL = '/notification_detail';
   String CHANGE_SC = '/change_sc';
   String INPUT_CODE = '/input_code';
+  String TERM_AND_PRIVACY = '/term_and_privacy';
+  String PARTNER_CUSTOMER = '/partner_customer';
 
   List<GetPage> listPage(){
     return [
@@ -99,6 +109,21 @@ class GetListPages{
         name: INPUT_CODE,
         page: () => InputCodePage(),
         binding: InputCodeBinding(),
+      ),
+      GetPage(
+        name: NOTIFICATION_DETAIL,
+        page: () => NotificationDetailPage(),
+        binding: NotificationDetailBinding(),
+      ),
+      GetPage(
+        name: TERM_AND_PRIVACY,
+        page: () => TermPage(),
+        binding: TermBinding(),
+      ),
+      GetPage(
+        name: PARTNER_CUSTOMER,
+        page: () => PartnerCustomerPage(),
+        binding: PartnerCustomerBinding(),
       )
     ];
   }

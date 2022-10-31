@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           darkTheme: DarkTheme.dataTheme(),
           themeMode: themeObject.mode,
           getPages: GetListPages.singleton.listPage(),
-          initialRoute: GetListPages.singleton.HOME,
+          initialRoute: GetListPages.singleton.TERM_AND_PRIVACY,
         )
       ),
     );
