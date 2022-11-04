@@ -44,7 +44,7 @@ class TermPage extends GetView<TermController>{
             ),
             GestureDetector(
               onTap: (){
-
+                controller.openTermAndPolicyPage();
               },
               child: Container(
                 color: Colors.transparent,
@@ -58,7 +58,7 @@ class TermPage extends GetView<TermController>{
             SizedBox(height: 18),
 
             ButtonWidget.buttonNormal(context, "Agree and Continue", onTap: (){
-              Get.toNamed(GetListPages.singleton.HOME);
+              controller.setAgreeTerm();
             })
           ],
         ),

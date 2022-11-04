@@ -49,7 +49,7 @@ class InputCodePage extends GetView<InputCodeController>{
                 SizedBox(width: 15),
                 GestureDetector(
                   onTap: (){
-                    Get.toNamed(GetListPages.singleton.FORGET_SC);
+                    Get.toNamed(GetListPages.FORGET_SC);
                   },
                   child: Container(
                     color: Colors.transparent,
@@ -65,7 +65,7 @@ class InputCodePage extends GetView<InputCodeController>{
                 Spacer(flex: 1),
                 GestureDetector(
                   onTap: (){
-                    Get.toNamed(GetListPages.singleton.CHANGE_SC);
+                    Get.toNamed(GetListPages.CHANGE_SC);
                   },
                   child: Container(
                     color: Colors.transparent,
@@ -82,7 +82,7 @@ class InputCodePage extends GetView<InputCodeController>{
             ),
             SizedBox(height: 10),
             ButtonWidget.buttonNormal(context, "Next", onTap: (){
-              Get.toNamed(GetListPages.singleton.PARTNER);
+              Get.toNamed(GetListPages.PARTNER);
             })
           ],
         ),

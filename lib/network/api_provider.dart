@@ -5,7 +5,7 @@ import 'package:eqinsurance/network/custom_exception.dart';
 import 'package:http/http.dart' as http;
 
 class ApiProvider {
-  final String _baseUrl = "";
+  final String _baseUrl = "https://internet.eqinsurance.com.sg/test/testwebMobile/eqws.asmx/";
 
   Future<dynamic> get(String url) async {
     var responseJson;
@@ -20,17 +20,27 @@ class ApiProvider {
     return responseJson;
   }
 
-  Future<List<dynamic>> fetchDataList(String uri, dynamic data) async{
+  Future<dynamic> fetchData(String uri, dynamic data) async{
     http.Response response;
     var responseJson;
-    var body = json.encode(data.toMap());
+    var body = data.toMap();
     var link = _baseUrl+uri;
     try {
+      response = await http.post(
+        Uri.parse(link),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        encoding: Encoding.getByName('utf-8'),
+        body: body,
+      );
 
-      print("call API $link $body");
-      response = await http.post(Uri.tryParse(link)!, headers: {"Content-Type": "application/json"}, body: body);
       print("API response: $link $body ${response.body}");
-      responseJson = _response(response);
+      if(response.statusCode == 200){
+        responseJson = response.body;
+      }else{
+        responseJson = null;
+      }
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }

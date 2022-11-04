@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final Function(String) onSubmit;
+  final Function(String)? onChange;
   final String hint;
   final bool isShowLeftIcon;
   final TextEditingController? controller;
   final String leftIcon;
 
-  const TextFieldWidget({Key? key, required this.onSubmit, this.hint = "", this.controller, this.isShowLeftIcon = false, this.leftIcon = ""}) : super(key: key);
+  const TextFieldWidget({Key? key, required this.onSubmit, this.hint = "", this.controller, this.isShowLeftIcon = false, this.leftIcon = "", this.onChange}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +37,11 @@ class TextFieldWidget extends StatelessWidget {
           ),
           Expanded(
             child: TextField(
-                //controller: controller.searchController,
+                controller: controller,
                 autocorrect: true,
                 maxLines: 1,
                 onSubmitted: (value) {
                   onSubmit(value);
-                },
-                onChanged: (value){
-
                 },
                 style: Theme.of(context)
                     .textTheme

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LightTheme{
   static ThemeData dataTheme() => ThemeData(
@@ -8,6 +9,16 @@ class LightTheme{
   accentColor: Colors.amber[700],
   brightness: Brightness.light,
   backgroundColor: Colors.grey[100],
+  textTheme: TextTheme(
+    bodyText1: GoogleFonts.sourceSansPro(
+      fontSize: 13,
+      color: Colors.black
+    ),
+      bodyText2: GoogleFonts.sourceSansPro(
+          fontSize: 13,
+          color: Colors.grey
+      )
+  ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
     systemOverlayStyle: SystemUiOverlayStyle(

@@ -25,7 +25,7 @@ class ButtonWidget{
         ),
         child: Text(text, style: StyleResource.TextStyleBlack(context).copyWith(color: textColor)),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 12),
+        padding: EdgeInsets.symmetric(vertical: 15),
       ),
     );
   }
@@ -45,7 +45,7 @@ class ButtonWidget{
         ),
         child: Text(text, style: StyleResource.TextStyleBlack(context).copyWith(color: textColor)),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 12),
+        padding: EdgeInsets.symmetric(vertical: 15),
       ),
       onTap: onTap,
     );

@@ -1,5 +1,7 @@
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
+import 'package:eqinsurance/page/notification/models/notification_res.dart';
+import 'package:eqinsurance/widgets/dialog/confirm_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NotificationDetailBinding extends Bindings{
   @override
@@ -10,5 +12,30 @@ class NotificationDetailBinding extends Bindings{
 }
 
 class NotificationDetailController extends GetxController{
+
+  final Rx<NotificationRes> notificationRes = NotificationRes().obs;
+
+
+  @override
+  void onInit() {
+    getArgumentData();
+    super.onInit();
+  }
+
+  void getArgumentData(){
+    NotificationRes data = Get.arguments['data'];
+    notificationRes.value = data;
+  }
+
+  Future<void> onDeleteNotification(BuildContext context) async {
+    bool isOk = await showDialog(
+      context: context,
+      builder: (_) => ConfirmDialog(message: "Delete Notification?"),
+    );
+
+    if(isOk){
+      Get.back(result: true);
+    }
+  }
 
 }

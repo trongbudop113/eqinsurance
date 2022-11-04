@@ -1,4 +1,5 @@
 import 'package:eqinsurance/get_pages.dart';
+import 'package:eqinsurance/splash_page.dart';
 import 'package:eqinsurance/theme/dark_theme.dart';
 import 'package:eqinsurance/theme/light_theme.dart';
 import 'package:eqinsurance/theme/theme_provider.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           darkTheme: DarkTheme.dataTheme(),
           themeMode: themeObject.mode,
           getPages: GetListPages.singleton.listPage(),
-          initialRoute: GetListPages.singleton.TERM_AND_PRIVACY,
+          home: SplashPage()
         )
       ),
     );

@@ -14,8 +14,15 @@ class PartnerPage extends GetView<PartnerController>{
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // width: double.maxFinite,
-        // height: double.maxFinite,
+        width: double.maxFinite,
+        height: double.maxFinite,
+        decoration: BoxDecoration(
+            color: Colors.black,
+            image: DecorationImage(
+                image: AssetImage(ImageResource.bg),
+                fit: BoxFit.fill
+            )
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -44,14 +51,14 @@ class PartnerPage extends GetView<PartnerController>{
                     GestureDetector(
                       child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
                       onTap: (){
-                        Get.toNamed(GetListPages.singleton.CONTACT_US);
+                        Get.toNamed(GetListPages.CONTACT_US);
                       },
                     ),
                     SizedBox(width: 8),
                     GestureDetector(
                       child: Image.asset(ImageResource.ic_notifications, width: 20, height: 20),
                       onTap: (){
-                        Get.toNamed(GetListPages.singleton.NOTIFICATION);
+                        Get.toNamed(GetListPages.NOTIFICATION);
                       },
                     ),
                     SizedBox(width: 8),

@@ -74,14 +74,14 @@ class AppbarWidget{
                   GestureDetector(
                     child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
                     onTap: (){
-                      Get.toNamed(GetListPages.singleton.CONTACT_US);
+                      Get.toNamed(GetListPages.CONTACT_US);
                     },
                   ),
                   SizedBox(width: 8),
                   GestureDetector(
                     child: Image.asset(ImageResource.ic_notifications, width: 20, height: 20),
                     onTap: (){
-                      Get.toNamed(GetListPages.singleton.NOTIFICATION);
+                      Get.toNamed(GetListPages.NOTIFICATION);
                     },
                   ),
                   SizedBox(width: 8),

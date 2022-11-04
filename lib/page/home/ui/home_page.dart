@@ -34,21 +34,21 @@ class HomePage extends GetView<HomeController>{
                 GestureDetector(
                   child: Image.asset(ImageResource.ic_settings, width: 20, height: 20),
                   onTap: (){
-                    Get.toNamed(GetListPages.singleton.SETTINGS);
+                    Get.toNamed(GetListPages.SETTINGS);
                   },
                 ),
                 SizedBox(width: 8),
                 GestureDetector(
                   child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
                   onTap: (){
-                    Get.toNamed(GetListPages.singleton.CONTACT_US);
+                    controller.getContactInfo();
                   },
                 ),
                 SizedBox(width: 8),
                 GestureDetector(
                   child: Image.asset(ImageResource.ic_notifications, width: 20, height: 20),
                   onTap: (){
-                    Get.toNamed(GetListPages.singleton.NOTIFICATION);
+                    Get.toNamed(GetListPages.NOTIFICATION);
                   },
                 )
               ],
@@ -67,15 +67,15 @@ class HomePage extends GetView<HomeController>{
             ),
             SizedBox(height: 15),
             ButtonWidget.buttonBorder(context, "Public Users", onTap: (){
-              Get.toNamed(GetListPages.singleton.PUBLIC_USER);
+              controller.getPublicUser();
             }),
             SizedBox(height: 10),
             ButtonWidget.buttonNormal(context, "Partners", onTap: (){
-              Get.toNamed(GetListPages.singleton.INPUT_CODE);
+              controller.goToPartnerPage();
             }),
             SizedBox(height: 10),
             ButtonWidget.buttonNormal(context, "Partner Customer", onTap: (){
-              Get.toNamed(GetListPages.singleton.PARTNER_CUSTOMER);
+              controller.goToPartnerCustomer();
             })
           ],
         ),

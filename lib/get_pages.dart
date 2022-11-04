@@ -25,6 +25,8 @@ import 'package:eqinsurance/page/register/ui/register_page.dart';
 import 'package:eqinsurance/page/settings/controller/settings_controller.dart';
 import 'package:eqinsurance/page/settings/ui/settings_page.dart';
 import 'package:eqinsurance/page/term_and_privacy/controller/term_controller.dart';
+import 'package:eqinsurance/page/webview/controller/webview_controller.dart';
+import 'package:eqinsurance/page/webview/ui/webview_page.dart';
 import 'package:get/get.dart';
 
 import 'page/term_and_privacy/ui/term_page.dart';
@@ -38,20 +40,21 @@ class GetListPages{
 
   GetListPages._internal();
 
-  String HOME = '/home';
-  String LOGIN = '/login';
-  String REGISTER = '/register';
-  String PARTNER = '/partner';
-  String CONTACT_US = '/contact_us';
-  String FORGET_SC = '/forget_sc';
-  String PUBLIC_USER = '/public_user';
-  String SETTINGS = '/settings';
-  String NOTIFICATION = '/notification';
-  String NOTIFICATION_DETAIL = '/notification_detail';
-  String CHANGE_SC = '/change_sc';
-  String INPUT_CODE = '/input_code';
-  String TERM_AND_PRIVACY = '/term_and_privacy';
-  String PARTNER_CUSTOMER = '/partner_customer';
+  static String HOME = '/home';
+  static String LOGIN = '/login';
+  static String REGISTER = '/register';
+  static String PARTNER = '/partner';
+  static String CONTACT_US = '/contact_us';
+  static String FORGET_SC = '/forget_sc';
+  static String PUBLIC_USER = '/public_user';
+  static String SETTINGS = '/settings';
+  static String NOTIFICATION = '/notification';
+  static String NOTIFICATION_DETAIL = '/notification_detail';
+  static String CHANGE_SC = '/change_sc';
+  static String INPUT_CODE = '/input_code';
+  static String TERM_AND_PRIVACY = '/term_and_privacy';
+  static String PARTNER_CUSTOMER = '/partner_customer';
+  static String WEBVIEW = '/webview';
 
   List<GetPage> listPage(){
     return [
@@ -124,6 +127,11 @@ class GetListPages{
         name: PARTNER_CUSTOMER,
         page: () => PartnerCustomerPage(),
         binding: PartnerCustomerBinding(),
+      ),
+      GetPage(
+        name: WEBVIEW,
+        page: () => WebViewPage(),
+        binding: WebViewAppBinding(),
       )
     ];
   }

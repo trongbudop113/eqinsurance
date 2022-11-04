@@ -31,12 +31,18 @@ class NotificationDetailPage extends GetView<NotificationDetailController>{
           SizedBox(width: 20),
           Container(
             alignment: Alignment.center,
-            child: Text("NotificationDetails"),
+            child: Text("NotificationDetails", style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20, color: Colors.white)),
           ),
           Spacer(flex: 1),
-          Container(
-            alignment: Alignment.center,
-            child: Image.asset(ImageResource.ic_trash, width: 20)
+          GestureDetector(
+            onTap: (){
+              controller.onDeleteNotification(context);
+            },
+            child: Container(
+              alignment: Alignment.center,
+              color: Colors.transparent,
+              child: Image.asset(ImageResource.ic_trash, width: 18)
+            ),
           ),
           SizedBox(width: 10)
         ],
@@ -45,7 +51,7 @@ class NotificationDetailPage extends GetView<NotificationDetailController>{
         width: double.maxFinite,
         height: double.maxFinite,
         padding: EdgeInsets.all(7),
-        child: Container(
+        child: Obx(() => Container(
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -55,14 +61,14 @@ class NotificationDetailPage extends GetView<NotificationDetailController>{
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('For Everyone Subject 2'),
+                Text("${controller.notificationRes.value.subject ?? ''}"),
                 SizedBox(height: 15),
-                Text('07/08/2018'),
+                Text('${controller.notificationRes.value.messageDate}'),
                 SizedBox(height: 20),
-                Text('On test-english.com you will find lots of free practice tests and materials to help you improve your '),
+                Text('${controller.notificationRes.value.message}'),
               ],
             )
-        ),
+        )),
       ),
     );
   }
