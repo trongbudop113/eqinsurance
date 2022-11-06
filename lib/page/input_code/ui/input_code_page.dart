@@ -40,6 +40,7 @@ class InputCodePage extends GetView<InputCodeController>{
             TextFieldWidget(onSubmit: (value){
 
             }, hint: "Enter Current Security Code",
+            controller: controller.scText,
             isShowLeftIcon: true,
             leftIcon: ImageResource.key),
 
@@ -82,7 +83,7 @@ class InputCodePage extends GetView<InputCodeController>{
             ),
             SizedBox(height: 10),
             ButtonWidget.buttonNormal(context, "Next", onTap: (){
-              Get.toNamed(GetListPages.PARTNER);
+              controller.onSubmitLoginAgentCode();
             })
           ],
         ),

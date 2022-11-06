@@ -64,7 +64,7 @@ class HomeController extends GetxController{
 
   Future<void> goToPartnerPage() async {
     bool isSet = await SharedConfigName.isSetSC();
-    if(isSet){
+    if(!isSet){
       Get.toNamed(GetListPages.INPUT_CODE);
     }else{
       Get.toNamed(GetListPages.REGISTER);

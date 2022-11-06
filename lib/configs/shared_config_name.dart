@@ -46,6 +46,12 @@ class SharedConfigName{
     return ConfigData.PUBLIC;
   }
 
+  static Future<void> clearUserNotificationCache() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.remove(userNotificationReadIDs);
+    sharedPreferences.remove(userNotificationDeletedIDs);
+  }
+
   static Future<String> getPhone() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString(phone) ?? '';
@@ -58,5 +64,65 @@ class SharedConfigName{
       return true;
     }
     return false;
+  }
+
+  static Future<void> setUserID(String sc) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(UserID, sc);
+  }
+  static Future<String> getUserID() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString(UserID) ?? '';
+  }
+
+  //v2
+  static Future<void> setUserPass(String userPass) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(UserPass, userPass);
+  }
+
+  static Future<String> getUserPass() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString(UserPass) ?? '';
+  }
+
+  static Future<void> setSC( String scCode) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(sc, scCode);
+  }
+
+  static Future<String> getSC() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString(sc) ?? '';
+  }
+
+  static Future<void> setRegisteredUserType(String userType) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(userType, userType);
+  }
+
+  static Future<String> getRegisteredUserType() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString(userType) ?? '';
+  }
+
+  static Future<void> setPhone(String phoneNumber) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(phone, phoneNumber);
+  }
+
+  static Future<void> setAgentCode(String agentCode) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(AgentCode, agentCode);
+  }
+
+  static Future<String> getAgentCode() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    String _AgentCode = sharedPreferences.getString(AgentCode) ?? '';
+    if(_AgentCode != ''){
+      return _AgentCode;
+    }else{
+      return "";
+    }
   }
 }

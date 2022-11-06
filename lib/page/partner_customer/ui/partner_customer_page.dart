@@ -67,7 +67,7 @@ class PartnerCustomerPage extends GetView<PartnerCustomerController>{
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(3.0)),
                   ),
-                  child: Text("+65"),
+                  child: Text("+${controller.countryCode}"),
                 ),
                 SizedBox(width: 8),
                 Expanded(
@@ -75,6 +75,7 @@ class PartnerCustomerPage extends GetView<PartnerCustomerController>{
                       onSubmit: (value){
 
                       },
+                    controller: controller.phoneText,
                       hint: "Enter phone number",
                   ),
                 )
@@ -83,7 +84,7 @@ class PartnerCustomerPage extends GetView<PartnerCustomerController>{
 
             Spacer(flex: 1),
             ButtonWidget.buttonNormal(context, 'Next', onTap: (){
-
+              controller.onSubmitCheckPhone();
             }),
             Spacer(flex: 1),
           ],

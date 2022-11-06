@@ -74,7 +74,7 @@ class PartnerPage extends GetView<PartnerController>{
             ),
             Expanded(
               child: WebView(
-                initialUrl: 'https://flutter.dev',
+                initialUrl: controller.url,
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   controller.webViewController.complete(webViewController);
@@ -88,6 +88,7 @@ class PartnerPage extends GetView<PartnerController>{
                 onPageFinished: (String url) {
                   print('Page finished loading: $url');
                 },
+
                 gestureNavigationEnabled: true,
                 backgroundColor: const Color(0x00000000),
               ),

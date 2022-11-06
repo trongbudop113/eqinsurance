@@ -36,7 +36,7 @@ class VerifyPhonePage extends StatelessWidget {
                     SizedBox(width: 5),
                     GestureDetector(
                       onTap: (){
-                        Get.back();
+                        controller.onBackPress();
                       },
                       child: Container(
                         color: Colors.transparent,
@@ -84,13 +84,42 @@ class VerifyPhonePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8),
-            TextFieldWidget(
-              onSubmit: (value){
-
+            GestureDetector(
+              onTap: (){
+                controller.showDialogSelectCountryCode();
               },
-              hint: "Enter User ID",
-              isShowLeftIcon: true,
-              leftIcon: ImageResource.user,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(3.0)),
+                ),
+                height: 38,
+                child: Row(
+                  children: [
+                    SizedBox(width: 8),
+                    Image.asset(ImageResource.location, height: 12),
+                    SizedBox(width: 12),
+                    Expanded(
+                      flex: 10,
+                      child: Text(
+                        controller.textLocationPhone.value,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            ?.copyWith(fontSize: 13, color: Colors.black, fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    Container(
+                      height: 25,
+                      width: 1,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_drop_down, color: Colors.black, size: 20),
+                    SizedBox(width: 8),
+                  ],
+                ),
+              ),
             ),
 
             SizedBox(height: 10),
@@ -103,7 +132,7 @@ class VerifyPhonePage extends StatelessWidget {
             SizedBox(height: 8),
             Row(
               children: [
-                Container(
+                Obx(() => Container(
                   height: 38,
                   width: 55,
                   alignment: Alignment.center,
@@ -111,11 +140,12 @@ class VerifyPhonePage extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(3.0)),
                   ),
-                  child: Text("+65"),
-                ),
+                  child: Text(controller.textCountryCodePhone.value),
+                )),
                 SizedBox(width: 8),
                 Expanded(
                   child: TextFieldWidget(
+                    controller: controller.phoneNumberText,
                     onSubmit: (value){
 
                     },

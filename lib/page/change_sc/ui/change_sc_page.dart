@@ -26,7 +26,7 @@ class ChangeSCPage extends GetView<ChangeSCController>{
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: 25),
             Container(
                 width: double.maxFinite,
                 child: Row(
@@ -77,7 +77,9 @@ class ChangeSCPage extends GetView<ChangeSCController>{
             SizedBox(height: 10),
             TextFieldWidget(onSubmit: (value){
 
-            }, hint: "Enter Current Security Code"),
+            }, hint: "Enter Current Security Code",
+              controller: controller.currentScText,
+            ),
 
             SizedBox(height: 10),
             Container(
@@ -87,7 +89,9 @@ class ChangeSCPage extends GetView<ChangeSCController>{
             SizedBox(height: 10),
             TextFieldWidget(onSubmit: (value){
 
-            }, hint: "Enter New Security Code"),
+            }, hint: "Enter New Security Code",
+              controller: controller.newScText,
+            ),
 
             SizedBox(height: 10),
             Container(
@@ -97,11 +101,13 @@ class ChangeSCPage extends GetView<ChangeSCController>{
             SizedBox(height: 10),
             TextFieldWidget(onSubmit: (value){
 
-            }, hint: "Confirm New Security Code"),
+            }, hint: "Confirm New Security Code",
+              controller: controller.confirmScText,
+            ),
 
             Spacer(flex: 1),
             ButtonWidget.buttonNormal(context, 'Update', onTap: (){
-
+              controller.onSubmitChangeSC();
             })
           ],
         ),

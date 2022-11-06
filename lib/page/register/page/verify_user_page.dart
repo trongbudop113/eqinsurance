@@ -36,7 +36,7 @@ class VerifyUserPage extends StatelessWidget {
                     SizedBox(width: 5),
                     GestureDetector(
                       onTap: (){
-                        Get.back();
+                        controller.onBackPress();
                       },
                       child: Container(
                         color: Colors.transparent,
