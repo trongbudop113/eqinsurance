@@ -3,6 +3,7 @@ import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/page/partner/controller/partner_controller.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
+import 'package:eqinsurance/widgets/icon_notification_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -55,12 +56,13 @@ class PartnerPage extends GetView<PartnerController>{
                       },
                     ),
                     SizedBox(width: 8),
-                    GestureDetector(
-                      child: Image.asset(ImageResource.ic_notifications, width: 20, height: 20),
+                    Obx(() => IconNotificationWidget(
                       onTap: (){
                         Get.toNamed(GetListPages.NOTIFICATION);
                       },
-                    ),
+                      count: controller.countNotify.value,
+                      isShowNotification: controller.isShowNotification.value,
+                    )),
                     SizedBox(width: 8),
                     GestureDetector(
                       child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),

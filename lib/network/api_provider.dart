@@ -47,82 +47,27 @@ class ApiProvider {
     return responseJson;
   }
 
-  Future<List<dynamic>> fetchDataListNoMapData(String uri) async{
+  Future<dynamic> fetchDataUpdateDevice(String uri, dynamic data) async{
     http.Response response;
     var responseJson;
-    Map data = {};
-    var body = json.encode(data);
-    var link = _baseUrl+uri;
-    try {
-      print("call API $link $body");
-      response = await http.post(Uri.tryParse(link)!, headers: {"Content-Type": "application/json"}, body: body);
-      print("API response: $link $body ${response.body}");
-      responseJson = _response(response);
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
-    return responseJson;
-  }
+    var body = data.toMap();
 
-  Future<dynamic> fetchAllDataObject(String uri, dynamic data) async{
-    http.Response response;
-    var responseJson;
-    var body = json.encode(data.toMap());
-    var link = _baseUrl+uri;
     try {
-      print("call API $link $body");
-      response = await http.post(Uri.tryParse(link)!, headers: {"Content-Type": "application/json"}, body: body);
-      print("API response: $link $body ${response.body}");
-      responseJson = _response(response);
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
-    return responseJson;
-  }
+      response = await http.post(
+        Uri.parse(uri),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        encoding: Encoding.getByName('utf-8'),
+        body: body,
+      );
 
-  Future<dynamic> fetchAllDataObjectMap(String uri, Map data) async{
-    http.Response response;
-    var responseJson;
-    var body = json.encode(data);
-    var link = _baseUrl+uri;
-    try {
-      print("call API $link $body");
-      response = await http.post(Uri.tryParse(link)!, headers: {"Content-Type": "application/json"}, body: body);
-      print("API response: $link $body ${response.body}");
-      responseJson = _response(response);
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
-    return responseJson;
-  }
-
-  Future<dynamic> fetchAllDataObjectNoMap(String uri) async{
-    http.Response response;
-    var responseJson;
-    Map data = {};
-    var body = json.encode(data);
-    var link = _baseUrl+uri;
-    try {
-      print("call API $link $body");
-      response = await http.post(Uri.tryParse(link)!, headers: {"Content-Type": "application/json"}, body: body);
-      print("API response: $link $body ${response.body}");
-      responseJson = _response(response);
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
-    return responseJson;
-  }
-
-  Future<dynamic> headlineHandleItem(String uri, dynamic data) async{
-    http.Response response;
-    var responseJson;
-    var body = json.encode(data.toMap());
-    var link = _baseUrl+uri;
-    try {
-      print("call API: $link $body");
-      response = await http.post(Uri.tryParse(link)!, headers: {"Content-Type": "application/json"}, body: body);
-      print("API response: $link $body ${response.body}");
-      responseJson = _response(response);
+      print("API response: $uri $body ${response.body}");
+      if(response.statusCode == 200){
+        responseJson = response.body;
+      }else{
+        responseJson = null;
+      }
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }

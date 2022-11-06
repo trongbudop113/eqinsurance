@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:core';
 
 import 'package:eqinsurance/configs/configs_data.dart';
@@ -124,5 +125,27 @@ class SharedConfigName{
     }else{
       return "";
     }
+  }
+
+  static Future<List<String>> getUserReadNotificationIDs() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    String userNotificationReadIDsJSONString =  sharedPreferences.getString(userNotificationReadIDs) ?? '';
+    if(userNotificationReadIDsJSONString != ''){
+
+      List<String> userNotificationReadIDs = List<String>.from(jsonDecode(userNotificationReadIDsJSONString));
+      return userNotificationReadIDs;
+    }
+    return [];
+  }
+
+  static Future<List<String>> getUserDeletedNotificationIDs() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    String userNotificationDeletedIDsJSONString =  sharedPreferences.getString(userNotificationDeletedIDs) ?? '';
+    if(userNotificationDeletedIDsJSONString != ""){
+
+      List<String> userNotificationDeletedIDs = List<String>.from(jsonDecode(userNotificationDeletedIDsJSONString));
+      return userNotificationDeletedIDs;
+    }
+    return [];
   }
 }

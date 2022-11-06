@@ -1,10 +1,8 @@
 import 'package:eqinsurance/page/contact_us/controller/contact_us_controller.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
-import 'package:eqinsurance/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ContactUsPage extends GetView<ContactUsController>{

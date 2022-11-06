@@ -8,4 +8,6 @@ class ConfigData{
 
   static const String CONSUMER_KEY = "verz";
   static const String CONSUMER_SECRET = "V3r\$2017";
+
+  static const String EVR_CODE = "TEST";
 }

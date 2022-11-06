@@ -5,6 +5,7 @@ import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/string_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/button_widget.dart';
+import 'package:eqinsurance/widgets/icon_notification_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,8 +28,10 @@ class HomePage extends GetView<HomeController>{
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
-            SizedBox(height: 30),
+            SizedBox(height: 25),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Spacer(flex: 1),
                 GestureDetector(
@@ -45,15 +48,16 @@ class HomePage extends GetView<HomeController>{
                   },
                 ),
                 SizedBox(width: 8),
-                GestureDetector(
-                  child: Image.asset(ImageResource.ic_notifications, width: 20, height: 20),
+                Obx(() => IconNotificationWidget(
                   onTap: (){
                     Get.toNamed(GetListPages.NOTIFICATION);
                   },
-                )
+                  count: controller.countNotify.value,
+                  isShowNotification: controller.isShowNotification.value,
+                ),)
               ],
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             Image.asset(ImageResource.logo1, width: Get.width * 0.5),
 
             Spacer(flex: 1),

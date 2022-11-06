@@ -12,4 +12,6 @@ class ApiName {
   static const GetAgentCode = "getAgentCode";
   static const ResetPin = "ResetPin";
   static const ChangePin = "ChangePin";
+  static const GetNotificationDetails = "GetNotificationDetails";
+  static const NotificationCount = "NotificationCount";
 }
