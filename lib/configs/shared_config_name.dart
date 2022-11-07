@@ -148,4 +148,37 @@ class SharedConfigName{
     }
     return [];
   }
+
+  static Future<int> getNotificationsPerPage() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    int notificationsPerPage = sharedPreferences.getInt(NotificationsPerPage) ?? 0;
+    if(notificationsPerPage != 0){
+      return notificationsPerPage;
+    }else{
+      return 10;
+    }
+  }
+
+  static Future<void> addUserReadNotificationID(String ID) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    List<String> userNotificationReadIDList = await getUserReadNotificationIDs();
+    if(!userNotificationReadIDList.contains(ID)){
+      userNotificationReadIDList.add(ID);
+
+      String jsonText = jsonEncode(userNotificationReadIDList);
+      sharedPreferences.setString(userNotificationReadIDs, jsonText);
+    }
+  }
+
+  static Future<void> addUserDeletedNotificationID(List<String> userNotificationDeletedIDList) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+
+    List<String> userNotificationDeletedIDsToSave = await getUserDeletedNotificationIDs();
+    userNotificationDeletedIDsToSave.addAll(userNotificationDeletedIDList);
+
+    String jsonText = jsonEncode(userNotificationDeletedIDsToSave);
+    sharedPreferences.setString(userNotificationDeletedIDs, jsonText);
+
+
+  }
 }

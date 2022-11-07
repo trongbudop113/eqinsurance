@@ -1,4 +1,5 @@
 
+import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class IconNotificationWidget extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(120)),
-                      color: Colors.red
+                      color: ColorResource.color_bg_notify
                   ),
                   child: Text(count.toString(), style: StyleResource.TextStyleBlack(context).copyWith(color: Colors.white, fontSize: 10, height: 1)),
                 ),

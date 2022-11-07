@@ -102,7 +102,11 @@ class NotificationPage extends GetView<NotificationController>{
                                   replacement: SizedBox(height: 12)
                               )),
                               SizedBox(height: 2),
-                              Image.asset(ImageResource.unread_notification, width: 25, height: 25),
+                              Obx(() => Image.asset(
+                                  !controller.listNotification[index].isRead.value
+                                      ? ImageResource.unread_notification : ImageResource.read_notification,
+                                  width: 25, height: 25)
+                              ),
                             ],
                           ),
                           SizedBox(width: 10),

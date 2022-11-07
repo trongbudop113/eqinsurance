@@ -49,27 +49,36 @@ class PublicUserPage extends GetView<PublicUserController>{
                     Spacer(flex: 1),
                     Text("EQ Insurance", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 18)),
                     Spacer(flex: 1),
-                    GestureDetector(
-                      child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
-                      onTap: (){
-                        controller.getContactInfo();
-                        //Get.toNamed(GetListPages.CONTACT_US);
-                      },
-                    ),
-                    SizedBox(width: 8),
-                    Obx(() => IconNotificationWidget(
-                      onTap: (){
-                        Get.toNamed(GetListPages.NOTIFICATION);
-                      },
-                      count: controller.countNotify.value,
-                      isShowNotification: controller.isShowNotification.value,
-                    )),
-                    SizedBox(width: 8),
-                    GestureDetector(
-                      child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),
-                      onTap: (){
-                        controller.reloadHome();
-                      },
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
+                            onTap: (){
+                              controller.getContactInfo();
+                              //Get.toNamed(GetListPages.CONTACT_US);
+                            },
+                          ),
+                          SizedBox(width: 10),
+                          Obx(() => IconNotificationWidget(
+                            onTap: (){
+                              Get.toNamed(GetListPages.NOTIFICATION);
+                            },
+                            count: controller.countNotify.value,
+                            isShowNotification: controller.isShowNotification.value,
+                          )),
+                          SizedBox(width: 5),
+                          GestureDetector(
+                            child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),
+                            onTap: (){
+                              controller.reloadHome();
+                            },
+                          )
+                        ],
+                      ),
+                      margin: EdgeInsets.only(bottom: 5),
                     ),
                     SizedBox(width: 15),
                   ],

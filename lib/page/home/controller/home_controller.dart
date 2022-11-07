@@ -8,8 +8,12 @@ import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/page/home/models/GetPartnerCustomerReq.dart';
 import 'package:eqinsurance/page/home/models/get_public_user_req.dart';
 import 'package:eqinsurance/page/notification/models/notification_req.dart';
+import 'package:eqinsurance/page/notification/models/notification_res.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
 import 'package:eqinsurance/page/webview/model/get_contact_req.dart';
+import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
+import 'package:eqinsurance/widgets/dialog/home_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xml/xml.dart';
 
@@ -27,13 +31,47 @@ class HomeController extends GetxController{
   final RxInt countNotify = 0.obs;
   final RxBool isShowNotification = false.obs;
 
+
+  final RxBool isPublicUser = true.obs;
+  final RxBool isPartner = true.obs;
+  final RxBool isPartnerCustomer = true.obs;
+
+  final RxInt isPublicUserType = 0.obs;
+  final RxInt isPartnerType = 0.obs;
+  final RxInt isPartnerCustomerType = 0.obs;
+
+
   @override
   void onInit() {
     super.onInit();
     showHideButton();
     refreshNotificationCount();
+    openPopupNotification();
   }
 
+  Future<void> openPopupNotification() async {
+
+    GetNotificationReq getNotificationReq = GetNotificationReq();
+    getNotificationReq.sUserName = ConfigData.CONSUMER_KEY;
+    getNotificationReq.sPassword = ConfigData.CONSUMER_SECRET;
+    getNotificationReq.sType = "POPUP";
+    getNotificationReq.sAgentCode = "";
+
+
+    var response = await apiProvider.fetchData(ApiName.Notification, getNotificationReq);
+    if(response != null){
+      var root = XmlDocument.parse(response);
+      print("data....." + root.children[2].children.first.toString());
+      String jsonString = root.children[2].children.first.toString();
+      if(CheckError.isSuccess(jsonString)){
+        if(jsonString != '' && jsonString != '0' && jsonString != 0){
+          NotificationDataRes notificationDataRes = NotificationDataRes.fromJson(jsonDecode(jsonString));
+          print("data....." + notificationDataRes.data!.length.toString());
+          showHomeDialog(notificationDataRes.data![0]);
+        }
+      }
+    }
+  }
 
   Future<void> getContactInfo() async {
     final String _Type = await SharedConfigName.getCurrentUserType();
@@ -84,7 +122,7 @@ class HomeController extends GetxController{
 
   Future<void> goToPartnerPage() async {
     bool isSet = await SharedConfigName.isSetSC();
-    if(!isSet){
+    if(isSet){
       Get.toNamed(GetListPages.INPUT_CODE);
     }else{
       Get.toNamed(GetListPages.REGISTER);
@@ -92,10 +130,14 @@ class HomeController extends GetxController{
   }
 
   Future<void> showPartnerCustomerWebsite() async {
+
+    String vPhone = await SharedConfigName.getPhone();
+    final String _MobileNo = "" + vPhone;
+
     GetPartnerCustomerReq getPartnerCustomerReq = GetPartnerCustomerReq();
     getPartnerCustomerReq.sUserName = ConfigData.CONSUMER_KEY;
     getPartnerCustomerReq.sPassword = ConfigData.CONSUMER_SECRET;
-    getPartnerCustomerReq.sHpNumber = "65 9468 7687";
+    getPartnerCustomerReq.sHpNumber = _MobileNo;
 
 
     var response = await apiProvider.fetchData(ApiName.CheckHpNumber, getPartnerCustomerReq);
@@ -103,7 +145,14 @@ class HomeController extends GetxController{
       var root = XmlDocument.parse(response);
       print("data....." + root.children[2].children.first.toString());
       String link = root.children[2].children.first.toString();
-      //Get.toNamed(GetListPages.CONTACT_US, arguments: {"link": link});
+      if(CheckError.isSuccess(link)){
+        var separateResult = response.split("\\|");
+        //final String _AgentCode = separateResult[0];
+        final String URL = separateResult[1];
+        Get.toNamed(GetListPages.PARTNER, arguments: {"link": URL});
+      }else{
+        showErrorMessage("Cannot verify your mobile number!");
+      }
     }
   }
 
@@ -134,7 +183,7 @@ class HomeController extends GetxController{
               readAndDeletedNotificationIDs.add(element);
           }
 
-          String jsonText = jsonEncode(readAndDeletedNotificationIDs);
+          //String jsonText = jsonEncode(readAndDeletedNotificationIDs);
 
           int localCacheCount = readAndDeletedNotificationIDs.length;
           int totalCount = apiCount - localCacheCount;
@@ -151,8 +200,46 @@ class HomeController extends GetxController{
     }
   }
 
-  void showHideButton(){
+  Future<void> showHideButton() async {
+    String currentUserType = await SharedConfigName.getCurrentUserType();
+    if(currentUserType == ConfigData.PROMO){
+      isPublicUser.value = false;
+      isPartner.value = false;
+      isPartnerCustomer.value = true;
 
+      isPartnerCustomerType.value = 1;
+    }else if(currentUserType == ConfigData.AGENT){
+
+      isPartnerCustomer.value = false;
+      isPublicUser.value = true;
+      isPartner.value = true;
+
+      isPublicUserType.value = 0;
+      isPartnerType.value = 1;
+    }else if(currentUserType == ConfigData.PUBLIC){
+      isPublicUser.value = true;
+      isPartner.value = true;
+      isPartnerCustomer.value = true;
+
+      isPublicUserType.value = 1;
+      isPartnerType.value = 0;
+      isPartnerCustomerType.value = 0;
+    }
+  }
+
+  void showErrorMessage(String message){
+    showDialog(
+      context: Get.context!,
+      builder: (_) => ErrorDialog(message: message),
+    );
+  }
+
+  void showHomeDialog(NotificationRes data){
+    showDialog(
+      barrierColor: Colors.black.withOpacity(0.7),
+        context: Get.context!,
+        builder: (_) => HomeDialog(data: data)
+    );
   }
 
 }

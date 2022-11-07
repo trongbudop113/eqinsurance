@@ -53,6 +53,10 @@ class ChangeSCController extends GetxController{
       changeSCReq.sOldPin = currentSc;
       changeSCReq.sNewPin = newSc;
 
+      changeSCReq.sManufacturer = null;
+      changeSCReq.sModel = null;
+      changeSCReq.sOsName = null;
+      changeSCReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
       var response = await apiProvider.fetchData(ApiName.ChangePin, changeSCReq);
       if(response != null){
@@ -81,9 +85,9 @@ class ChangeSCController extends GetxController{
     loginReq.sUserID = userID;
     loginReq.sPin = sc;
 
-    // loginReq.sManufacturer = scText.text.trim();
-    // loginReq.sOsVersion = scText.text.trim();
-    // loginReq.sModel = scText.text.trim();
+    loginReq.sManufacturer = null;
+    loginReq.sModel = null;
+    loginReq.sOsName = null;
     loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 

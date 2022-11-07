@@ -45,9 +45,9 @@ class InputCodeController extends GetxController{
       loginReq.sUserID = userID;
       loginReq.sPin = pin;
 
-      // loginReq.sManufacturer = scText.text.trim();
-      // loginReq.sOsVersion = scText.text.trim();
-      // loginReq.sModel = scText.text.trim();
+      loginReq.sManufacturer = null;
+      loginReq.sModel = null;
+      loginReq.sOsName = null;
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 

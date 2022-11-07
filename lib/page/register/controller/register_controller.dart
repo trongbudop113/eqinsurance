@@ -160,9 +160,9 @@ class RegisterController extends GetxController{
         inputCodeReq.sOTP = otp;
         inputCodeReq.sPin = sc;
 
-        // inputCodeReq.sManufacturer = scText.text.trim();
-        // inputCodeReq.sOsVersion = scText.text.trim();
-        // inputCodeReq.sModel = scText.text.trim();
+        inputCodeReq.sManufacturer = null;
+        inputCodeReq.sModel = null;
+        inputCodeReq.sOsName = null;
         inputCodeReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -193,9 +193,9 @@ class RegisterController extends GetxController{
     loginReq.sUserID = userID;
     loginReq.sPin = scCode;
 
-    // loginReq.sManufacturer = scText.text.trim();
-    // loginReq.sOsVersion = scText.text.trim();
-    // loginReq.sModel = scText.text.trim();
+    loginReq.sManufacturer = null;
+    loginReq.sModel = null;
+    loginReq.sOsName = null;
     loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -222,9 +222,9 @@ class RegisterController extends GetxController{
     loginReq.sUserID = userID;
     loginReq.sUserPass = userPassword;
 
-    // loginReq.sManufacturer = scText.text.trim();
-    // loginReq.sOsVersion = scText.text.trim();
-    // loginReq.sModel = scText.text.trim();
+    loginReq.sManufacturer = null;
+    loginReq.sModel = null;
+    loginReq.sOsName = null;
     loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 

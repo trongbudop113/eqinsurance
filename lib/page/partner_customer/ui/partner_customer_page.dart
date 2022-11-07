@@ -40,7 +40,7 @@ class PartnerCustomerPage extends GetView<PartnerCustomerController>{
                       },
                       child: Container(
                         color: Colors.transparent,
-                        child: Image.asset(ImageResource.ic_back, width: 12,),
+                        child: Image.asset(ImageResource.ic_back, width: 12),
                       ),
                     ),
                     Spacer(flex: 1),

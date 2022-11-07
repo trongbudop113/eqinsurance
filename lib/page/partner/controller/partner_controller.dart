@@ -98,7 +98,7 @@ class PartnerController extends GetxController{
               readAndDeletedNotificationIDs.add(element);
           }
 
-          String jsonText = jsonEncode(readAndDeletedNotificationIDs);
+          //String jsonText = jsonEncode(readAndDeletedNotificationIDs);
 
           int localCacheCount = readAndDeletedNotificationIDs.length;
           int totalCount = apiCount - localCacheCount;

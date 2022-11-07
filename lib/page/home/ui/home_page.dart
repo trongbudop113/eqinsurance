@@ -40,14 +40,14 @@ class HomePage extends GetView<HomeController>{
                     Get.toNamed(GetListPages.SETTINGS);
                   },
                 ),
-                SizedBox(width: 8),
+                SizedBox(width: 10),
                 GestureDetector(
                   child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
                   onTap: (){
                     controller.getContactInfo();
                   },
                 ),
-                SizedBox(width: 8),
+                SizedBox(width: 10),
                 Obx(() => IconNotificationWidget(
                   onTap: (){
                     Get.toNamed(GetListPages.NOTIFICATION);
@@ -69,18 +69,55 @@ class HomePage extends GetView<HomeController>{
                 style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14),
               ),
             ),
-            SizedBox(height: 15),
-            ButtonWidget.buttonBorder(context, "Public Users", onTap: (){
-              controller.getPublicUser();
-            }),
-            SizedBox(height: 10),
-            ButtonWidget.buttonNormal(context, "Partners", onTap: (){
-              controller.goToPartnerPage();
-            }),
-            SizedBox(height: 10),
-            ButtonWidget.buttonNormal(context, "Partner Customer", onTap: (){
-              controller.goToPartnerCustomer();
-            })
+            Obx(() => Column(
+              children: [
+                Visibility(
+                  visible: controller.isPublicUser.value,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 15),
+                    child: Visibility(
+                      visible: controller.isPublicUserType.value == 0,
+                      child: ButtonWidget.buttonBorder(context, "Public Users", onTap: (){
+                        controller.getPublicUser();
+                      }),
+                      replacement: ButtonWidget.buttonNormal(context, "Public Users", onTap: (){
+                        controller.getPublicUser();
+                      })
+                    ),
+                  ),
+                ),
+                Visibility(
+                    visible: controller.isPartner.value,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10),
+                    child: Visibility(
+                      visible: controller.isPartnerType.value == 0,
+                      child: ButtonWidget.buttonBorder(context,  "Partners", onTap: (){
+                        controller.goToPartnerPage();
+                      }),
+                      replacement: ButtonWidget.buttonNormal(context, "Partners", onTap: (){
+                        controller.goToPartnerPage();
+                      }),
+                    ),
+                  )
+                ),
+                Visibility(
+                    visible: controller.isPartnerCustomer.value,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Visibility(
+                        visible: controller.isPartnerCustomerType.value == 0,
+                        child: ButtonWidget.buttonBorder(context,  "Partner Customer", onTap: (){
+                          controller.goToPartnerCustomer();
+                        }),
+                        replacement: ButtonWidget.buttonNormal(context, "Partner Customer", onTap: (){
+                          controller.goToPartnerCustomer();
+                        }),
+                      )
+                    )
+                ),
+              ],
+            ))
           ],
         ),
       ),

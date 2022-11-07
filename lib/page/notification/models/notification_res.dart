@@ -31,6 +31,7 @@ class NotificationRes {
   String? picPath;
 
   RxBool isCheck = false.obs;
+  RxBool isRead= false.obs;
 
   NotificationRes({this.iD, this.subject, this.message, this.messageDate, this.picPath});
 
