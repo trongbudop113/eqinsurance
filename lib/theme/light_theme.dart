@@ -12,11 +12,9 @@ class LightTheme{
   textTheme: TextTheme(
     bodyText1: GoogleFonts.sourceSansPro(
       fontSize: 13,
-      color: Colors.black
     ),
-      bodyText2: GoogleFonts.sourceSansPro(
+      bodyText2: GoogleFonts.quicksand(
           fontSize: 13,
-          color: Colors.grey
       )
   ),
   appBarTheme: const AppBarTheme(

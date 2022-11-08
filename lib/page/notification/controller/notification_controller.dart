@@ -28,6 +28,8 @@ class NotificationController extends GetxController{
 
   final RxBool isSelected = false.obs;
 
+  final RxBool isLoading = true.obs;
+
   int page = 1;
   int limit = 10;
   bool noMorePage = false;
@@ -42,7 +44,6 @@ class NotificationController extends GetxController{
   void onInit() {
     getNotification();
     super.onInit();
-    print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   }
 
   Future<void> initData() async {
@@ -51,7 +52,7 @@ class NotificationController extends GetxController{
   }
 
   Future<void> getNotification() async {
-
+    isLoading.value = true;
     String agentCode = await SharedConfigName.getAgentCode();
 
     GetNotificationReq getNotificationReq = GetNotificationReq();
@@ -80,6 +81,7 @@ class NotificationController extends GetxController{
         totalPages = 0;
       }
     }
+    isLoading.value = false;
   }
 
   Future<void> displayNotificationList() async {

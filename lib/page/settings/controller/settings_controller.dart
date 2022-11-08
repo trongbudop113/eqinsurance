@@ -3,6 +3,8 @@ import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/network/api_name.dart';
 import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/page/settings/models/notification_item_count.dart';
+import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xml/xml.dart';
 
@@ -20,6 +22,8 @@ class SettingsController extends GetxController{
 
   Future<void> onClickYes() async {
     await getNotificationItemCount();
+    SharedConfigName.logoutUser();
+    SharedConfigName.setRegisteredUserType('');
     Get.back();
   }
 
@@ -41,8 +45,15 @@ class SettingsController extends GetxController{
       int? number = int.tryParse(res);
       SharedConfigName.setNotificationsPerPage(number ?? 0);
     }else{
-
+      showErrorMessage("Cannot get NotificationItemCount!");
     }
+  }
+
+  void showErrorMessage(String message){
+    showDialog(
+      context: Get.context!,
+      builder: (_) => ErrorDialog(message: message),
+    );
   }
 
 }

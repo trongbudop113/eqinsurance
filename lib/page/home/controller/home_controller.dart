@@ -40,6 +40,7 @@ class HomeController extends GetxController{
   final RxInt isPartnerType = 0.obs;
   final RxInt isPartnerCustomerType = 0.obs;
 
+  final RxBool isLoading = true.obs;
 
   @override
   void onInit() {
@@ -74,6 +75,7 @@ class HomeController extends GetxController{
   }
 
   Future<void> getContactInfo() async {
+    isLoading.value = true;
     final String _Type = await SharedConfigName.getCurrentUserType();
     String _HpNumberTemp = "";
     if(_Type == ConfigData.PROMO){
@@ -94,10 +96,15 @@ class HomeController extends GetxController{
       print("data....." + root.children[2].children.first.toString());
       String link = root.children[2].children.first.toString();
       Get.toNamed(GetListPages.CONTACT_US, arguments: {"link": link});
+      isLoading.value = false;
+    }else{
+      isLoading.value = false;
+      showErrorMessage("Can not load contact, please try again!");
     }
   }
 
   Future<void> getPublicUser() async {
+    isLoading.value = true;
     GetPublicUserReq getPublicUserReq = GetPublicUserReq();
     getPublicUserReq.sUserName = ConfigData.CONSUMER_KEY;
     getPublicUserReq.sPassword = ConfigData.CONSUMER_SECRET;
@@ -110,6 +117,9 @@ class HomeController extends GetxController{
       String link = root.children[2].children.first.toString();
       Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
     }
+    isLoading.value = false;
+
+    //Get.toNamed(GetListPages.AUTHENTICATION);
   }
 
   void goToPartnerCustomer(){
@@ -157,7 +167,7 @@ class HomeController extends GetxController{
   }
 
   Future<void> refreshNotificationCount() async {
-
+    isLoading.value = true;
     String agentCode = await SharedConfigName.getAgentCode();
     String userType = await SharedConfigName.getCurrentUserType();
 
@@ -198,6 +208,8 @@ class HomeController extends GetxController{
         }
       }
     }
+
+    isLoading.value = false;
   }
 
   Future<void> showHideButton() async {

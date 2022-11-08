@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:eqinsurance/configs/configs_data.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
@@ -9,7 +7,10 @@ import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/page/notification/models/notification_req.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
 import 'package:eqinsurance/page/webview/model/get_contact_req.dart';
+import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:xml/xml.dart';
 
@@ -31,6 +32,8 @@ class PublicUserController extends GetxController{
   final RxInt countNotify = 0.obs;
   final RxBool isShowNotification = false.obs;
 
+  final RxBool isLoading = true.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -39,6 +42,7 @@ class PublicUserController extends GetxController{
   }
 
   Future<void> getContactInfo() async {
+    isLoading.value = true;
     final String _Type = await SharedConfigName.getCurrentUserType();
     String _HpNumberTemp = "";
     if(_Type == ConfigData.PROMO){
@@ -58,8 +62,19 @@ class PublicUserController extends GetxController{
       var root = XmlDocument.parse(response);
       print("data....." + root.children[2].children.first.toString());
       String link = root.children[2].children.first.toString();
+      isLoading.value = false;
       Get.toNamed(GetListPages.CONTACT_US, arguments: {"link": link});
+    }else{
+      isLoading.value = false;
+      showErrorMessage("Can not load contact, please try again!");
     }
+  }
+
+  void showErrorMessage(String message){
+    showDialog(
+      context: Get.context!,
+      builder: (_) => ErrorDialog(message: message),
+    );
   }
 
   void getIntentParam(){
@@ -113,6 +128,36 @@ class PublicUserController extends GetxController{
           }
         }
       }
+    }
+  }
+
+  bool isContact = false;
+
+  Future<void> onCheckLink(String link) async {
+    if(link.startsWith("tel:")){
+      isContact = true;
+      bool canLaunch = await canLaunchUrlString(link);
+      if(canLaunch){
+        launchUrlString(link);
+      }
+    }else if(link.endsWith(".pdf") || link.endsWith(".doc")
+        || link.endsWith(".docx")
+        || link.endsWith(".xls")
+        || link.endsWith(".xlsx")){
+      isContact = true;
+      downloadFile(url);
+    }
+  }
+
+  void downloadFile(String url) {
+
+  }
+
+  Future<void> onReload() async {
+    if(isContact){
+      var web = await webViewController.future;
+      await web.loadUrl(url);
+      isContact = false;
     }
   }
 }

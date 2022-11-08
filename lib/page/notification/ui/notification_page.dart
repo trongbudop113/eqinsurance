@@ -1,4 +1,5 @@
 
+import 'package:eqinsurance/page/loading/loading_page.dart';
 import 'package:eqinsurance/page/notification/controller/notification_controller.dart';
 import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
@@ -72,81 +73,86 @@ class NotificationPage extends GetView<NotificationController>{
           SizedBox(width: 10)
         ],
       ),
-      body: Container(
-        width: double.maxFinite,
-        height: double.maxFinite,
-        padding: EdgeInsets.all(7),
-        child: Container(
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(5))
-          ),
-          child: Obx(() => ListView.builder(
-            itemCount: controller.listNotification.length,
-            itemBuilder: (ctx, index){
-              return GestureDetector(
-                child: Container(
-                  color: Colors.transparent,
-                  child: Column(
-                    children: [
-                      Row(
+      body: Stack(
+        children: [
+          Container(
+            width: double.maxFinite,
+            height: double.maxFinite,
+            padding: EdgeInsets.all(7),
+            child: Container(
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+              ),
+              child: Obx(() => ListView.builder(
+                itemCount: controller.listNotification.length,
+                itemBuilder: (ctx, index){
+                  return GestureDetector(
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
                             children: [
-                              Obx(() => Visibility(
-                                  visible: controller.isSelected.value,
-                                  child: controller.selectedCheckbox(controller.listNotification[index].isCheck.value),
-                                  replacement: SizedBox(height: 12)
-                              )),
-                              SizedBox(height: 2),
-                              Obx(() => Image.asset(
-                                  !controller.listNotification[index].isRead.value
-                                      ? ImageResource.unread_notification : ImageResource.read_notification,
-                                  width: 25, height: 25)
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Obx(() => Visibility(
+                                      visible: controller.isSelected.value,
+                                      child: controller.selectedCheckbox(controller.listNotification[index].isCheck.value),
+                                      replacement: SizedBox(height: 12)
+                                  )),
+                                  SizedBox(height: 2),
+                                  Obx(() => Image.asset(
+                                      !controller.listNotification[index].isRead.value
+                                          ? ImageResource.unread_notification : ImageResource.read_notification,
+                                      width: 25, height: 25)
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                flex: 10,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 10),
+                                    Text(
+                                      '${controller.listNotification[index].subject}',
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      maxLines: 1,
+                                    ),
+                                    SizedBox(height: 2),
+                                    Text(
+                                      '${controller.listNotification[index].message}',
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      maxLines: 1,
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            flex: 10,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 10),
-                                Text(
-                                  '${controller.listNotification[index].subject}',
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: true,
-                                  maxLines: 1,
-                                ),
-                                SizedBox(height: 2),
-                                Text(
-                                  '${controller.listNotification[index].message}',
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: true,
-                                  maxLines: 1,
-                                )
-                              ],
-                            ),
-                          ),
+                          SizedBox(height: 3),
+                          Divider()
                         ],
                       ),
-                      SizedBox(height: 3),
-                      Divider()
-                    ],
-                  ),
-                ),
-                onTap: (){
-                  controller.onSelectItem(index);
+                    ),
+                    onTap: (){
+                      controller.onSelectItem(index);
+                    },
+                  );
                 },
-              );
-            },
-          ))
-        ),
+              ))
+            ),
+          ),
+          Obx(() => LoadingPage(isLoading: controller.isLoading.value))
+        ],
       ),
     );
   }

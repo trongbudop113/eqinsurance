@@ -5,7 +5,6 @@ import 'package:eqinsurance/widgets/button_widget.dart';
 import 'package:eqinsurance/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 
 class ChangeSCPage extends GetView<ChangeSCController>{
   const ChangeSCPage({Key? key}) : super(key: key);

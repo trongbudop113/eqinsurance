@@ -19,6 +19,7 @@ class ImageResource {
   static String ic_call = getPngSourcePath('call');
   static String ic_close = getPngSourcePath('close_icon');
   static String ic_complete_step_3 = getPngSourcePath('complete_step_3_icon');
+  static String ic_complete = getPngSourcePath('complete_icon');
   static String ic_warning_yellow = getPngSourcePath('ex_yellow');
   static String ic_warning = getPngSourcePath('ex');
   static String ic_exit = getPngSourcePath('exit');

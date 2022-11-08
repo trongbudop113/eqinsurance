@@ -1,3 +1,5 @@
+import 'package:eqinsurance/page/athentication/controller/authentication_controller.dart';
+import 'package:eqinsurance/page/athentication/ui/authentication_page.dart';
 import 'package:eqinsurance/page/change_sc/controller/change_sc_controller.dart';
 import 'package:eqinsurance/page/change_sc/ui/change_sc_page.dart';
 import 'package:eqinsurance/page/contact_us/controller/contact_us_controller.dart';
@@ -55,6 +57,7 @@ class GetListPages{
   static String TERM_AND_PRIVACY = '/term_and_privacy';
   static String PARTNER_CUSTOMER = '/partner_customer';
   static String WEBVIEW = '/webview';
+  static String AUTHENTICATION = '/authen';
 
   List<GetPage> listPage(){
     return [
@@ -132,6 +135,11 @@ class GetListPages{
         name: WEBVIEW,
         page: () => WebViewPage(),
         binding: WebViewAppBinding(),
+      ),
+      GetPage(
+        name: AUTHENTICATION,
+        page: () => AuthenticationPage(),
+        binding: AuthenticationBinding(),
       )
     ];
   }

@@ -14,6 +14,7 @@ class IconNotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
+        color: Colors.transparent,
         width: 25,
         height: 25,
         child: Stack(

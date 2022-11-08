@@ -1,13 +1,10 @@
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/splash_page.dart';
-import 'package:eqinsurance/theme/dark_theme.dart';
 import 'package:eqinsurance/theme/light_theme.dart';
-import 'package:eqinsurance/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
 }
 
@@ -16,24 +13,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => ThemeProvider(),
-        ),
-        //Your other providers goes here...
-      ],
-      child: Consumer<ThemeProvider>(
-        builder: (ctx, themeObject, _) => GetMaterialApp(
-          title: 'Flutter Demo',
-          debugShowCheckedModeBanner: false,
-          theme: LightTheme.dataTheme(),
-          darkTheme: DarkTheme.dataTheme(),
-          themeMode: themeObject.mode,
-          getPages: GetListPages.singleton.listPage(),
-          home: SplashPage()
-        )
-      ),
+    return GetMaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: LightTheme.dataTheme(),
+        getPages: GetListPages.singleton.listPage(),
+        home: SplashPage()
     );
   }
 }

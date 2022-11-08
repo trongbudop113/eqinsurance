@@ -6,13 +6,14 @@ class ButtonWidget{
   static Widget buttonNormal(BuildContext context, String text,
       {Color textColor = Colors.white,
         Color buttonColor = ColorResource.color_button_user,
+        double radius = 18,
       VoidCallback? onTap}){
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.maxFinite,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
           color: buttonColor,
           boxShadow: [
             BoxShadow(
@@ -23,7 +24,7 @@ class ButtonWidget{
             ),
           ],
         ),
-        child: Text(text, style: StyleResource.TextStyleBlack(context).copyWith(color: textColor)),
+        child: Text(text, style: StyleResource.TextStyleBlack(context).copyWith(color: textColor, fontWeight: FontWeight.bold, fontSize: 14)),
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: 15),
       ),
@@ -43,7 +44,7 @@ class ButtonWidget{
           border: Border.all(color: borderColor, width: 1),
           borderRadius: BorderRadius.all(Radius.circular(18)),
         ),
-        child: Text(text, style: StyleResource.TextStyleBlack(context).copyWith(color: textColor)),
+        child: Text(text, style: StyleResource.TextStyleBlack(context).copyWith(color: textColor, fontWeight: FontWeight.bold, fontSize: 14)),
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: 15),
       ),
