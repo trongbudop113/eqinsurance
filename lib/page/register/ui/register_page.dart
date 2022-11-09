@@ -1,4 +1,5 @@
 
+import 'package:eqinsurance/page/loading/loading_page.dart';
 import 'package:eqinsurance/page/register/controller/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -32,7 +33,8 @@ class RegisterPage extends GetView<RegisterController>{
                 );
               }).toList(),
             ),
-          )
+          ),
+          Obx(() => LoadingPage(isLoading: controller.isLoading.value))
         ],
       )),
       onWillPop: () async{

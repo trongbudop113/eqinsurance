@@ -1,4 +1,6 @@
+import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final Function(String) onSubmit;
@@ -7,8 +9,11 @@ class TextFieldWidget extends StatelessWidget {
   final bool isShowLeftIcon;
   final TextEditingController? controller;
   final String leftIcon;
+  final TextInputType? textInputType;
+  final List<TextInputFormatter>? inputFormatter;
+  final bool obscureText;
 
-  const TextFieldWidget({Key? key, required this.onSubmit, this.hint = "", this.controller, this.isShowLeftIcon = false, this.leftIcon = "", this.onChange}) : super(key: key);
+  const TextFieldWidget({Key? key, required this.onSubmit, this.hint = "", this.controller, this.isShowLeftIcon = false, this.leftIcon = "", this.onChange, this.textInputType, this.inputFormatter, this.obscureText = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class TextFieldWidget extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(3.0)),
       ),
-      height: 38,
+      height: 40,
       child: Row(
         children: [
           Visibility(
@@ -38,21 +43,24 @@ class TextFieldWidget extends StatelessWidget {
             child: TextField(
                 controller: controller,
                 autocorrect: true,
+                obscureText: obscureText,
                 maxLines: 1,
+                keyboardType: textInputType,
+                inputFormatters: inputFormatter,
                 onSubmitted: (value) {
                   onSubmit(value);
                 },
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
-                    ?.copyWith(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),
+                    .bodyText1
+                    ?.copyWith(fontSize: 14, color: ColorResource.plaintext_textColor, fontWeight: FontWeight.bold),
                 decoration: InputDecoration(
                   hintText: hint,
                   contentPadding: EdgeInsets.only(left: 10),
                   hintStyle: Theme.of(context)
                       .textTheme
-                      .bodyText2
-                      ?.copyWith(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w400),
+                      .bodyText1
+                      ?.copyWith(fontSize: 14, color: ColorResource.plaintext_textColorHint, fontWeight: FontWeight.w400),
                   filled: true,
                   fillColor: Colors.white70,
                   enabledBorder: OutlineInputBorder(

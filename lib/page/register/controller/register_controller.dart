@@ -49,6 +49,7 @@ class RegisterController extends GetxController{
 
   final formKey = GlobalKey<FormState>();
 
+  final RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -60,92 +61,117 @@ class RegisterController extends GetxController{
     currentIndex.value = i;
   }
 
+  void showLoading(){
+    isLoading.value = true;
+  }
+
+  void hideLoading(){
+    isLoading.value = false;
+  }
+
   Future<void> onSubmitUserAccount() async {
-    UserAccountReq userAccountReq = UserAccountReq();
-    userAccountReq.sUserName = ConfigData.CONSUMER_KEY;
-    userAccountReq.sPassword = ConfigData.CONSUMER_SECRET;
-    userAccountReq.sUserID = userIDText.text.trim();
-    userAccountReq.sUserPass = userPasswordText.text.trim();
+    showLoading();
+    try{
+      UserAccountReq userAccountReq = UserAccountReq();
+      userAccountReq.sUserName = ConfigData.CONSUMER_KEY;
+      userAccountReq.sPassword = ConfigData.CONSUMER_SECRET;
+      userAccountReq.sUserID = userIDText.text.trim();
+      userAccountReq.sUserPass = userPasswordText.text.trim();
 
 
-    var response = await apiProvider.fetchData(ApiName.IsValidateID, userAccountReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.IsValidateID, userAccountReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        doWhenVerifyUserSuccess(userIDText.text.trim(), userPasswordText.text.trim());
-      }else{
-        showErrorMessage('User ID or Password is wrong!');
+        if(CheckError.isSuccess(data)){
+          doWhenVerifyUserSuccess(userIDText.text.trim(), userPasswordText.text.trim());
+        }else{
+          showErrorMessage('User ID or Password is wrong!');
+        }
       }
-      //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+
+      hideLoading();
+    }catch(e){
+      hideLoading();
+      showErrorMessage('User ID or Password is wrong!');
     }
   }
 
   Future<void> onSubmitVerifyPhoneNumber() async {
+    showLoading();
+    try{
+      final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
 
-    final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
-
-    PhoneNumberReq phoneNumberReq = PhoneNumberReq();
-    phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
-    phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
-    phoneNumberReq.sUserID = userID;
-    phoneNumberReq.sMobileNo = _MobileNo;
+      PhoneNumberReq phoneNumberReq = PhoneNumberReq();
+      phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
+      phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
+      phoneNumberReq.sUserID = userID;
+      phoneNumberReq.sMobileNo = _MobileNo;
 
 
-    var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        doWhenVerifyPhoneSuccess(phoneNumberText.text.trim(), textCountryCodePhone.value);
-      }else{
-        showErrorMessage("Cannot send SMS to your mobile number!");
+        if(CheckError.isSuccess(data)){
+          doWhenVerifyPhoneSuccess(phoneNumberText.text.trim(), textCountryCodePhone.value);
+        }else{
+          showErrorMessage("Cannot send SMS to your mobile number!");
+        }
       }
-      //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+
+      hideLoading();
+    }catch(e){
+      hideLoading();
+      showErrorMessage("Cannot send SMS to your mobile number!");
     }
   }
 
   Future<void> onSubmitVerifyCodeOTP() async {
+    showLoading();
+    try{
+      final String _MobileNo = countryCode + phoneNumber;
 
-    final String _MobileNo = countryCode + phoneNumber;
-
-    VerifyCodeReq phoneNumberReq = VerifyCodeReq();
-    phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
-    phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
-    phoneNumberReq.sUserID = userID;
-    phoneNumberReq.sMobileNo = _MobileNo;
-    phoneNumberReq.sOTP = pinCodeText.text.trim();
+      VerifyCodeReq phoneNumberReq = VerifyCodeReq();
+      phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
+      phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
+      phoneNumberReq.sUserID = userID;
+      phoneNumberReq.sMobileNo = _MobileNo;
+      phoneNumberReq.sOTP = pinCodeText.text.trim();
 
 
-    var response = await apiProvider.fetchData(ApiName.VerifyOTP, phoneNumberReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.VerifyOTP, phoneNumberReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        doWhenVerifyOTPSuccess(pinCodeText.text.trim());
-      }else{
-        showErrorMessage("OTP is wrong!");
+        if(CheckError.isSuccess(data)){
+          doWhenVerifyOTPSuccess(pinCodeText.text.trim());
+        }else{
+          showErrorMessage("OTP is wrong!");
+        }
       }
-      //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+      hideLoading();
+    }catch(e){
+      hideLoading();
+      showErrorMessage("OTP is wrong!");
     }
   }
 
   Future<void> onSubmitSCCode() async {
-
+    showLoading();
     var sc = scText.text.trim().toString();
     var confirmSc = confirmSCText.text.trim().toString();
-    final regexp = RegExp(r'^[0-9]*\$');
 
     try{
       if(sc.isEmpty || confirmSc.isEmpty){
         showErrorMessage("Please enter Security Code and Confirm Security Code.");
-      }else if(!regexp.hasMatch(sc) || !regexp.hasMatch(confirmSc) || sc.length != 6 || confirmSc.length!=6){
+      }else if(sc.length != 6 || confirmSc.length != 6){
         showErrorMessage("Security Code must contain 6 digits.");
       }else if(!(sc == confirmSc)){
         showErrorMessage("Security Code does not match the Confirm Security Code.");
@@ -177,69 +203,102 @@ class RegisterController extends GetxController{
           }else{
             showErrorMessage("Invalid Security Code!");
           }
-          //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
         }
       }
     }catch(e){
-
+      hideLoading();
+      showErrorMessage("Invalid Security Code!");
     }
   }
 
   Future<void> onSubmitLogin() async {
+    try{
+      Login1Req loginReq = Login1Req();
+      loginReq.sUserName = ConfigData.CONSUMER_KEY;
+      loginReq.sPassword = ConfigData.CONSUMER_SECRET;
+      loginReq.sUserID = userID;
+      loginReq.sPin = scCode;
 
-    Login1Req loginReq = Login1Req();
-    loginReq.sUserName = ConfigData.CONSUMER_KEY;
-    loginReq.sPassword = ConfigData.CONSUMER_SECRET;
-    loginReq.sUserID = userID;
-    loginReq.sPin = scCode;
-
-    loginReq.sManufacturer = null;
-    loginReq.sModel = null;
-    loginReq.sOsName = null;
-    loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
+      loginReq.sManufacturer = null;
+      loginReq.sModel = null;
+      loginReq.sOsName = null;
+      loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
-    var response = await apiProvider.fetchData(ApiName.LoginWithSecurityCode, loginReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.LoginWithSecurityCode, loginReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        doWhenSuccessLoginWithSecurityCode();
-      }else{
-        showErrorMessage("Cannot login. Please contact website admin!");
+        if(CheckError.isSuccess(data)){
+          doWhenSuccessLoginWithSecurityCode();
+        }else{
+          showErrorMessage("Cannot login. Please contact website admin!");
+        }
       }
-      //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+    }catch(e){
+      hideLoading();
+      showErrorMessage("Cannot login. Please contact website admin!");
     }
   }
 
   Future<void> onSubmitLoginAgentCode() async {
+    try{
+      Login2Req loginReq = Login2Req();
+      loginReq.sUserName = ConfigData.CONSUMER_KEY;
+      loginReq.sPassword = ConfigData.CONSUMER_SECRET;
+      loginReq.sUserID = userID;
+      loginReq.sUserPass = userPassword;
 
-    Login2Req loginReq = Login2Req();
-    loginReq.sUserName = ConfigData.CONSUMER_KEY;
-    loginReq.sPassword = ConfigData.CONSUMER_SECRET;
-    loginReq.sUserID = userID;
-    loginReq.sUserPass = userPassword;
-
-    loginReq.sManufacturer = null;
-    loginReq.sModel = null;
-    loginReq.sOsName = null;
-    loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
+      loginReq.sManufacturer = null;
+      loginReq.sModel = null;
+      loginReq.sOsName = null;
+      loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
-    var response = await apiProvider.fetchData(ApiName.GetAgentCode, loginReq);
+      var response = await apiProvider.fetchData(ApiName.GetAgentCode, loginReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
+
+        if(CheckError.isSuccess(data)){
+          doWhenLoginSuccess(data);
+        }else{
+          showErrorMessage("Cannot get AgentCode!");
+        }
+      }
+      hideLoading();
+    }catch(e){
+      hideLoading();
+      showErrorMessage("Cannot get AgentCode!");
+    }
+  }
+
+  Future<void> onSubmitResendCode() async {
+
+    final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
+
+    PhoneNumberReq phoneNumberReq = PhoneNumberReq();
+    phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
+    phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
+    phoneNumberReq.sUserID = userID;
+    phoneNumberReq.sMobileNo = _MobileNo;
+
+
+    var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
     if(response != null){
       var root = XmlDocument.parse(response);
       print("data....." + root.children[2].children.first.toString());
       String data = root.children[2].children.first.toString();
 
       if(CheckError.isSuccess(data)){
-        doWhenLoginSuccess(data);
+        showErrorMessage("New OTP has been sent to you.");
       }else{
-        showErrorMessage("Cannot get AgentCode!");
+        showErrorMessage("Cannot send SMS to your mobile number!");
       }
-      //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+
     }
   }
 
