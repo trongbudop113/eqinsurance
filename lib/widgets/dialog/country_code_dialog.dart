@@ -1,10 +1,12 @@
+import 'package:eqinsurance/page/register/controller/register_controller.dart';
 import 'package:eqinsurance/page/register/models/country_code_res.dart';
 import 'package:eqinsurance/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CountryCodeDialog extends StatefulWidget {
-
+  final RegisterController controller;
+  const CountryCodeDialog({required this.controller});
   @override
   _CountryCodeDialogState createState() => _CountryCodeDialogState();
 }
@@ -48,36 +50,43 @@ class _CountryCodeDialogState extends State<CountryCodeDialog> with SingleTicker
                   child: SearchTextFieldWidget(onSubmit: (String ) {
 
                   }, onChange: (value){
-
+                    widget.controller.onSearchCountryCode(value);
                   }),
                 ),
                 SizedBox(height: 10),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: CountryCodeRes.listCountryCode().length,
+                  child: Obx(() => ListView.builder(
+                    itemCount: widget.controller.listCountryCode.length,
                     itemBuilder: (ctx, index){
-                      return Container(
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(width: 15),
-                                Container(
-                                  child: Text(CountryCodeRes.listCountryCode()[index].name ?? ""),
-                                  padding: EdgeInsets.symmetric(vertical: 3),
-                                ),
-                                Spacer(flex: 1),
-                                
-                                selectedCheckbox(true),
-                                SizedBox(width: 15),
-                              ],
-                            ),
-                            Divider()
-                          ],
+                      return GestureDetector(
+                        onTap: (){
+                          widget.controller.onChangeSearchCountry(index);
+                          Navigator.pop(context, rs);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(width: 15),
+                                  Container(
+                                    child: Text(widget.controller.listCountryCode[index].name ?? ""),
+                                    padding: EdgeInsets.symmetric(vertical: 3),
+                                  ),
+                                  Spacer(flex: 1),
+
+                                  selectedCheckbox(widget.controller.listCountryCode[index].isChecked.value),
+                                  SizedBox(width: 15),
+                                ],
+                              ),
+                              Divider()
+                            ],
+                          ),
                         ),
                       );
                     },
-                  ),
+                  )),
                 ),
                 SizedBox(height: 20),
                 Container(

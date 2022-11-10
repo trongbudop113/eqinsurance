@@ -49,7 +49,7 @@ class ContactUsController extends GetxController{
   }
 
   void downloadFile(String url) {
-
+    launchUrlString(url);
   }
 
   Future<void> onReload() async {

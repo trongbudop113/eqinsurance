@@ -40,6 +40,7 @@ class WebViewAppController extends GetxController{
   final RxBool isShowNotification = false.obs;
 
   final RxBool isLoading = true.obs;
+  final RxString pageTitle = "".obs;
 
   @override
   void onInit() {
@@ -77,7 +78,8 @@ class WebViewAppController extends GetxController{
 
   void getIntentParam(){
     var data = Get.arguments;
-    url = data['link'].toString();
+    url = data[0]['link'].toString();
+    pageTitle.value = data[1]['page'] ?? "EQ Insurance";
   }
 
   Future<void> reloadHome() async {
@@ -217,7 +219,7 @@ class WebViewAppController extends GetxController{
   }
 
   void downloadFile(String url) {
-
+    launchUrlString(url);
   }
 
   Future<void> onReload() async {

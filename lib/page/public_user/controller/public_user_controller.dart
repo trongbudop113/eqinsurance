@@ -150,7 +150,7 @@ class PublicUserController extends GetxController{
   }
 
   void downloadFile(String url) {
-
+    launchUrlString(url);
   }
 
   Future<void> onReload() async {

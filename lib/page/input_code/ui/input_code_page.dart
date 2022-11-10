@@ -14,80 +14,106 @@ class InputCodePage extends GetView<InputCodeController>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.maxFinite,
-        height: double.maxFinite,
-        decoration: BoxDecoration(
-            color: Colors.black,
-            image: DecorationImage(
-                image: AssetImage(ImageResource.bg),
-                fit: BoxFit.fill
-            )
-        ),
-        padding: EdgeInsets.all(15),
-        child: Column(
+    return GestureDetector(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
           children: [
-            SizedBox(height: 50),
-            Image.asset(ImageResource.logo1, width: Get.width * 0.5),
-
-            SizedBox(height: 20),
             Container(
-              alignment: Alignment.centerLeft,
-              child: Text('Security Code'),
-            ),
-            SizedBox(height: 10),
-            TextFieldWidget(onSubmit: (value){
+              width: double.maxFinite,
+              height: Get.height,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  image: DecorationImage(
+                      image: AssetImage(ImageResource.bg),
+                      fit: BoxFit.fill
+                  )
+              ),
+              padding: EdgeInsets.all(15),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 50),
+                    Image.asset(ImageResource.logo1, width: Get.width * 0.5),
 
-            }, hint: "Enter Current Security Code",
-            controller: controller.scText,
-            isShowLeftIcon: true,
-            leftIcon: ImageResource.key),
+                    SizedBox(height: 20),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Security Code',
+                        style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: ColorResource.color_title_popup),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    TextFieldWidget(onSubmit: (value){
 
-            Spacer(flex: 1),
-            Row(
-              children: [
-                SizedBox(width: 15),
-                GestureDetector(
-                  onTap: (){
-                    Get.toNamed(GetListPages.FORGET_SC);
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Text(
-                        'Forget Security Code',
-                        style: StyleResource.TextStyleBlack(context).copyWith(
-                            decoration: TextDecoration.underline,
-                            color: ColorResource.color_appbar_settings
-                        )
-                    ),
-                  ),
+                    }, hint: "Enter Current Security Code",
+                        controller: controller.scText,
+                        isShowLeftIcon: true,
+                        leftIcon: ImageResource.key),
+
+                  ],
                 ),
-                Spacer(flex: 1),
-                GestureDetector(
-                  onTap: (){
-                    Get.toNamed(GetListPages.CHANGE_SC);
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Text(
-                        'Change Security Code',
-                        style: StyleResource.TextStyleBlack(context).copyWith(
-                          decoration: TextDecoration.underline,
-                        )
-                    ),
-                  ),
-                ),
-                SizedBox(width: 15),
-              ],
+              )
             ),
-            SizedBox(height: 10),
-            ButtonWidget.buttonNormal(context, "Next", onTap: (){
-              controller.onSubmitLoginAgentCode();
-            })
+            Positioned(
+              bottom: 15,
+              left: 15,
+              right: 15,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: 15),
+                      GestureDetector(
+                        onTap: (){
+                          Get.toNamed(GetListPages.FORGET_SC);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Text(
+                              'Forget Security Code',
+                              style: StyleResource.TextStyleBlack(context).copyWith(
+                                  decoration: TextDecoration.underline,
+                                  color: ColorResource.link_text,
+                                fontSize: 15
+                              )
+                          ),
+                        ),
+                      ),
+                      Spacer(flex: 1),
+                      GestureDetector(
+                        onTap: (){
+                          Get.toNamed(GetListPages.CHANGE_SC);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Text(
+                              'Change Security Code',
+                              style: StyleResource.TextStyleBlack(context).copyWith(
+                                decoration: TextDecoration.underline,
+                                  color: ColorResource.link_text_grey,
+                                fontSize: 15
+                              )
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  ButtonWidget.buttonNormal(context, "Next", onTap: (){
+                    controller.onSubmitLoginAgentCode();
+                  }),
+                ],
+              ),
+            )
           ],
         ),
       ),
+      onTap: (){
+        controller.hideKeyboard(context: context);
+      },
     );
   }
 

@@ -65,18 +65,18 @@ class VerifyCodePage extends StatelessWidget {
                       SizedBox(height: 20),
                       Text.rich(
                         TextSpan(
-                          style: StyleResource.TextStyleQuickSand(context).copyWith(fontSize: 22, color: ColorResource.color_title_popup),
+                          style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 22, color: ColorResource.page_title_textColor),
                           children: [
                             TextSpan(text: 'Verify '),
                             TextSpan(
                               text: controller.countryCode + controller.phoneNumber,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: ColorResource.color_title_popup),
                             ),
                           ],
                         ),
                       ),
 
-                      SizedBox(height: 15),
+                      SizedBox(height: 12),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         child: Text(
@@ -120,12 +120,12 @@ class VerifyCodePage extends StatelessWidget {
                               enableActiveFill: true,
                               //controller: controller.pinCodeText,
                               keyboardType: TextInputType.number,
-                              textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 16),
+                              textStyle: StyleResource.TextStyleBlack(context).copyWith(fontSize: 16, color: Colors.black),
                               onCompleted: (v) {
-
+                                controller.pinCodeText = v.toString();
                               },
                               onChanged: (value) {
-
+                                controller.pinCodeText = value.toString();
                               },
                               beforeTextPaste: (text) {
                                 return true;
@@ -138,7 +138,7 @@ class VerifyCodePage extends StatelessWidget {
                         color: Colors.grey,
                       ),
                       SizedBox(height: 20),
-                      Text('Enter 6 Digit Code', style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 15, fontWeight: FontWeight.bold)),
+                      Text('Enter 6 Digit Code', style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 16, color: ColorResource.color_button_partner)),
                     ],
                   ),
                 )
@@ -163,15 +163,15 @@ class VerifyCodePage extends StatelessWidget {
                       children: [
                         Image.asset(ImageResource.message, width: 15),
                         SizedBox(width: 10),
-                        Text('Resend the Code', style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 15, decoration: TextDecoration.underline))
+                        Text('Resend the Code', style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 15, color: ColorResource.link_text))
                       ],
                     ),
                   ),
                 ),
                 SizedBox(height: 10),
                 ButtonWidget.buttonNormal(context, 'Next', onTap: (){
-                  //controller.onSubmitVerifyCodeOTP();
-                  controller.onFocusPage(3);
+                  controller.onSubmitVerifyCodeOTP();
+                  //controller.onFocusPage(3);
                 }),
               ],
             )

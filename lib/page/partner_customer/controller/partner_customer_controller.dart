@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/hide_keyboard.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
@@ -21,12 +22,14 @@ class PartnerCustomerBinding extends Bindings{
 
 }
 
-class PartnerCustomerController extends GetxController{
+class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
 
   ApiProvider apiProvider = ApiProvider();
   TextEditingController phoneText = TextEditingController();
 
   String countryCode = "65";
+
+  final RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -34,26 +37,35 @@ class PartnerCustomerController extends GetxController{
   }
 
   Future<void> onSubmitCheckPhone() async {
+    isLoading.value = true;
+    if(countryCode.isEmpty || phoneText.text.trim().isEmpty){
+      showErrorMessage("Please enter your mobile number and country code.");
+    }
+    try{
+      String hpNumber = phoneText.text.trim().toString();
 
-    String hpNumber = phoneText.text.trim().toString();
-
-    LoginHpNumberReq loginReq = LoginHpNumberReq();
-    loginReq.sUserName = ConfigData.CONSUMER_KEY;
-    loginReq.sPassword = ConfigData.CONSUMER_SECRET;
-    loginReq.sHpNumber = hpNumber;
+      LoginHpNumberReq loginReq = LoginHpNumberReq();
+      loginReq.sUserName = ConfigData.CONSUMER_KEY;
+      loginReq.sPassword = ConfigData.CONSUMER_SECRET;
+      loginReq.sHpNumber = hpNumber;
 
 
-    var response = await apiProvider.fetchData(ApiName.CheckHpNumber, loginReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.CheckHpNumber, loginReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        doWhenSuccess(data, hpNumber);
-      }else{
-        showErrorMessage("Cannot get AgentCode!");
+        if(CheckError.isSuccess(data)){
+          doWhenSuccess(data, hpNumber);
+        }else{
+          showErrorMessage("Cannot get AgentCode!");
+        }
       }
+      isLoading.value = false;
+    }catch(e){
+      isLoading.value = false;
+      showErrorMessage("Cannot get AgentCode!");
     }
   }
 

@@ -14,6 +14,7 @@ class NotificationDetailBinding extends Bindings{
 class NotificationDetailController extends GetxController{
 
   final Rx<NotificationRes> notificationRes = NotificationRes().obs;
+  final RxString pageTitle = ''.obs;
 
 
   @override
@@ -25,6 +26,7 @@ class NotificationDetailController extends GetxController{
   void getArgumentData(){
     NotificationRes data = Get.arguments['data'];
     notificationRes.value = data;
+    pageTitle.value = data.subject ?? '';
   }
 
   Future<void> onDeleteNotification(BuildContext context) async {

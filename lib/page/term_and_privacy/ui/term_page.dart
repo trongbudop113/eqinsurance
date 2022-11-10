@@ -1,6 +1,7 @@
 
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/page/term_and_privacy/controller/term_controller.dart';
+import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/string_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
@@ -30,18 +31,22 @@ class TermPage extends GetView<TermController>{
             SizedBox(height: 50),
             Image.asset(ImageResource.logo1, width: Get.width * 0.5),
             SizedBox(height: 10),
-            Text(
-              StringResource.code_for_access,
-              textAlign: TextAlign.center,
-              style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                StringResource.code_for_access,
+                textAlign: TextAlign.center,
+                style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 13, color: Colors.black),
+              ),
             ),
 
             Spacer(flex: 1),
             Text(
               StringResource.tap_on,
               textAlign: TextAlign.center,
-              style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14),
+              style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: ColorResource.link_text_grey),
             ),
+            SizedBox(height: 2),
             GestureDetector(
               onTap: (){
                 controller.openTermAndPolicyPage();
@@ -51,7 +56,7 @@ class TermPage extends GetView<TermController>{
                 child: Text(
                   StringResource.eq_term,
                   textAlign: TextAlign.center,
-                  style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, decoration: TextDecoration.underline,),
+                  style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, decoration: TextDecoration.underline, color: ColorResource.link_text),
                 ),
               ),
             ),

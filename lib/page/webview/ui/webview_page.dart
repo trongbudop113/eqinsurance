@@ -2,6 +2,7 @@
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/page/loading/loading_page.dart';
 import 'package:eqinsurance/page/webview/controller/webview_controller.dart';
+import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/icon_notification_widget.dart';
@@ -38,7 +39,7 @@ class WebViewPage extends GetView<WebViewAppController>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(width: 15),
+                        SizedBox(width: 20),
                         GestureDetector(
                           onTap: (){
                             Get.back();
@@ -48,31 +49,42 @@ class WebViewPage extends GetView<WebViewAppController>{
                             child: Image.asset(ImageResource.ic_back, width: 12),
                           ),
                         ),
-                        SizedBox(width: 64),
+                        SizedBox(width: 60),
                         Spacer(flex: 1),
-                        Text("EQ Insurance", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 18)),
+                        Obx(() => Text(
+                            controller.pageTitle.value, style: StyleResource.TextStyleBlack(context)
+                            .copyWith(fontSize: 19, color: ColorResource.color_content_popup))),
                         Spacer(flex: 1),
-                        GestureDetector(
-                          child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
-                          onTap: (){
-                            controller.getContactInfo();
-                            //Get.toNamed(GetListPages.CONTACT_US);
-                          },
-                        ),
-                        SizedBox(width: 8),
-                        Obx(() => IconNotificationWidget(
-                          onTap: (){
-                            Get.toNamed(GetListPages.NOTIFICATION);
-                          },
-                          count: controller.countNotify.value,
-                          isShowNotification: controller.isShowNotification.value,
-                        )),
-                        SizedBox(width: 8),
-                        GestureDetector(
-                          child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),
-                          onTap: (){
-                            controller.reloadHome();
-                          },
+                        Container(
+                          margin: EdgeInsets.only(bottom: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
+                                onTap: (){
+                                  controller.getContactInfo();
+                                  //Get.toNamed(GetListPages.CONTACT_US);
+                                },
+                              ),
+                              SizedBox(width: 8),
+                              Obx(() => IconNotificationWidget(
+                                onTap: (){
+                                  Get.toNamed(GetListPages.NOTIFICATION);
+                                },
+                                count: controller.countNotify.value,
+                                isShowNotification: controller.isShowNotification.value,
+                              )),
+                              SizedBox(width: 8),
+                              GestureDetector(
+                                child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),
+                                onTap: (){
+                                  controller.reloadHome();
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(width: 15),
                       ],

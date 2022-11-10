@@ -1,4 +1,5 @@
 import 'package:eqinsurance/page/register/controller/register_controller.dart';
+import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/button_widget.dart';
@@ -64,21 +65,23 @@ class VerifyPhonePage extends StatelessWidget {
                       SizedBox(height: 20),
                       Text.rich(
                         TextSpan(
+                          style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 22, color: ColorResource.page_title_textColor),
                           children: [
                             TextSpan(text: 'Verify your '),
                             TextSpan(
                               text: 'Phone Number',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: ColorResource.color_title_popup),
                             ),
                           ],
                         ),
                       ),
 
-                      SizedBox(height: 15),
+                      SizedBox(height: 12),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         child: Text(
                           'In order to protect the security of your account, we would need you to verify your mobile phone number. We will send you a text message with the verification code that you will need to enter on the next screen.',
+                          style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: Colors.black),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -108,13 +111,10 @@ class VerifyPhonePage extends StatelessWidget {
                               SizedBox(width: 12),
                               Expanded(
                                 flex: 10,
-                                child: Text(
+                                child: Obx(() => Text(
                                   controller.textLocationPhone.value,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2
-                                      ?.copyWith(fontSize: 13, color: Colors.black, fontWeight: FontWeight.w400),
-                                ),
+                                  style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: ColorResource.plaintext_textColor),
+                                )),
                               ),
                               Container(
                                 height: 25,
@@ -147,7 +147,10 @@ class VerifyPhonePage extends StatelessWidget {
                               color: Colors.white,
                               borderRadius: BorderRadius.all(Radius.circular(3.0)),
                             ),
-                            child: Text(controller.textCountryCodePhone.value),
+                            child: Text(
+                               "+" + controller.textCountryCodePhone.value,
+                              style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: ColorResource.plaintext_textColor),
+                            ),
                           )),
                           SizedBox(width: 8),
                           Expanded(
@@ -178,8 +181,8 @@ class VerifyPhonePage extends StatelessWidget {
             left: 15,
             right: 15,
             child: ButtonWidget.buttonNormal(context, 'Next', onTap: (){
-              //controller.onSubmitVerifyPhoneNumber();
-              controller.onFocusPage(2);
+              controller.onSubmitVerifyPhoneNumber();
+              //controller.onFocusPage(2);
             }),
           )
         ],

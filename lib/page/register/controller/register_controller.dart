@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/hide_keyboard.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
 import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
+import 'package:eqinsurance/page/register/models/country_code_res.dart';
 import 'package:eqinsurance/page/register/models/input_code_req.dart';
 import 'package:eqinsurance/page/register/models/login_req.dart';
 import 'package:eqinsurance/page/register/models/phone_number_req.dart';
@@ -29,7 +31,7 @@ class RegisterBinding extends Bindings{
 
 }
 
-class RegisterController extends GetxController{
+class RegisterController extends GetxController with KeyboardHiderMixin{
 
   ApiProvider apiProvider = ApiProvider();
 
@@ -38,14 +40,19 @@ class RegisterController extends GetxController{
   TextEditingController userIDText = TextEditingController();
   TextEditingController userPasswordText = TextEditingController();
   TextEditingController phoneNumberText = TextEditingController();
-  TextEditingController pinCodeText = TextEditingController();
+  //TextEditingController pinCodeText = TextEditingController();
   TextEditingController scText = TextEditingController();
   TextEditingController confirmSCText = TextEditingController();
 
   List<int> listCountPage = List.generate(4, (index) => 0);
 
-  RxString textLocationPhone = "Singapore".obs;
-  RxString textCountryCodePhone = "+65".obs;
+  RxString textLocationPhone = "".obs;
+  RxString textCountryCodePhone = "".obs;
+
+  String pinCodeText = '';
+
+  RxList<CountryCode> listCountryCode = <CountryCode>[].obs;
+  var listCountryCodeGen = CountryCodeRes.listCountryCode();
 
   final formKey = GlobalKey<FormState>();
 
@@ -53,8 +60,31 @@ class RegisterController extends GetxController{
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    initCountryCode();
     super.onInit();
+  }
+
+  void initCountryCode(){
+    try{
+      var countryCodeCurrent = listCountryCodeGen.where((element) => element.id == "65").first;
+      countryCodeCurrent.isChecked.value = true;
+      textLocationPhone.value = countryCodeCurrent.name ?? '';
+      textCountryCodePhone.value = countryCodeCurrent.id ?? '';
+      listCountryCode.value = listCountryCodeGen;
+    }catch(e){
+      textLocationPhone.value = 'Singapore';
+      textCountryCodePhone.value = '65';
+    }
+  }
+
+  void onSearchCountryCode(String value){
+    try{
+      listCountryCode.value = listCountryCodeGen;
+      var listSearch = listCountryCode.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+      listCountryCode.value = listSearch;
+    }catch(e){
+
+    }
   }
 
   void onFocusPage(int i) {
@@ -72,26 +102,29 @@ class RegisterController extends GetxController{
   Future<void> onSubmitUserAccount() async {
     showLoading();
     try{
-      UserAccountReq userAccountReq = UserAccountReq();
-      userAccountReq.sUserName = ConfigData.CONSUMER_KEY;
-      userAccountReq.sPassword = ConfigData.CONSUMER_SECRET;
-      userAccountReq.sUserID = userIDText.text.trim();
-      userAccountReq.sUserPass = userPasswordText.text.trim();
+      if(userIDText.text.trim().isEmpty || userPasswordText.text.trim().isEmpty){
+        showErrorMessage("Please enter User ID and Password");
+      }else{
+        UserAccountReq userAccountReq = UserAccountReq();
+        userAccountReq.sUserName = ConfigData.CONSUMER_KEY;
+        userAccountReq.sPassword = ConfigData.CONSUMER_SECRET;
+        userAccountReq.sUserID = userIDText.text.trim();
+        userAccountReq.sUserPass = userPasswordText.text.trim();
 
 
-      var response = await apiProvider.fetchData(ApiName.IsValidateID, userAccountReq);
-      if(response != null){
-        var root = XmlDocument.parse(response);
-        print("data....." + root.children[2].children.first.toString());
-        String data = root.children[2].children.first.toString();
+        var response = await apiProvider.fetchData(ApiName.IsValidateID, userAccountReq);
+        if(response != null){
+          var root = XmlDocument.parse(response);
+          print("data....." + root.children[2].children.first.toString());
+          String data = root.children[2].children.first.toString();
 
-        if(CheckError.isSuccess(data)){
-          doWhenVerifyUserSuccess(userIDText.text.trim(), userPasswordText.text.trim());
-        }else{
-          showErrorMessage('User ID or Password is wrong!');
+          if(CheckError.isSuccess(data)){
+            doWhenVerifyUserSuccess(userIDText.text.trim(), userPasswordText.text.trim());
+          }else{
+            showErrorMessage('User ID or Password is wrong!');
+          }
         }
       }
-
       hideLoading();
     }catch(e){
       hideLoading();
@@ -102,28 +135,32 @@ class RegisterController extends GetxController{
   Future<void> onSubmitVerifyPhoneNumber() async {
     showLoading();
     try{
-      final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
 
-      PhoneNumberReq phoneNumberReq = PhoneNumberReq();
-      phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
-      phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
-      phoneNumberReq.sUserID = userID;
-      phoneNumberReq.sMobileNo = _MobileNo;
+      if(textCountryCodePhone.value.trim() != '' || phoneNumberText.text.trim() != ''){
+        showErrorMessage("Please enter your mobile number and select country");
+      }else{
+        final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
+
+        PhoneNumberReq phoneNumberReq = PhoneNumberReq();
+        phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
+        phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
+        phoneNumberReq.sUserID = userID;
+        phoneNumberReq.sMobileNo = _MobileNo;
 
 
-      var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
-      if(response != null){
-        var root = XmlDocument.parse(response);
-        print("data....." + root.children[2].children.first.toString());
-        String data = root.children[2].children.first.toString();
+        var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
+        if(response != null){
+          var root = XmlDocument.parse(response);
+          print("data....." + root.children[2].children.first.toString());
+          String data = root.children[2].children.first.toString();
 
-        if(CheckError.isSuccess(data)){
-          doWhenVerifyPhoneSuccess(phoneNumberText.text.trim(), textCountryCodePhone.value);
-        }else{
-          showErrorMessage("Cannot send SMS to your mobile number!");
+          if(CheckError.isSuccess(data)){
+            doWhenVerifyPhoneSuccess(phoneNumberText.text.trim(), textCountryCodePhone.value);
+          }else{
+            showErrorMessage("Cannot send SMS to your mobile number!");
+          }
         }
       }
-
       hideLoading();
     }catch(e){
       hideLoading();
@@ -134,27 +171,32 @@ class RegisterController extends GetxController{
   Future<void> onSubmitVerifyCodeOTP() async {
     showLoading();
     try{
-      final String _MobileNo = countryCode + phoneNumber;
+      if(pinCodeText != '' && pinCodeText.length == 6){
+        final String _MobileNo = countryCode + phoneNumber;
+        print("pinCode ...." + pinCodeText);
 
-      VerifyCodeReq phoneNumberReq = VerifyCodeReq();
-      phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
-      phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
-      phoneNumberReq.sUserID = userID;
-      phoneNumberReq.sMobileNo = _MobileNo;
-      phoneNumberReq.sOTP = pinCodeText.text.trim();
+        VerifyCodeReq phoneNumberReq = VerifyCodeReq();
+        phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
+        phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
+        phoneNumberReq.sUserID = userID;
+        phoneNumberReq.sMobileNo = _MobileNo;
+        phoneNumberReq.sOTP = pinCodeText;
 
 
-      var response = await apiProvider.fetchData(ApiName.VerifyOTP, phoneNumberReq);
-      if(response != null){
-        var root = XmlDocument.parse(response);
-        print("data....." + root.children[2].children.first.toString());
-        String data = root.children[2].children.first.toString();
+        var response = await apiProvider.fetchData(ApiName.VerifyOTP, phoneNumberReq);
+        if(response != null){
+          var root = XmlDocument.parse(response);
+          print("data....." + root.children[2].children.first.toString());
+          String data = root.children[2].children.first.toString();
 
-        if(CheckError.isSuccess(data)){
-          doWhenVerifyOTPSuccess(pinCodeText.text.trim());
-        }else{
-          showErrorMessage("OTP is wrong!");
+          if(CheckError.isSuccess(data)){
+            doWhenVerifyOTPSuccess(pinCodeText);
+          }else{
+            showErrorMessage("OTP is wrong!");
+          }
         }
+      }else{
+        showErrorMessage("Please enter OTP");
       }
       hideLoading();
     }catch(e){
@@ -322,6 +364,8 @@ class RegisterController extends GetxController{
     countryCode = code;
 
     phoneNumberText.clear();
+    listCountryCodeGen = CountryCodeRes.listCountryCode();
+    initCountryCode();
     //missing
 
     onFocusPage(2);
@@ -331,7 +375,7 @@ class RegisterController extends GetxController{
   void doWhenVerifyOTPSuccess(String _otp){
     this.otp = otp;
 
-    pinCodeText.clear();
+    pinCodeText = '';
     onFocusPage(3);
   }
 
@@ -369,12 +413,24 @@ class RegisterController extends GetxController{
   void showDialogSelectCountryCode(){
     showDialog(
       context: Get.context!,
-      builder: (_) => CountryCodeDialog()
+      builder: (_) => CountryCodeDialog(controller: this)
     );
   }
 
-  void onChangeSearchCountry(String value){
+  void onChangeSearchCountry(int index){
+    try{
+      CountryCode countryCode = listCountryCodeGen.where((e) => e.id == textCountryCodePhone.value).first;
+      countryCode.isChecked.value = false;
 
+      CountryCode countryCodeNew = listCountryCodeGen[index];
+      countryCodeNew.isChecked.value = true;
+      textCountryCodePhone.value = countryCodeNew.id ?? '';
+      textLocationPhone.value = countryCodeNew.name ?? '';
+
+      listCountryCode.value = listCountryCodeGen;
+    }catch(e){
+
+    }
   }
 
   Widget getWidgetContent(){
@@ -392,6 +448,14 @@ class RegisterController extends GetxController{
   }
 
   void onBackPress(){
+    pinCodeText = "";
+    phoneNumberText.clear();
+    userPasswordText.clear();
+    userIDText.clear();
+    scText.clear();
+    confirmSCText.clear();
+    initCountryCode();
+    listCountryCodeGen = CountryCodeRes.listCountryCode();
     if(currentIndex.value == 3){
       currentIndex.value = 2;
     }else if(currentIndex.value == 2){

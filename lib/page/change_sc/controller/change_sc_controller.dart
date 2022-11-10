@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/hide_keyboard.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
@@ -21,7 +22,7 @@ class ChangeSCBinding extends Bindings{
 
 }
 
-class ChangeSCController extends GetxController{
+class ChangeSCController extends GetxController with KeyboardHiderMixin{
 
   ApiProvider apiProvider = ApiProvider();
 
@@ -29,80 +30,89 @@ class ChangeSCController extends GetxController{
   TextEditingController newScText = TextEditingController();
   TextEditingController confirmScText = TextEditingController();
 
+  final RxBool isLoading = false.obs;
+
   Future<void> onSubmitChangeSC() async {
+    isLoading.value = true;
+    try{
+      String userID = await SharedConfigName.getUserID();
 
-    String userID = await SharedConfigName.getUserID();
+      var currentSc = currentScText.text.trim().toString();
+      var newSc = newScText.text.trim().toString();
+      var confirmSc = confirmScText.text.trim().toString();
 
-    var currentSc = currentScText.text.trim().toString();
-    var newSc = newScText.text.trim().toString();
-    var confirmSc = confirmScText.text.trim().toString();
-    final regexp = RegExp(r'^[0-9]*\$');
+      if(currentSc.isEmpty || newSc.isEmpty || confirmSc.isEmpty){
+        showErrorMessage("Please enter all security codes.");
+      }else if(currentSc.length != 6 || newSc.length != 6 || confirmSc.length != 6){
+        showErrorMessage("Security Code must contain 6 digits.");
+      }else if(newSc != confirmSc){
+        showErrorMessage("New Security Code does not match the Confirm Security Code.");
+      }else{
+        ChangeSCReq changeSCReq = ChangeSCReq();
+        changeSCReq.sUserName = ConfigData.CONSUMER_KEY;
+        changeSCReq.sPassword = ConfigData.CONSUMER_SECRET;
+        changeSCReq.sUserID = userID;
+        changeSCReq.sOldPin = currentSc;
+        changeSCReq.sNewPin = newSc;
 
-    if(currentSc.isEmpty || newSc.isEmpty || confirmSc.isEmpty){
-      showErrorMessage("Please enter all security codes.");
-    }else if(!regexp.hasMatch(currentSc) || !regexp.hasMatch(newSc) || !regexp.hasMatch(confirmSc) ||
-        currentSc.length != 6 || newSc.length !=6 || confirmSc.length !=6){
-      showErrorMessage("Security Code must contain 6 digits.");
-    }else if(newSc != confirmSc){
-      showErrorMessage("New Security Code does not match the Confirm Security Code.");
-    }else{
-      ChangeSCReq changeSCReq = ChangeSCReq();
-      changeSCReq.sUserName = ConfigData.CONSUMER_KEY;
-      changeSCReq.sPassword = ConfigData.CONSUMER_SECRET;
-      changeSCReq.sUserID = userID;
-      changeSCReq.sOldPin = currentSc;
-      changeSCReq.sNewPin = newSc;
+        changeSCReq.sManufacturer = null;
+        changeSCReq.sModel = null;
+        changeSCReq.sOsName = null;
+        changeSCReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
-      changeSCReq.sManufacturer = null;
-      changeSCReq.sModel = null;
-      changeSCReq.sOsName = null;
-      changeSCReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
+        var response = await apiProvider.fetchData(ApiName.ChangePin, changeSCReq);
+        if(response != null){
+          var root = XmlDocument.parse(response);
+          print("data....." + root.children[2].children.first.toString());
+          String data = root.children[2].children.first.toString();
 
-      var response = await apiProvider.fetchData(ApiName.ChangePin, changeSCReq);
-      if(response != null){
-        var root = XmlDocument.parse(response);
-        print("data....." + root.children[2].children.first.toString());
-        String data = root.children[2].children.first.toString();
-
-        if(CheckError.isSuccess(data)){
-          onSubmitLogin(newSc);
-        }else{
-          showErrorMessage("Old Security Code is wrong!");
+          if(CheckError.isSuccess(data)){
+            onSubmitLogin(newSc);
+          }else{
+            showErrorMessage("Old Security Code is wrong!");
+          }
         }
-        //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
       }
+    }catch(e){
+      isLoading.value = false;
+      showErrorMessage("Error, Please try again!");
     }
 
   }
 
   Future<void> onSubmitLogin(String sc) async {
 
-    String userID = await SharedConfigName.getUserID();
+    try{
+      String userID = await SharedConfigName.getUserID();
 
-    Login1Req loginReq = Login1Req();
-    loginReq.sUserName = ConfigData.CONSUMER_KEY;
-    loginReq.sPassword = ConfigData.CONSUMER_SECRET;
-    loginReq.sUserID = userID;
-    loginReq.sPin = sc;
+      Login1Req loginReq = Login1Req();
+      loginReq.sUserName = ConfigData.CONSUMER_KEY;
+      loginReq.sPassword = ConfigData.CONSUMER_SECRET;
+      loginReq.sUserID = userID;
+      loginReq.sPin = sc;
 
-    loginReq.sManufacturer = null;
-    loginReq.sModel = null;
-    loginReq.sOsName = null;
-    loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
+      loginReq.sManufacturer = null;
+      loginReq.sModel = null;
+      loginReq.sOsName = null;
+      loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
-    var response = await apiProvider.fetchData(ApiName.LoginWithSecurityCode, loginReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.LoginWithSecurityCode, loginReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        Get.offAndToNamed(GetListPages.PARTNER, arguments: {"link" : data});
-      }else{
-        showErrorMessage("Cannot login. Please contact website admin!");
+        if(CheckError.isSuccess(data)){
+          Get.offAndToNamed(GetListPages.PARTNER, arguments: {"link" : data});
+        }else{
+          showErrorMessage("Cannot login. Please contact website admin!");
+        }
+        isLoading.value = false;
       }
-      //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+    }catch(e){
+      isLoading.value = false;
+      showErrorMessage("Error, Please try again!");
     }
   }
 

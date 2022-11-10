@@ -1,5 +1,6 @@
 import 'package:eqinsurance/page/contact_us/controller/contact_us_controller.dart';
 import 'package:eqinsurance/page/loading/loading_page.dart';
+import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class ContactUsPage extends GetView<ContactUsController>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(width: 15),
+                        SizedBox(width: 20),
                         GestureDetector(
                           onTap: (){
                             Get.back();
@@ -46,9 +47,9 @@ class ContactUsPage extends GetView<ContactUsController>{
                           ),
                         ),
                         Spacer(flex: 1),
-                        Text("Contact Us", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 18)),
+                        Text("Contact Us", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 19, fontWeight: FontWeight.w500, color: ColorResource.color_content_popup)),
                         Spacer(flex: 1),
-                        SizedBox(width: 27),
+                        SizedBox(width: 32),
                       ],
                     )
                 ),

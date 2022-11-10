@@ -15,4 +15,5 @@ class ColorResource{
   static const Color plaintext_textColorHint = Color(0xFF909090);
   static const Color plaintext_textColor = Color(0xFF000000);
   static const Color link_text = Color(0xFF22afb4);
+  static const Color link_text_grey = Color(0xFF303030);
 }

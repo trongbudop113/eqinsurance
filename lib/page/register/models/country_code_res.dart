@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 class CountryCodeRes {
   List<CountryCode>? list;
 
@@ -37,6 +39,7 @@ class CountryCodeRes {
 class CountryCode {
   String? name;
   String? id;
+  RxBool isChecked = false.obs;
 
   CountryCode({this.name, this.id});
 

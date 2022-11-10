@@ -2,6 +2,7 @@
 import 'package:eqinsurance/page/notification/controller/notification_detail_controller.dart';
 import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
+import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,10 +31,16 @@ class NotificationDetailPage extends GetView<NotificationDetailController>{
               },
             ),
             SizedBox(width: 20),
-            Container(
-              alignment: Alignment.center,
-              child: Text("NotificationDetails", style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20, color: Colors.white)),
-            ),
+            Obx(() => Expanded(
+              flex: 10,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(controller.pageTitle.value,
+                    overflow: TextOverflow.clip,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20, color: Colors.white)
+                ),
+              ),
+            )),
             Spacer(flex: 1),
             GestureDetector(
               onTap: (){
@@ -62,11 +69,20 @@ class NotificationDetailPage extends GetView<NotificationDetailController>{
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${controller.notificationRes.value.subject ?? ''}"),
+                  Text(
+                      "${controller.notificationRes.value.subject ?? ''}",
+                    style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 17, color: ColorResource.color_title_popup, fontWeight: FontWeight.w400),
+                  ),
                   SizedBox(height: 15),
-                  Text('${controller.notificationRes.value.messageDate}'),
+                  Text(
+                      '${controller.notificationRes.value.messageDate}',
+                    style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: ColorResource.page_title_textColor, fontWeight: FontWeight.w400),
+                  ),
                   SizedBox(height: 20),
-                  Text('${controller.notificationRes.value.message}'),
+                  Text(
+                      '${controller.notificationRes.value.message}',
+                    style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: ColorResource.page_title_textColor, fontWeight: FontWeight.w400),
+                  ),
                 ],
               )
           )),

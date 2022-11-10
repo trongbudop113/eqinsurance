@@ -2,6 +2,7 @@
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/page/loading/loading_page.dart';
 import 'package:eqinsurance/page/public_user/controller/public_user_controller.dart';
+import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/icon_notification_widget.dart';
@@ -39,7 +40,7 @@ class PublicUserPage extends GetView<PublicUserController>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(width: 15),
+                        SizedBox(width: 20),
                         GestureDetector(
                           onTap: (){
                             Get.back();
@@ -49,9 +50,9 @@ class PublicUserPage extends GetView<PublicUserController>{
                             child: Image.asset(ImageResource.ic_back, width: 12),
                           ),
                         ),
-                        SizedBox(width: 64),
+                        SizedBox(width: 60),
                         Spacer(flex: 1),
-                        Text("EQ Insurance", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 18)),
+                        Text("EQ Insurance", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 19, color: ColorResource.color_content_popup)),
                         Spacer(flex: 1),
                         Container(
                           child: Row(

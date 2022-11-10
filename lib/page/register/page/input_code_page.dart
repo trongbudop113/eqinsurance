@@ -63,19 +63,19 @@ class InputCodePage extends StatelessWidget {
                      SizedBox(height: 20),
                      Text.rich(
                        TextSpan(
-                         style: StyleResource.TextStyleQuickSand(context).copyWith(fontSize: 22, color: ColorResource.color_title_popup),
+                         style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 22, color: ColorResource.page_title_textColor),
                          children: [
                            TextSpan(text: 'Set '),
                            TextSpan(
                              text: 'Security Code',
-                             style: TextStyle(fontWeight: FontWeight.bold),
+                             style: TextStyle(fontWeight: FontWeight.bold, color: ColorResource.color_title_popup),
                            ),
                          ],
                        ),
                      ),
 
 
-                     SizedBox(height: 10),
+                     SizedBox(height: 12),
 
                      Container(
                        padding: EdgeInsets.symmetric(horizontal: 5),

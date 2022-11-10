@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/hide_keyboard.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
@@ -20,7 +21,7 @@ class InputCodeBinding extends Bindings{
 
 }
 
-class InputCodeController extends GetxController{
+class InputCodeController extends GetxController with KeyboardHiderMixin{
 
   ApiProvider apiProvider = ApiProvider();
   TextEditingController scText = TextEditingController();

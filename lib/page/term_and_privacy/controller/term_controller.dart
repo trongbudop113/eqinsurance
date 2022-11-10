@@ -27,7 +27,7 @@ class TermController extends GetxController{
 
   //https://www.eqinsurance.com.sg/CorporatePolicies/privacy-policy
   void openTermAndPolicyPage(){
-    Get.toNamed(GetListPages.WEBVIEW, arguments: {"link": 'https://www.eqinsurance.com.sg/CorporatePolicies/privacy-policy'});
+    Get.toNamed(GetListPages.WEBVIEW, arguments:[{"link": 'https://www.eqinsurance.com.sg/CorporatePolicies/privacy-policy'},  {"page": 'Privacy Policy'}]);
   }
 
 }

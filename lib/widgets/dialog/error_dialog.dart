@@ -1,3 +1,4 @@
+import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -47,7 +48,10 @@ class _ErrorDialogState extends State<ErrorDialog> with SingleTickerProviderStat
                 SizedBox(height: 15),
                 Text(widget.title, style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
-                Text(widget.message, style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 15)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(widget.message, style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 15), textAlign: TextAlign.center),
+                ),
                 SizedBox(height: 20),
                 Container(
                   height: 1,
@@ -71,7 +75,7 @@ class _ErrorDialogState extends State<ErrorDialog> with SingleTickerProviderStat
                           child: Container(
                             color: Colors.transparent,
                             alignment: Alignment.center,
-                            child: Text("OK"),
+                            child: Text("OK", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ),

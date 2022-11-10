@@ -1,4 +1,5 @@
 import 'package:eqinsurance/page/register/controller/register_controller.dart';
+import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/button_widget.dart';
@@ -63,21 +64,23 @@ class VerifyUserPage extends StatelessWidget {
                       SizedBox(height: 20),
                       Text.rich(
                         TextSpan(
+                          style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 22, color: ColorResource.page_title_textColor),
                           children: [
                             TextSpan(text: 'Verify your '),
                             TextSpan(
                               text: 'User Account',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: ColorResource.color_title_popup),
                             ),
                           ],
                         ),
                       ),
 
-                      SizedBox(height: 15),
+                      SizedBox(height: 12),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 5),
                         child: Text(
                           'Please key in your existing User ID and Password to verify your user account.  Your user ID is the same login ID as the EQI Partners e-portal.',
+                          style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: Colors.black),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -86,7 +89,8 @@ class VerifyUserPage extends StatelessWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                            'User ID'
+                            'User ID',
+                          style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: ColorResource.color_title_popup),
                         ),
                       ),
                       SizedBox(height: 8),
@@ -104,7 +108,8 @@ class VerifyUserPage extends StatelessWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                            'Password'
+                            'Password',
+                          style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 14, color: ColorResource.color_title_popup),
                         ),
                       ),
                       SizedBox(height: 8),
@@ -130,8 +135,8 @@ class VerifyUserPage extends StatelessWidget {
             right: 15,
             child: Container(
               child: ButtonWidget.buttonNormal(context, 'Next', onTap: (){
-                //controller.onSubmitUserAccount();
-                controller.onFocusPage(1);
+                controller.onSubmitUserAccount();
+                //controller.onFocusPage(1);
               }),
             ),
           )

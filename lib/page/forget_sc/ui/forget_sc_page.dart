@@ -1,4 +1,5 @@
 import 'package:eqinsurance/page/forget_sc/controller/forget_sc_controller.dart';
+import 'package:eqinsurance/page/loading/loading_page.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/button_widget.dart';
@@ -12,8 +13,19 @@ class ForgetSCPage extends GetView<ForgetSCController>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(() => controller.getWidgetContent()),
+    return GestureDetector(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Obx(() => Stack(
+          children: [
+            controller.getWidgetContent(),
+            Obx(() => LoadingPage(isLoading: controller.isLoading.value))
+          ],
+        )),
+      ),
+      onTap: (){
+        controller.hideKeyboard(context: context);
+      },
     );
   }
 
