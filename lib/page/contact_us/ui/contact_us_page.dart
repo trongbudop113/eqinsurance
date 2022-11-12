@@ -47,7 +47,7 @@ class ContactUsPage extends GetView<ContactUsController>{
                           ),
                         ),
                         Spacer(flex: 1),
-                        Text("Contact Us", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 19, fontWeight: FontWeight.w500, color: ColorResource.color_content_popup)),
+                        Text("Contact Us", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 19, fontWeight: FontWeight.bold, color: ColorResource.color_content_popup)),
                         Spacer(flex: 1),
                         SizedBox(width: 32),
                       ],

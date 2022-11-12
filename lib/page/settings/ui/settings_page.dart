@@ -34,7 +34,7 @@ class SettingsPage extends GetView<SettingsController>{
           SizedBox(width: 20),
           Container(
             alignment: Alignment.center,
-            child: Text("Settings", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 20, color: Colors.white)),
+            child: Text("Settings", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
           ),
           Spacer(flex: 1),
         ],

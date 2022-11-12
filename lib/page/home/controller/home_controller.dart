@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/encrypt.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
@@ -11,8 +12,11 @@ import 'package:eqinsurance/page/notification/models/notification_req.dart';
 import 'package:eqinsurance/page/notification/models/notification_res.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
 import 'package:eqinsurance/page/webview/model/get_contact_req.dart';
+import 'package:eqinsurance/page/webview/models/notification_detail_req.dart';
+import 'package:eqinsurance/splash_page.dart';
 import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
 import 'package:eqinsurance/widgets/dialog/home_dialog.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xml/xml.dart';
@@ -49,6 +53,78 @@ class HomeController extends GetxController{
     refreshNotificationCount();
     openPopupNotification();
   }
+
+  @override
+  void onReady() {
+    initFirebaseMessage();
+    super.onReady();
+  }
+
+  void initFirebaseMessage(){
+    FirebaseMessaging.onMessage.listen(showFlutterNotification);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+      Get.toNamed(GetListPages.AUTHENTICATION);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+      Get.toNamed(GetListPages.AUTHENTICATION);
+    });
+  }
+
+  String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
+  Future<void> requestToGetAPIInfo(String token) async {
+    try{
+      NotificationDetailReq notificationDetailReq = NotificationDetailReq();
+      notificationDetailReq.sUserName = ConfigData.CONSUMER_KEY;
+      notificationDetailReq.sPassword = ConfigData.CONSUMER_SECRET;
+      notificationDetailReq.sEnvironment = ConfigData.EVR_CODE;
+
+      var response = await apiProvider.fetchData(ApiName.GetNotificationDetails, notificationDetailReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
+
+        if(CheckError.isSuccess(data)){
+          var temValues = data.split("\|");
+          //for (String item in temValues)
+
+          fireBaseKey = temValues[0];
+          requestTokenUrl = temValues[1];
+          completeTokenUrl = temValues[2];
+          apiUsername = temValues[3];
+          apiKey = temValues[4];
+          if(token != ""){
+            print("apiKey......" + apiKey);
+            EncryptionData.test(apiUsername + "|" + token, apiKey);
+            // final key = keyLib.Key.fromUtf8(apiKey);
+            // final encrypter = Encrypter(AES(key));
+            // //var IV = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            //
+            // final iv = IV.fromSecureRandom(16);
+            // final String requestKey = encrypter.encrypt(apiUsername + "|" + token, iv: iv).base64;
+            // print("requestKey......" + requestKey);
+            // requestToUpdateDeviceAPI(requestKey);
+          }
+        }
+      }
+    }catch(e){
+      isLoading.value = false;
+    }
+  }
+
+
+  Future<void> sendPushMessage() async {
+    String _token = await SharedConfigName.getTokenFirebase();
+    if (_token == "") {
+      print('Unable to send FCM message, no token exists.');
+      return;
+    }
+    requestToGetAPIInfo(_token);
+    //await apiProvider.pushNotification(_token);
+  }
+
 
   Future<void> openPopupNotification() async {
 
@@ -105,19 +181,23 @@ class HomeController extends GetxController{
 
   Future<void> getPublicUser() async {
     isLoading.value = true;
-    GetPublicUserReq getPublicUserReq = GetPublicUserReq();
-    getPublicUserReq.sUserName = ConfigData.CONSUMER_KEY;
-    getPublicUserReq.sPassword = ConfigData.CONSUMER_SECRET;
+    try{
+      GetPublicUserReq getPublicUserReq = GetPublicUserReq();
+      getPublicUserReq.sUserName = ConfigData.CONSUMER_KEY;
+      getPublicUserReq.sPassword = ConfigData.CONSUMER_SECRET;
 
 
-    var response = await apiProvider.fetchData(ApiName.PublicLink, getPublicUserReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String link = root.children[2].children.first.toString();
-      Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+      var response = await apiProvider.fetchData(ApiName.PublicLink, getPublicUserReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String link = root.children[2].children.first.toString();
+        Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+      }
+      isLoading.value = false;
+    }catch(e){
+      isLoading.value = false;
     }
-    isLoading.value = false;
 
     //Get.toNamed(GetListPages.AUTHENTICATION);
   }

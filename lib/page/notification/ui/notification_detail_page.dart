@@ -37,7 +37,7 @@ class NotificationDetailPage extends GetView<NotificationDetailController>{
                 alignment: Alignment.centerLeft,
                 child: Text(controller.pageTitle.value,
                     overflow: TextOverflow.clip,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20, color: Colors.white)
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)
                 ),
               ),
             )),

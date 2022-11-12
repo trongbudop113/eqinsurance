@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">44679586052-8b7eoem11n94qo251ilj9jks9no0st10.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">44679586052</string>
+    <string name="google_api_key" translatable="false">AIzaSyCGdEntrdRZevhlTrVRxnSrK94RQKnMAho</string>
+    <string name="google_app_id" translatable="false">1:44679586052:android:7f1350d77cc9c9b45b3051</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCGdEntrdRZevhlTrVRxnSrK94RQKnMAho</string>
+    <string name="google_storage_bucket" translatable="false">eqinsurance-51a0f.appspot.com</string>
+    <string name="project_id" translatable="false">eqinsurance-51a0f</string>
+</resources>

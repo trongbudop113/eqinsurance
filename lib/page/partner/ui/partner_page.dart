@@ -50,7 +50,7 @@ class PartnerPage extends GetView<PartnerController>{
                         ),
                         SizedBox(width: 69),
                         Spacer(flex: 1),
-                        Text("EQ Insurance", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 19, color: ColorResource.color_content_popup)),
+                        Text("EQ Insurance", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 19, color: ColorResource.color_content_popup, fontWeight: FontWeight.bold)),
                         Spacer(flex: 1),
                         GestureDetector(
                           child: Image.asset(ImageResource.ic_call, width: 20, height: 20),

@@ -53,7 +53,7 @@ class WebViewPage extends GetView<WebViewAppController>{
                         Spacer(flex: 1),
                         Obx(() => Text(
                             controller.pageTitle.value, style: StyleResource.TextStyleBlack(context)
-                            .copyWith(fontSize: 19, color: ColorResource.color_content_popup))),
+                            .copyWith(fontSize: 20, color: ColorResource.color_content_popup, fontWeight: FontWeight.bold))),
                         Spacer(flex: 1),
                         Container(
                           margin: EdgeInsets.only(bottom: 3),

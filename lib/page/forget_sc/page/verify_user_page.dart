@@ -47,7 +47,7 @@ class VerifyUserPage extends StatelessWidget {
                           ),
                         ),
                         Spacer(flex: 1),
-                        Text("Forgot Security Code", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 20, color: ColorResource.page_title_textColor)),
+                        Text("Forgot Security Code", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 20, color: ColorResource.page_title_textColor, fontWeight: FontWeight.bold)),
                         Spacer(flex: 1),
                         SizedBox(width: 22)
                       ],

@@ -32,7 +32,7 @@ class NotificationPage extends GetView<NotificationController>{
           SizedBox(width: 20),
           Container(
             alignment: Alignment.center,
-            child: Text("Notifications", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 20, color: Colors.white)),
+            child: Text("Notifications", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
           ),
           Spacer(flex: 1),
           Obx(() => Visibility(

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cryptography/cryptography.dart';
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/encrypt.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
@@ -15,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:xml/xml.dart' as xml;
 import 'package:xml/xml.dart';
 
 class WebViewAppBinding extends Bindings{
@@ -34,8 +35,6 @@ class WebViewAppController extends GetxController{
 
   String url = "";
 
-  String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
-
   final RxInt countNotify = 0.obs;
   final RxBool isShowNotification = false.obs;
 
@@ -47,7 +46,15 @@ class WebViewAppController extends GetxController{
     super.onInit();
     getIntentParam();
     refreshNotificationCount();
+    initCheckUserID();
+  }
 
+  Future<void> initCheckUserID() async {
+    String userId =  await SharedConfigName.getUserID();
+    String token =  await SharedConfigName.getTokenFirebase();
+    if (userId != '' && !userId.isEmpty){
+      requestToGetAPIInfo(token);
+    }
   }
 
   Future<void> getContactInfo() async {
@@ -68,7 +75,7 @@ class WebViewAppController extends GetxController{
 
     var response = await apiProvider.fetchData(ApiName.ContactUs, getContactReq);
     if(response != null){
-      var root = xml.XmlDocument.parse(response);
+      var root = XmlDocument.parse(response);
       print("data....." + root.children[2].children.first.toString());
       String link = root.children[2].children.first.toString();
       Get.toNamed(GetListPages.CONTACT_US, arguments: {"link": link});
@@ -85,13 +92,6 @@ class WebViewAppController extends GetxController{
   Future<void> reloadHome() async {
     var web = await webViewController.future;
     await web.loadUrl(url);
-  }
-
-  Future<void> checkUserID() async {
-    String userId =  await SharedConfigName.getUserID();
-    //getInstanceToken(context);
-    if (userId != ''&& !userId.isEmpty)
-      requestToGetAPIInfo();
   }
 
   Future<void> refreshNotificationCount() async {
@@ -138,61 +138,6 @@ class WebViewAppController extends GetxController{
     }
   }
 
-  Future<void> requestToGetAPIInfo() async {
-    NotificationDetailReq notificationDetailReq = NotificationDetailReq();
-    notificationDetailReq.sUserName = ConfigData.CONSUMER_KEY;
-    notificationDetailReq.sPassword = ConfigData.CONSUMER_SECRET;
-    notificationDetailReq.sEnvironment = ConfigData.EVR_CODE;
-
-    var response = await apiProvider.fetchData(ApiName.GetNotificationDetails, notificationDetailReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
-
-      if(CheckError.isSuccess(data)){
-        var temValues = data.split("\\|");
-        for (String item in temValues)
-
-        fireBaseKey = temValues[0];
-        requestTokenUrl = temValues[1];
-        completeTokenUrl = temValues[2];
-        apiUsername = temValues[3];
-        apiKey = temValues[4];
-        getInstanceToken();
-      }
-    }
-  }
-
-  void getInstanceToken(){
-    // String token = task.getResult().getToken();
-    // byte[] IV = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    // final String requestKey = base64Encode(Encryption.encrypt((apiUsername + "|" + token).getBytes(), apiKey, IV), Base64.DEFAULT);
-    // requestToUpdateDeviceAPI(requestKey);
-  }
-
-  Future<void> requestToUpdateDeviceAPI(String requestKey) async {
-    final String requestKeyCopy = requestKey;
-    String reQuestUrl = requestTokenUrl.substring(0, requestTokenUrl.indexOf("/RequestToken"));
-    String userID = await SharedConfigName.getUserID();
-
-    UpdateDeviceReq updateDeviceReq = UpdateDeviceReq();
-    updateDeviceReq.ClientId = apiUsername;
-    updateDeviceReq.RequestKey = requestKeyCopy;
-    updateDeviceReq.Username = userID;
-
-    var response = await apiProvider.fetchDataUpdateDevice(reQuestUrl + "/UpdateUserDevice", updateDeviceReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
-
-      if(CheckError.isSuccess(data)){
-
-      }
-    }
-  }
-
   void showErrorMessage(String message){
     showDialog(
       context: Get.context!,
@@ -227,6 +172,72 @@ class WebViewAppController extends GetxController{
       var web = await webViewController.future;
       await web.loadUrl(url);
       isContact = false;
+    }
+  }
+
+  String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
+
+  Future<void> requestToGetAPIInfo(String token) async {
+    try{
+      NotificationDetailReq notificationDetailReq = NotificationDetailReq();
+      notificationDetailReq.sUserName = ConfigData.CONSUMER_KEY;
+      notificationDetailReq.sPassword = ConfigData.CONSUMER_SECRET;
+      notificationDetailReq.sEnvironment = ConfigData.EVR_CODE;
+
+      var response = await apiProvider.fetchData(ApiName.GetNotificationDetails, notificationDetailReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
+
+        if(CheckError.isSuccess(data)){
+          var temValues = data.split("\|");
+          //for (String item in temValues)
+
+          fireBaseKey = temValues[0];
+          requestTokenUrl = temValues[1];
+          completeTokenUrl = temValues[2];
+          apiUsername = temValues[3];
+          apiKey = temValues[4];
+          if(token != ""){
+            EncryptionData.encryptData(apiUsername + "|" + token, apiKey);
+            // final key = keyLib.Key.fromUtf8(apiKey);
+            // final encrypter = Encrypter(AES(key));
+            // //var IV = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            //
+            // final iv = IV.fromSecureRandom(16);
+            // final String requestKey = encrypter.encrypt(apiUsername + "|" + token, iv: iv).base64;
+            // print("requestKey......" + requestKey);
+            // requestToUpdateDeviceAPI(requestKey);
+          }
+        }
+      }
+    }catch(e){
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> requestToUpdateDeviceAPI(String requestKey) async {
+    try{
+      final String requestKeyCopy = requestKey;
+      String reQuestUrl = requestTokenUrl.substring(0, requestTokenUrl.indexOf("/RequestToken"));
+      String userID = await SharedConfigName.getUserID();
+
+      UpdateDeviceReq updateDeviceReq = UpdateDeviceReq();
+      updateDeviceReq.ClientId = apiUsername;
+      updateDeviceReq.RequestKey = requestKeyCopy;
+      updateDeviceReq.Username = userID;
+
+      var response = await apiProvider.fetchDataUpdateDevice(reQuestUrl + "/UpdateUserDevice", updateDeviceReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        String data = root.children[2].children.first.toString();
+
+        print("data....." +data);
+
+      }
+    }catch(e){
+
     }
   }
 }
