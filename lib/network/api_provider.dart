@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 class ApiProvider {
   final String _baseUrl = "https://internet.eqinsurance.com.sg/test/testwebMobile/eqws.asmx/";
+  //final String _baseUrl = "http://eq.verzview.com:8090/";
 
   Future<dynamic> get(String url) async {
     var responseJson;
@@ -72,37 +73,6 @@ class ApiProvider {
       throw FetchDataException('No Internet connection');
     }
     return responseJson;
-  }
-
-  Future<dynamic> pushNotification(String token) async {
-    try {
-      await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: constructFCMPayload(token),
-      );
-      print('FCM request for device sent!');
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  int _messageCount = 0;
-  String constructFCMPayload(String? token) {
-    _messageCount++;
-    return jsonEncode({
-      'token': token,
-      'data': {
-        'via': 'FlutterFire Cloud Messaging!!!',
-        'count': _messageCount.toString(),
-      },
-      'notification': {
-        'title': 'Hello FlutterFire!',
-        'body': 'This notification (#$_messageCount) was created via FCM!',
-      },
-    });
   }
 
   dynamic _response(http.Response response) {

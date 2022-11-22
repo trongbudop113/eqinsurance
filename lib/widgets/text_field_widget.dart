@@ -91,9 +91,9 @@ class SearchTextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-        border: Border.all(color: Colors.grey)
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          border: Border.all(color: Colors.grey)
       ),
       height: 36,
       child: Row(

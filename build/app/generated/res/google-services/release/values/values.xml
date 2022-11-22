@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">650243686882-rnsni967srpsduu45kd29mnr72lrmtms.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://eqinsurance-edad5.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">650243686882</string>
+    <string name="google_api_key" translatable="false">AIzaSyDqno6sMG6ksiEv0x76C9jC3f0eiIIqrPc</string>
+    <string name="google_app_id" translatable="false">1:650243686882:android:0195704026790aae05b9bb</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDqno6sMG6ksiEv0x76C9jC3f0eiIIqrPc</string>
+    <string name="google_storage_bucket" translatable="false">eqinsurance-edad5.appspot.com</string>
+    <string name="project_id" translatable="false">eqinsurance-edad5</string>
+</resources>

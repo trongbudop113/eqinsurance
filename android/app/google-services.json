@@ -1,42 +1,43 @@
 {
   "project_info": {
-    "project_number": "44679586052",
-    "project_id": "eqinsurance-51a0f",
-    "storage_bucket": "eqinsurance-51a0f.appspot.com"
+    "project_number": "650243686882",
+    "firebase_url": "https://eqinsurance-edad5.firebaseio.com",
+    "project_id": "eqinsurance-edad5",
+    "storage_bucket": "eqinsurance-edad5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:44679586052:android:7f1350d77cc9c9b45b3051",
+        "mobilesdk_app_id": "1:650243686882:android:0195704026790aae05b9bb",
         "android_client_info": {
           "package_name": "com.verz.eqinsurance"
         }
       },
       "oauth_client": [
         {
-          "client_id": "44679586052-qfd2tef5ltu6vfnd48dlgs2aemji220p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.verz.eqinsurance",
-            "certificate_hash": "c1aef3ea5f1d5a3e1eb681cbed0825efd55eb81f"
-          }
-        },
-        {
-          "client_id": "44679586052-8b7eoem11n94qo251ilj9jks9no0st10.apps.googleusercontent.com",
+          "client_id": "650243686882-rnsni967srpsduu45kd29mnr72lrmtms.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCGdEntrdRZevhlTrVRxnSrK94RQKnMAho"
+          "current_key": "AIzaSyDqno6sMG6ksiEv0x76C9jC3f0eiIIqrPc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "44679586052-8b7eoem11n94qo251ilj9jks9no0st10.apps.googleusercontent.com",
+              "client_id": "650243686882-rnsni967srpsduu45kd29mnr72lrmtms.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "650243686882-k4fu8p58ucvfi0pkb17b67ded1e660ql.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "eqinsurance",
+                "app_store_id": "20190620"
+              }
             }
           ]
         }

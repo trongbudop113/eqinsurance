@@ -32,27 +32,28 @@ dependencies:
 
   get:
   provider:
-  http:
+  http: 0.13.0
   webview_flutter: ^2.8.0
   shared_preferences: ^2.0.15
-  google_fonts:
+  google_fonts: 2.3.1
   pin_code_fields:
   url_launcher: ^6.1.6
   intl: ^0.17.0
 
+  aespack: 0.0.3
+  pointycastle: ^3.0.1
+  convert: 3.0.0
+  archive: ^3.3.0
+  encrypt: 5.0.0
+
   firebase_messaging:
   flutter_local_notifications:
   firebase_core: ^2.1.0
-  pointycastle:
-  convert:
-
-  encrypt:
-  cryptography: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  xml: ^4.5.1
+  xml: ^5.0.0
 
 dev_dependencies:
 #  flutter_launcher_icons: "^0.9.0"

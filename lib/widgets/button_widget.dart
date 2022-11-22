@@ -7,7 +7,7 @@ class ButtonWidget{
       {Color textColor = Colors.white,
         Color buttonColor = ColorResource.color_button_user,
         double radius = 18,
-      VoidCallback? onTap}){
+        VoidCallback? onTap}){
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -35,7 +35,7 @@ class ButtonWidget{
       {Color textColor = ColorResource.color_button_partner,
         Color buttonColor = Colors.transparent,
         Color borderColor = ColorResource.color_button_partner,
-      VoidCallback? onTap}){
+        VoidCallback? onTap}){
     return GestureDetector(
       child: Container(
         width: double.maxFinite,

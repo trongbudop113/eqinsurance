@@ -2,14 +2,18 @@ import 'dart:async';
 import 'package:eqinsurance/configs/configs_data.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
+import 'package:eqinsurance/network/aes_encrypt.dart';
 import 'package:eqinsurance/network/api_name.dart';
 import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/page/notification/models/notification_req.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
 import 'package:eqinsurance/page/webview/model/get_contact_req.dart';
+import 'package:eqinsurance/page/webview/models/notification_detail_req.dart';
+import 'package:eqinsurance/page/webview/models/update_device_req.dart';
 import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:xml/xml.dart';
@@ -33,12 +37,91 @@ class PublicUserController extends GetxController{
   final RxBool isShowNotification = false.obs;
 
   final RxBool isLoading = true.obs;
+  String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
 
   @override
   void onInit() {
     super.onInit();
     getIntentParam();
     refreshNotificationCount();
+    initCheckUserID();
+  }
+
+  Future<void> initCheckUserID() async {
+    String userId =  await SharedConfigName.getUserID();
+    String token =  await SharedConfigName.getTokenFirebase();
+    if (userId != '' && !userId.isEmpty){
+      requestToGetAPIInfo(token);
+    }
+  }
+
+  Future<void> requestToGetAPIInfo(String token) async {
+    try{
+      NotificationDetailReq notificationDetailReq = NotificationDetailReq();
+      notificationDetailReq.sUserName = ConfigData.CONSUMER_KEY;
+      notificationDetailReq.sPassword = ConfigData.CONSUMER_SECRET;
+      notificationDetailReq.sEnvironment = ConfigData.EVR_CODE;
+
+      var response = await apiProvider.fetchData(ApiName.GetNotificationDetails, notificationDetailReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
+
+        if(CheckError.isSuccess(data)){
+          var temValues = data.split("\|");
+          //for (String item in temValues)
+
+          fireBaseKey = temValues[0];
+          requestTokenUrl = temValues[1];
+          completeTokenUrl = temValues[2];
+          apiUsername = temValues[3];
+          apiKey = temValues[4];
+          if(token != ""){
+
+            final String input = apiUsername + "|" + token;
+            String requestKey = AesHelper.encryptString(input, apiKey);
+            requestToUpdateDeviceAPI(requestKey);
+            //EncryptionData.encryptData(apiUsername + "|" + token, apiKey);
+            // final key = keyLib.Key.fromUtf8(apiKey);
+            // final encrypter = Encrypter(AES(key));
+            // //var IV = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            //
+            // final iv = IV.fromSecureRandom(16);
+            // final String requestKey = encrypter.encrypt(apiUsername + "|" + token, iv: iv).base64;
+            // print("requestKey......" + requestKey);
+            // requestToUpdateDeviceAPI(requestKey);
+          }
+        }
+      }
+    }catch(e){
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> requestToUpdateDeviceAPI(String requestKey) async {
+    try{
+      final String requestKeyCopy = requestKey;
+      String reQuestUrl = requestTokenUrl.substring(0, requestTokenUrl.indexOf("/RequestToken"));
+      String userID = await SharedConfigName.getUserID();
+
+      UpdateDeviceReq updateDeviceReq = UpdateDeviceReq();
+      updateDeviceReq.ClientId = apiUsername;
+      updateDeviceReq.RequestKey = requestKeyCopy;
+      updateDeviceReq.Username = userID;
+
+      var response = await apiProvider.fetchDataUpdateDevice(reQuestUrl + "/UpdateUserDevice", updateDeviceReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        String data = root.children[2].children.first.toString();
+
+        print("data....." +data);
+
+      }
+      isLoading.value = false;
+    }catch(e){
+      isLoading.value = false;
+    }
   }
 
   Future<void> getContactInfo() async {
@@ -131,11 +214,24 @@ class PublicUserController extends GetxController{
     }
   }
 
-  bool isContact = false;
+  bool checkNavigatorLink(String link){
+    if(link.startsWith("tel:")){
+      return false;
+    }else if(link.endsWith(".pdf") || link.endsWith(".doc")
+        || link.endsWith(".docx")
+        || link.endsWith(".xls")
+        || link.endsWith(".xlsx")){
+      return false;
+    }else if(link.contains("mailto")){
+      return false;
+    }else{
+      return true;
+    }
+  }
 
   Future<void> onCheckLink(String link) async {
+    print("link:....." + link);
     if(link.startsWith("tel:")){
-      isContact = true;
       bool canLaunch = await canLaunchUrlString(link);
       if(canLaunch){
         launchUrlString(link);
@@ -144,20 +240,20 @@ class PublicUserController extends GetxController{
         || link.endsWith(".docx")
         || link.endsWith(".xls")
         || link.endsWith(".xlsx")){
-      isContact = true;
-      downloadFile(url);
+      downloadFile(link);
+    }else if(link.contains("mailto:")){
+      launchUrlString(link);
     }
   }
 
-  void downloadFile(String url) {
-    launchUrlString(url);
+  Future<void> downloadFile(String url) async {
+    await launch(url);
   }
 
   Future<void> onReload() async {
-    if(isContact){
-      var web = await webViewController.future;
-      await web.loadUrl(url);
-      isContact = false;
-    }
+    // var web = await webViewController.future;
+    // web.loadUrl('https://www.africau.edu/images/default/sample.pdf');
+
+    launch("https://gia.org.sg/images/pdf-files/MCF_Brochure.pdf");
   }
 }

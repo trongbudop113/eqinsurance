@@ -1,3 +1,4 @@
+
 import 'package:eqinsurance/page/athentication/controller/authentication_controller.dart';
 import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
@@ -74,7 +75,8 @@ class _PortalDialogState extends State<PortalDialog> with SingleTickerProviderSt
                           "Done",
                         radius: 30,
                         onTap: (){
-                          Get.back();
+                            rs = true;
+                          Get.back(result: rs);
                         }
                       )
                     ],
@@ -87,7 +89,8 @@ class _PortalDialogState extends State<PortalDialog> with SingleTickerProviderSt
               right: 0,
               child: GestureDetector(
                 onTap: (){
-                  Get.back();
+                  rs = false;
+                  Get.back(result: rs);
                 },
                 child: Container(
                   color: Colors.transparent,

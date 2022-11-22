@@ -1,3 +1,4 @@
+
 import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

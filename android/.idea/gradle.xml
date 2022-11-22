@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$USER_HOME$/Downloads/gradle-6.9.1" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../../../Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-2.2.0/android" />
+            <option value="$PROJECT_DIR$/../../../Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-14.1.0/android" />
+            <option value="$PROJECT_DIR$/../../../Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-8.2.0/android" />
+            <option value="$PROJECT_DIR$/../../../Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.21/android" />
+            <option value="$PROJECT_DIR$/../../../Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.14/android" />
+            <option value="$PROJECT_DIR$/../../../Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_android-6.0.21/android" />
+            <option value="$PROJECT_DIR$/../../../Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_android-2.10.4/android" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

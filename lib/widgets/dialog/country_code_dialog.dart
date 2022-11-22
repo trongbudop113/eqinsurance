@@ -1,5 +1,4 @@
 import 'package:eqinsurance/page/register/controller/register_controller.dart';
-import 'package:eqinsurance/page/register/models/country_code_res.dart';
 import 'package:eqinsurance/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

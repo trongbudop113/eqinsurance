@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:eqinsurance/configs/check_network.dart';
 import 'package:eqinsurance/configs/configs_data.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
+import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'page/loading/loading_page.dart';
 
 class SplashPage extends StatefulWidget {
+  const SplashPage({Key? key}) : super(key: key);
 
   @override
   _SplashPageState createState() => _SplashPageState();
@@ -32,18 +37,31 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> initGoToPage() async {
     isLoading.value = true;
-    String? token = await initFirebase();
-    print("token....."+ token);
-    if(token.isNotEmpty){
-      await SharedConfigName.setTokenFirebase(token);
+    if(await CheckConnect.hasNetwork()){
+      String? token = await initFirebase();
+      print("token....."+ token);
+      if(token.isNotEmpty){
+        await SharedConfigName.setTokenFirebase(token);
+      }
+      isLoading.value = false;
+      initData();
+    }else{
+      isLoading.value = false;
+      showErrorMessage("Network Error, Please try again!");
     }
-    isLoading.value = false;
-    initData();
   }
 
-  late final FirebaseMessaging _firebaseMessaging;
+  Future<void> showErrorMessage(String message) async {
+    await showDialog(
+      context: Get.context!,
+      builder: (_) => ErrorDialog(message: message),
+    );
+    exit(0);
+  }
+
+  //late final FirebaseMessaging _firebaseMessaging;
   Future<String> initFirebase() async {
-    _firebaseMessaging = FirebaseMessaging.instance;
+    var _firebaseMessaging = FirebaseMessaging.instance;
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await setupFlutterNotifications();
     // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -57,6 +75,7 @@ class _SplashPageState extends State<SplashPage> {
     }
     return "";
   }
+
 
   Future<void> initData() async {
     var sharedPreferences = await SharedPreferences.getInstance();
