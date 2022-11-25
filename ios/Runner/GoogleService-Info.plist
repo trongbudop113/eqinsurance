@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>650243686882-djmt9isvn6sp15mmkb9aogo6q7065aof.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.650243686882-djmt9isvn6sp15mmkb9aogo6q7065aof</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>650243686882-22flkbn48h6rnj10q9ibfeepk2ukl81h.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDada6fued8ItS9-hI859Dsp1dNkj3Lszk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>650243686882</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.verz.eqinsurance</string>
+	<key>PROJECT_ID</key>
+	<string>eqinsurance-edad5</string>
+	<key>STORAGE_BUCKET</key>
+	<string>eqinsurance-edad5.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:650243686882:ios:9445a486d70d5cc605b9bb</string>
+	<key>DATABASE_URL</key>
+	<string>https://eqinsurance-edad5.firebaseio.com</string>
+</dict>
+</plist>

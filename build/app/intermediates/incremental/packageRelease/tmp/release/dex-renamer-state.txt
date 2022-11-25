@@ -1,4 +1,0 @@
-#Tue Nov 22 21:37:32 ICT 2022
-base.0=C\:\\Project\\EQInsurance\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
