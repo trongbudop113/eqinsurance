@@ -333,7 +333,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
   Future<void> onSubmitResendCode() async {
     showLoading();
     try{
-      final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
+      final String _MobileNo = countryCode + phoneNumber;
 
       PhoneNumberReq phoneNumberReq = PhoneNumberReq();
       phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
@@ -433,20 +433,33 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     );
   }
 
-  void onChangeSearchCountry(int index){
+  void onChangeSearchCountry(CountryCode? countryCodeSelect){
     try{
-      CountryCode countryCode = listCountryCodeGen.where((e) => e.id == textCountryCodePhone.value).first;
-      countryCode.isChecked.value = false;
+      CountryCode? countryCode;
+      for(var item in listCountryCodeGen){
+        if(item.id == textCountryCodePhone.value && item.name!.toLowerCase() == textLocationPhone.value.toLowerCase()){
+          item.isChecked.value = false;
+        }
 
-      CountryCode countryCodeNew = listCountryCodeGen[index];
-      countryCodeNew.isChecked.value = true;
-      textCountryCodePhone.value = countryCodeNew.id ?? '';
-      textLocationPhone.value = countryCodeNew.name ?? '';
+        if(item.id == countryCodeSelect!.id && item.name!.toLowerCase() == countryCodeSelect.name!.toLowerCase()){
+          item.isChecked.value = true;
+          countryCode = item;
+        }
+      }
+      if(countryCode == null){
+        return;
+      }
+      textCountryCodePhone.value = countryCode.id ?? '';
+      textLocationPhone.value = countryCode.name ?? '';
 
       listCountryCode.value = listCountryCodeGen;
     }catch(e){
 
     }
+  }
+
+  void onCloseDialog(){
+    listCountryCode.value = listCountryCodeGen;
   }
 
   Widget getWidgetContent(){

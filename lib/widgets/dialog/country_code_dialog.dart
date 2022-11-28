@@ -59,7 +59,7 @@ class _CountryCodeDialogState extends State<CountryCodeDialog> with SingleTicker
                     itemBuilder: (ctx, index){
                       return GestureDetector(
                         onTap: (){
-                          widget.controller.onChangeSearchCountry(index);
+                          widget.controller.onChangeSearchCountry(widget.controller.listCountryCode[index]);
                           Navigator.pop(context, rs);
                         },
                         child: Container(
@@ -106,6 +106,7 @@ class _CountryCodeDialogState extends State<CountryCodeDialog> with SingleTicker
                           onTap: (){
                             rs = true;
                             Navigator.pop(context, rs);
+                            widget.controller.onCloseDialog();
                           },
                           child: Container(
                             color: Colors.transparent,

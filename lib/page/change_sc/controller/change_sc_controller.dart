@@ -80,8 +80,8 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
           if(CheckError.isSuccess(data)){
             onSubmitLogin(newSc);
           }else{
-            showErrorMessage("Old Security Code is wrong!");
             hideLoading();
+            showErrorMessage("Old Security Code is wrong!");
           }
         }
       }

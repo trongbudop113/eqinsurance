@@ -80,6 +80,7 @@ class InputCodeController extends GetxController with KeyboardHiderMixin{
       hideLoading();
     }catch(e){
       hideLoading();
+      showErrorMessage("Cannot login. Security Code is wrong!");
     }
   }
 

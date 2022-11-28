@@ -71,7 +71,7 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
           showErrorMessage('User ID or Password is wrong!');
         }
       }
-      isLoading.value = false;
+      hideLoading();
     }catch(e){
       hideLoading();
       showErrorMessage("Error, Please try again!");
@@ -117,8 +117,8 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
           if(CheckError.isSuccess(data)){
             onSubmitLogin(sc);
           }else{
-            showErrorMessage("Cannot reset Security Code. Please contact website admin!");
             hideLoading();
+            showErrorMessage("Cannot reset Security Code. Please contact website admin!");
           }
         }
       }

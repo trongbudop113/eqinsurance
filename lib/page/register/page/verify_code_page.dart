@@ -8,9 +8,17 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-class VerifyCodePage extends StatelessWidget {
+class VerifyCodePage extends StatefulWidget {
   final RegisterController controller;
   const VerifyCodePage({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  State<VerifyCodePage> createState() => _VerifyCodePageState();
+}
+
+class _VerifyCodePageState extends State<VerifyCodePage> {
+
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,7 @@ class VerifyCodePage extends StatelessWidget {
                         SizedBox(width: 5),
                         GestureDetector(
                           onTap: (){
-                            controller.onBackPress();
+                            widget.controller.onBackPress();
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -71,7 +79,7 @@ class VerifyCodePage extends StatelessWidget {
                           children: [
                             TextSpan(text: 'Verify '),
                             TextSpan(
-                              text: "+" + controller.countryCode + controller.phoneNumber,
+                              text: "+" + widget.controller.countryCode + widget.controller.phoneNumber,
                               style: TextStyle(fontWeight: FontWeight.bold, color: ColorResource.color_title_popup),
                             ),
                           ],
@@ -90,10 +98,11 @@ class VerifyCodePage extends StatelessWidget {
 
                       SizedBox(height: 30),
                       Form(
-                        key: controller.formKey,
+                        key: widget.controller.formKey,
                         child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: PinCodeTextField(
+                              controller: textEditingController,
                               appContext: context,
                               length: 6,
                               obscureText: false,
@@ -124,10 +133,10 @@ class VerifyCodePage extends StatelessWidget {
                               keyboardType: TextInputType.number,
                               textStyle: StyleResource.TextStyleBlack(context).copyWith(fontSize: 16, color: Colors.black),
                               onCompleted: (v) {
-                                controller.pinCodeText = v.toString();
+                                widget.controller.pinCodeText = v.toString();
                               },
                               onChanged: (value) {
-                                controller.pinCodeText = value.toString();
+                                widget.controller.pinCodeText = value.toString();
                               },
                               beforeTextPaste: (text) {
                                 return true;
@@ -155,7 +164,9 @@ class VerifyCodePage extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: (){
-                    controller.onSubmitResendCode();
+                    widget.controller.onSubmitResendCode();
+                    widget.controller.pinCodeText = "";
+                    textEditingController.clear();
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -172,7 +183,7 @@ class VerifyCodePage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 ButtonWidget.buttonNormal(context, 'Next', onTap: (){
-                  controller.onSubmitVerifyCodeOTP();
+                  widget.controller.onSubmitVerifyCodeOTP();
                   //controller.onFocusPage(3);
                 }),
               ],
