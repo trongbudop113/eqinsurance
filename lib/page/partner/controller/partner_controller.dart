@@ -55,8 +55,16 @@ class PartnerController extends GetxController{
     }
   }
 
-  Future<void> requestToGetAPIInfo(String token) async {
+  void showLoading(){
     isLoading.value = true;
+  }
+
+  void hideLoading(){
+    isLoading.value = false;
+  }
+
+  Future<void> requestToGetAPIInfo(String token) async {
+    showLoading();
     try{
       NotificationDetailReq notificationDetailReq = NotificationDetailReq();
       notificationDetailReq.sUserName = ConfigData.CONSUMER_KEY;
@@ -83,10 +91,12 @@ class PartnerController extends GetxController{
             String requestKey = AesHelper.encryptString(input, apiKey);
             requestToUpdateDeviceAPI(requestKey);
           }
+        }else{
+          hideLoading();
         }
       }
     }catch(e){
-      isLoading.value = false;
+      hideLoading();
     }
   }
 
@@ -106,9 +116,9 @@ class PartnerController extends GetxController{
         print("data....." + response);
 
       }
-      isLoading.value = false;
+      hideLoading();
     }catch(e){
-      isLoading.value = false;
+      hideLoading();
     }
   }
 

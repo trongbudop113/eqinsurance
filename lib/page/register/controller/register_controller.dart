@@ -137,7 +137,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     showLoading();
     try{
 
-      if(textCountryCodePhone.value.trim() != '' || phoneNumberText.text.trim() != ''){
+      if(textCountryCodePhone.value.trim() == '' || phoneNumberText.text.trim() == ''){
         showErrorMessage("Please enter your mobile number and select country");
       }else{
         final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
@@ -214,10 +214,16 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     try{
       if(sc.isEmpty || confirmSc.isEmpty){
         showErrorMessage("Please enter Security Code and Confirm Security Code.");
+        hideLoading();
+        return;
       }else if(sc.length != 6 || confirmSc.length != 6){
         showErrorMessage("Security Code must contain 6 digits.");
+        hideLoading();
+        return;
       }else if(!(sc == confirmSc)){
         showErrorMessage("Security Code does not match the Confirm Security Code.");
+        hideLoading();
+        return;
       }else{
         final String _MobileNo = countryCode + phoneNumber;
 
@@ -245,6 +251,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
             doWhenVerifySCSuccess(sc);
           }else{
             showErrorMessage("Invalid Security Code!");
+            hideLoading();
           }
         }
       }
@@ -278,7 +285,10 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
           doWhenSuccessLoginWithSecurityCode();
         }else{
           showErrorMessage("Cannot login. Please contact website admin!");
+          hideLoading();
         }
+      }else{
+        hideLoading();
       }
     }catch(e){
       hideLoading();
@@ -321,28 +331,33 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
   }
 
   Future<void> onSubmitResendCode() async {
+    showLoading();
+    try{
+      final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
 
-    final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
-
-    PhoneNumberReq phoneNumberReq = PhoneNumberReq();
-    phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
-    phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
-    phoneNumberReq.sUserID = userID;
-    phoneNumberReq.sMobileNo = _MobileNo;
+      PhoneNumberReq phoneNumberReq = PhoneNumberReq();
+      phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
+      phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
+      phoneNumberReq.sUserID = userID;
+      phoneNumberReq.sMobileNo = _MobileNo;
 
 
-    var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        showErrorMessage("New OTP has been sent to you.");
-      }else{
-        showErrorMessage("Cannot send SMS to your mobile number!");
+        if(CheckError.isSuccess(data)){
+          showErrorMessage("New OTP has been sent to you.");
+        }else{
+          showErrorMessage("Cannot send SMS to your mobile number!");
+        }
       }
-
+      hideLoading();
+    }catch(e){
+      hideLoading();
+      showErrorMessage("Cannot send SMS to your mobile number!");
     }
   }
 

@@ -26,45 +26,60 @@ class InputCodeController extends GetxController with KeyboardHiderMixin{
   ApiProvider apiProvider = ApiProvider();
   TextEditingController scText = TextEditingController();
 
+  final RxBool isLoading = false.obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
   }
 
+  void showLoading(){
+    isLoading.value = true;
+  }
+
+  void hideLoading(){
+    isLoading.value = false;
+  }
+
   Future<void> onSubmitLoginAgentCode() async {
+    showLoading();
+    try{
+      String userID = await SharedConfigName.getUserID();
+      String pin = scText.text.trim().toString();
 
-    String userID = await SharedConfigName.getUserID();
-    String pin = scText.text.trim().toString();
+      if(pin.isEmpty){
+        showErrorMessage("Please enter Security Code");
+      }else{
+        Login1Req loginReq = Login1Req();
+        loginReq.sUserName = ConfigData.CONSUMER_KEY;
+        loginReq.sPassword = ConfigData.CONSUMER_SECRET;
+        loginReq.sUserID = userID;
+        loginReq.sPin = pin;
 
-    if(pin.isEmpty){
-      showErrorMessage("Please enter Security Code");
-    }else{
-      Login1Req loginReq = Login1Req();
-      loginReq.sUserName = ConfigData.CONSUMER_KEY;
-      loginReq.sPassword = ConfigData.CONSUMER_SECRET;
-      loginReq.sUserID = userID;
-      loginReq.sPin = pin;
-
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
-      loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
+        loginReq.sManufacturer = null;
+        loginReq.sModel = null;
+        loginReq.sOsName = null;
+        loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
-      var response = await apiProvider.fetchData(ApiName.LoginWithSecurityCode, loginReq);
-      if(response != null){
-        var root = XmlDocument.parse(response);
-        print("data....." + root.children[2].children.first.toString());
-        String data = root.children[2].children.first.toString();
+        var response = await apiProvider.fetchData(ApiName.LoginWithSecurityCode, loginReq);
+        if(response != null){
+          var root = XmlDocument.parse(response);
+          print("data....." + root.children[2].children.first.toString());
+          String data = root.children[2].children.first.toString();
 
-        if(CheckError.isSuccess(data)){
-          doWhenLoginSuccess(data);
-        }else{
-          showErrorMessage("Cannot login. Security Code is wrong!");
+          if(CheckError.isSuccess(data)){
+            doWhenLoginSuccess(data);
+          }else{
+            showErrorMessage("Cannot login. Security Code is wrong!");
+          }
+          //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
         }
-        //Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
       }
+      hideLoading();
+    }catch(e){
+      hideLoading();
     }
   }
 

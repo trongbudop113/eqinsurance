@@ -71,7 +71,7 @@ class VerifyCodePage extends StatelessWidget {
                           children: [
                             TextSpan(text: 'Verify '),
                             TextSpan(
-                              text: controller.countryCode + controller.phoneNumber,
+                              text: "+" + controller.countryCode + controller.phoneNumber,
                               style: TextStyle(fontWeight: FontWeight.bold, color: ColorResource.color_title_popup),
                             ),
                           ],
@@ -155,7 +155,7 @@ class VerifyCodePage extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: (){
-
+                    controller.onSubmitResendCode();
                   },
                   child: Container(
                     alignment: Alignment.center,

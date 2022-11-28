@@ -1,6 +1,7 @@
 
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/page/input_code/controller/input_code_controller.dart';
+import 'package:eqinsurance/page/loading/loading_page.dart';
 import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
@@ -134,7 +135,8 @@ class InputCodePage extends GetView<InputCodeController>{
                   }),
                 ],
               ),
-            )
+            ),
+            Obx(() => LoadingPage(isLoading: controller.isLoading.value))
           ],
         ),
       ),
