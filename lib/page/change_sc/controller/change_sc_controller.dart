@@ -66,9 +66,9 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
         changeSCReq.sOldPin = currentSc;
         changeSCReq.sNewPin = newSc;
 
-        changeSCReq.sManufacturer = null;
-        changeSCReq.sModel = null;
-        changeSCReq.sOsName = null;
+        changeSCReq.sManufacturer = "";
+        changeSCReq.sModel = "";
+        changeSCReq.sOsName = "";
         changeSCReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
         var response = await apiProvider.fetchData(ApiName.ChangePin, changeSCReq);
@@ -103,9 +103,9 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
       loginReq.sUserID = userID;
       loginReq.sPin = sc;
 
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
+      loginReq.sManufacturer = "";
+      loginReq.sModel = "";
+      loginReq.sOsName = "";
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
