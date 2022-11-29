@@ -57,9 +57,9 @@ class InputCodeController extends GetxController with KeyboardHiderMixin{
         loginReq.sUserID = userID;
         loginReq.sPin = pin;
 
-        loginReq.sManufacturer = null;
-        loginReq.sModel = null;
-        loginReq.sOsName = null;
+        loginReq.sManufacturer = "";
+        loginReq.sModel = "";
+        loginReq.sOsName = "";
         loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -85,7 +85,7 @@ class InputCodeController extends GetxController with KeyboardHiderMixin{
   }
 
   void doWhenLoginSuccess(String data){
-    Get.offAndToNamed(GetListPages.PARTNER, arguments: {"res" : data});
+    Get.offAndToNamed(GetListPages.PARTNER, arguments: {"link" : data});
   }
 
   void showErrorMessage(String message){

@@ -114,6 +114,7 @@ class PartnerPage extends GetView<PartnerController>{
               ],
             ),
           ),
+          Obx(() => LoadingPage(isLoading: controller.isLoading.value))
         ],
       ),
     );

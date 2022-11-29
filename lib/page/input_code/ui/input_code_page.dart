@@ -8,6 +8,7 @@ import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/button_widget.dart';
 import 'package:eqinsurance/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class InputCodePage extends GetView<InputCodeController>{
@@ -74,6 +75,13 @@ class InputCodePage extends GetView<InputCodeController>{
                         TextFieldWidget(onSubmit: (value){
 
                         }, hint: "Enter Current Security Code",
+                            obscureText: true,
+                            textInputType: TextInputType.number,
+                            inputFormatter: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                              FilteringTextInputFormatter.digitsOnly
+
+                            ],
                             controller: controller.scText,
                             isShowLeftIcon: true,
                             leftIcon: ImageResource.key),

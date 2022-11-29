@@ -103,8 +103,9 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
         inputCodeReq.sUserID = userID;
         inputCodeReq.sPin = sc;
 
-        inputCodeReq.sManufacturer = null;
-        inputCodeReq.sModel = null;
+        inputCodeReq.sManufacturer = "";
+        inputCodeReq.sModel = "";
+        inputCodeReq.sOsName = "";
         inputCodeReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -138,9 +139,9 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
       loginReq.sUserID = userID;
       loginReq.sPin = sc;
 
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
+      loginReq.sManufacturer = "";
+      loginReq.sModel = "";
+      loginReq.sOsName = "";
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 

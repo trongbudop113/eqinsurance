@@ -235,9 +235,9 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
         inputCodeReq.sOTP = otp;
         inputCodeReq.sPin = sc;
 
-        inputCodeReq.sManufacturer = null;
-        inputCodeReq.sModel = null;
-        inputCodeReq.sOsName = null;
+        inputCodeReq.sManufacturer = "";
+        inputCodeReq.sModel = "";
+        inputCodeReq.sOsName = "";
         inputCodeReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -269,9 +269,9 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
       loginReq.sUserID = userID;
       loginReq.sPin = scCode;
 
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
+      loginReq.sManufacturer = "";
+      loginReq.sModel = "";
+      loginReq.sOsName = "";
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -304,9 +304,9 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
       loginReq.sUserID = userID;
       loginReq.sUserPass = userPassword;
 
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
+      loginReq.sManufacturer = "";
+      loginReq.sModel = "";
+      loginReq.sOsName = "";
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -416,7 +416,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
 
   void doWhenLoginSuccess(String data){
     SharedConfigName.setAgentCode(data);
-    Get.offAndToNamed(GetListPages.PARTNER, arguments: {"res" : data});
+    Get.offAndToNamed(GetListPages.PARTNER, arguments: {"link" : data});
   }
 
   void showErrorMessage(String message){
