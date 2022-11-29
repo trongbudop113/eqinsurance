@@ -390,7 +390,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
 
   String otp = "";
   void doWhenVerifyOTPSuccess(String _otp){
-    this.otp = otp;
+    this.otp = _otp;
 
     pinCodeText = '';
     onFocusPage(3);
