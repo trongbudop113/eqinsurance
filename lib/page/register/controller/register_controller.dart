@@ -282,7 +282,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
         String data = root.children[2].children.first.toString();
 
         if(CheckError.isSuccess(data)){
-          doWhenSuccessLoginWithSecurityCode();
+          doWhenSuccessLoginWithSecurityCode(data);
         }else{
           showErrorMessage("Cannot login. Please contact website admin!");
           hideLoading();
@@ -296,7 +296,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     }
   }
 
-  Future<void> onSubmitLoginAgentCode() async {
+  Future<void> onSubmitLoginAgentCode(String link) async {
     try{
       Login2Req loginReq = Login2Req();
       loginReq.sUserName = ConfigData.CONSUMER_KEY;
@@ -318,7 +318,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
 
         if(CheckError.isSuccess(data)){
           await ConfigButton.singleton.showHideButton();
-          doWhenLoginSuccess(data);
+          doWhenLoginSuccess(link);
         }else{
           showErrorMessage("Cannot get AgentCode!");
         }
@@ -402,7 +402,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     onSubmitLogin();
   }
 
-  Future<void> doWhenSuccessLoginWithSecurityCode() async {
+  Future<void> doWhenSuccessLoginWithSecurityCode(String data) async {
     String currentUserType = await SharedConfigName.getCurrentUserType();
     if(currentUserType != ConfigData.AGENT){
       await SharedConfigName.clearUserNotificationCache();
@@ -411,7 +411,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     SharedConfigName.setSC(scCode);
     SharedConfigName.setRegisteredUserType("AGENT");
     SharedConfigName.setPhone(countryCode + phoneNumber);
-    onSubmitLoginAgentCode();
+    onSubmitLoginAgentCode(data);
   }
 
   void doWhenLoginSuccess(String data){
