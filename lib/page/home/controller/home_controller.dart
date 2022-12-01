@@ -12,7 +12,6 @@ import 'package:eqinsurance/page/notification/models/notification_req.dart';
 import 'package:eqinsurance/page/notification/models/notification_res.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
 import 'package:eqinsurance/page/webview/model/get_contact_req.dart';
-import 'package:eqinsurance/splash_page.dart';
 import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
 import 'package:eqinsurance/widgets/dialog/home_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -20,16 +19,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xml/xml.dart';
 
-class HomeBinding extends Bindings{
+class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => HomeController());
   }
-
 }
 
-class HomeController extends GetxController{
-
+class HomeController extends GetxController {
   ApiProvider apiProvider = ApiProvider();
   final RxInt countNotify = 0.obs;
   final RxBool isShowNotification = false.obs;
@@ -46,8 +43,10 @@ class HomeController extends GetxController{
 
   @override
   void onReady() {
-    initFirebaseMessage();
     super.onReady();
+    print("onReady :...");
+
+    initFirebaseMessage();
     // print("start encrypt.....");
     // var text = 'mobileapi|cauugf6ORCafNuvfhBNxLg:APA91bGWk7S0Z1we_YrKm9Hc-FVG04230kodgyuQftmKL7mf4Stwt-hypkYzSzJH19emDxnKdEQN1IclTyCfGCWAN--5qasNLr3Dxski9IcEt3WXLmN2heDG1BWZboD_Vphq3Jx7f_TG';
     // String key = "28103264-9141-4540-a55b-c4ec6596ee2d"; //
@@ -58,54 +57,75 @@ class HomeController extends GetxController{
     // print("end encrypt.....");
   }
 
-  void initFirebaseMessage(){
+  void initFirebaseMessage() async {
     print("initFirebaseMessage....");
-    FirebaseMessaging.onMessage.listen(showFlutterNotification);
+
+    NotificationSettings settings =
+        await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+
+    //FirebaseMessaging.onMessage.listen(showFlutterNotification);
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+      print(
+          'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
       Get.toNamed(GetListPages.AUTHENTICATION);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+      print(
+          'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
       Get.toNamed(GetListPages.AUTHENTICATION);
     });
   }
 
-
   Future<void> openPopupNotification() async {
-
-    try{
+    try {
       GetNotificationReq getNotificationReq = GetNotificationReq();
       getNotificationReq.sUserName = ConfigData.CONSUMER_KEY;
       getNotificationReq.sPassword = ConfigData.CONSUMER_SECRET;
       getNotificationReq.sType = "POPUP";
       getNotificationReq.sAgentCode = "";
 
-
-      var response = await apiProvider.fetchData(ApiName.Notification, getNotificationReq);
-      if(response != null){
+      var response =
+          await apiProvider.fetchData(ApiName.Notification, getNotificationReq);
+      if (response != null) {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
         String jsonString = root.children[2].children.first.toString();
-        if(CheckError.isSuccess(jsonString)){
-          if(jsonString != '' && jsonString != '0' && jsonString != 0){
-            NotificationDataRes notificationDataRes = NotificationDataRes.fromJson(jsonDecode(jsonString));
+        if (CheckError.isSuccess(jsonString)) {
+          if (jsonString != '' && jsonString != '0' && jsonString != 0) {
+            NotificationDataRes notificationDataRes =
+                NotificationDataRes.fromJson(jsonDecode(jsonString));
             print("data....." + notificationDataRes.data!.length.toString());
             showHomeDialog(notificationDataRes.data![0]);
           }
         }
       }
-    }catch(e){
-
-    }
+    } catch (e) {}
   }
 
   Future<void> getContactInfo() async {
-    try{
+    try {
       isLoading.value = true;
       final String _Type = await SharedConfigName.getCurrentUserType();
       String _HpNumberTemp = "";
-      if(_Type == ConfigData.PROMO){
+      if (_Type == ConfigData.PROMO) {
         _HpNumberTemp = await SharedConfigName.getPhone();
       }
       final String _HpNumber = _HpNumberTemp;
@@ -116,18 +136,18 @@ class HomeController extends GetxController{
       getContactReq.sType = ConfigData.PUBLIC;
       getContactReq.sHpNumber = _HpNumber;
 
-
-      var response = await apiProvider.fetchData(ApiName.ContactUs, getContactReq);
-      if(response != null){
+      var response =
+          await apiProvider.fetchData(ApiName.ContactUs, getContactReq);
+      if (response != null) {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
         String link = root.children[2].children.first.toString();
         Get.toNamed(GetListPages.CONTACT_US, arguments: {"link": link});
-      }else{
+      } else {
         showErrorMessage("Can not load contact, please try again!");
       }
       isLoading.value = false;
-    }catch(e){
+    } catch (e) {
       isLoading.value = false;
       showErrorMessage("Can not load contact, please try again!");
     }
@@ -135,31 +155,32 @@ class HomeController extends GetxController{
 
   Future<void> getPublicUser() async {
     isLoading.value = true;
-    try{
+    try {
       GetPublicUserReq getPublicUserReq = GetPublicUserReq();
       getPublicUserReq.sUserName = ConfigData.CONSUMER_KEY;
       getPublicUserReq.sPassword = ConfigData.CONSUMER_SECRET;
 
-
-      var response = await apiProvider.fetchData(ApiName.PublicLink, getPublicUserReq);
-      if(response != null){
+      var response =
+          await apiProvider.fetchData(ApiName.PublicLink, getPublicUserReq);
+      if (response != null) {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
         String link = root.children[2].children.first.toString();
         Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
       }
       isLoading.value = false;
-    }catch(e){
+    } catch (e) {
       isLoading.value = false;
       showErrorMessage("Error, Please try again");
     }
     //Get.toNamed(GetListPages.AUTHENTICATION);
   }
 
-  void goToPartnerCustomer(){
-    if(SharedConfigName.getCurrentUserType == ConfigData.PROMO && SharedConfigName.getPhone != ''){
+  void goToPartnerCustomer() {
+    if (SharedConfigName.getCurrentUserType == ConfigData.PROMO &&
+        SharedConfigName.getPhone != '') {
       showPartnerCustomerWebsite();
-    }else{
+    } else {
       Get.toNamed(GetListPages.PARTNER_CUSTOMER);
     }
 
@@ -170,16 +191,16 @@ class HomeController extends GetxController{
 
   Future<void> goToPartnerPage() async {
     bool isSet = await SharedConfigName.isSetSC();
-    if(isSet){
+    if (isSet) {
       Get.toNamed(GetListPages.INPUT_CODE);
-    }else{
+    } else {
       Get.toNamed(GetListPages.REGISTER);
     }
   }
 
   Future<void> showPartnerCustomerWebsite() async {
     isLoading.value = true;
-    try{
+    try {
       String vPhone = await SharedConfigName.getPhone();
       final String _MobileNo = "" + vPhone;
 
@@ -188,23 +209,23 @@ class HomeController extends GetxController{
       getPartnerCustomerReq.sPassword = ConfigData.CONSUMER_SECRET;
       getPartnerCustomerReq.sHpNumber = _MobileNo;
 
-
-      var response = await apiProvider.fetchData(ApiName.CheckHpNumber, getPartnerCustomerReq);
-      if(response != null){
+      var response = await apiProvider.fetchData(
+          ApiName.CheckHpNumber, getPartnerCustomerReq);
+      if (response != null) {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
         String link = root.children[2].children.first.toString();
-        if(CheckError.isSuccess(link)){
+        if (CheckError.isSuccess(link)) {
           var separateResult = response.split("\|");
           //final String _AgentCode = separateResult[0];
           final String URL = separateResult[1];
           Get.toNamed(GetListPages.PARTNER, arguments: {"link": URL});
-        }else{
+        } else {
           showErrorMessage("Cannot verify your mobile number!");
         }
       }
       isLoading.value = false;
-    }catch(e){
+    } catch (e) {
       isLoading.value = false;
       showErrorMessage("Cannot verify your mobile number, please try again!");
     }
@@ -212,7 +233,7 @@ class HomeController extends GetxController{
 
   Future<void> refreshNotificationCount() async {
     isLoading.value = true;
-    try{
+    try {
       String agentCode = await SharedConfigName.getAgentCode();
       String userType = await SharedConfigName.getCurrentUserType();
 
@@ -222,19 +243,22 @@ class HomeController extends GetxController{
       getNotificationReq.sType = userType;
       getNotificationReq.sAgentCode = agentCode;
 
-      var response = await apiProvider.fetchData(ApiName.NotificationCount, getNotificationReq);
-      if(response != null){
+      var response = await apiProvider.fetchData(
+          ApiName.NotificationCount, getNotificationReq);
+      if (response != null) {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
         String data = root.children[2].children.first.toString();
 
-        if(CheckError.isSuccess(data)){
-          if(data != "" && data != "0" && data != 0){
+        if (CheckError.isSuccess(data)) {
+          if (data != "" && data != "0" && data != 0) {
             int apiCount = int.tryParse(data) ?? 0;
-            List<String> readAndDeletedNotificationIDs = await SharedConfigName.getUserReadNotificationIDs();
-            var listDataDeleted = await SharedConfigName.getUserDeletedNotificationIDs();
-            for(var element in listDataDeleted){
-              if(!readAndDeletedNotificationIDs.contains(element))
+            List<String> readAndDeletedNotificationIDs =
+                await SharedConfigName.getUserReadNotificationIDs();
+            var listDataDeleted =
+                await SharedConfigName.getUserDeletedNotificationIDs();
+            for (var element in listDataDeleted) {
+              if (!readAndDeletedNotificationIDs.contains(element))
                 readAndDeletedNotificationIDs.add(element);
             }
 
@@ -243,10 +267,10 @@ class HomeController extends GetxController{
             int localCacheCount = readAndDeletedNotificationIDs.length;
             int totalCount = apiCount - localCacheCount;
 
-            if(totalCount >0){
+            if (totalCount > 0) {
               countNotify.value = totalCount;
               isShowNotification.value = true;
-            }else{
+            } else {
               countNotify.value = 0;
               isShowNotification.value = false;
             }
@@ -255,24 +279,22 @@ class HomeController extends GetxController{
       }
 
       isLoading.value = false;
-    }catch(e){
+    } catch (e) {
       isLoading.value = false;
     }
   }
 
-  void showErrorMessage(String message){
+  void showErrorMessage(String message) {
     showDialog(
       context: Get.context!,
       builder: (_) => ErrorDialog(message: message),
     );
   }
 
-  void showHomeDialog(NotificationRes data){
+  void showHomeDialog(NotificationRes data) {
     showDialog(
-      barrierColor: Colors.black.withOpacity(0.7),
+        barrierColor: Colors.black.withOpacity(0.7),
         context: Get.context!,
-        builder: (_) => HomeDialog(data: data)
-    );
+        builder: (_) => HomeDialog(data: data));
   }
-
 }
