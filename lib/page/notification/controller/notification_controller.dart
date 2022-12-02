@@ -187,9 +187,9 @@ class NotificationController extends GetxController{
       if(listNotificationRead.contains(listNotification[i].iD)){
         listNotification[i].isRead.value = true;
       }
-      if(listNotificationDeleted.contains(listNotification[i].iD)){
-        listNotification.removeAt(i);
-      }
+    }
+    if(listNotificationDeleted.length > 0) {
+      listNotification.removeWhere((element) => listNotificationDeleted.contains(element.iD));
     }
   }
 
@@ -209,6 +209,8 @@ class NotificationController extends GetxController{
       listNotification[index].isRead.value = true;
       listNotificationRead.add(listNotification[index].iD ?? '');
       if(isDelete){
+        listNotificationDeleted.add(listNotification[index].iD ?? '');
+        listNotification.removeWhere((element) => listNotification[index].iD == element.iD);
         removeItemInList(index);
       }else{
         SharedConfigName.addUserReadNotificationID(listNotification[index].iD ?? '');
@@ -233,15 +235,15 @@ class NotificationController extends GetxController{
           removeItemInList(i);
         }
       }
-      //SharedConfigName.addUserDeletedNotificationID(listNotificationDeleted);
+      if(listNotificationDeleted.length > 0){
+        listNotification.removeWhere((element) => listNotificationDeleted.contains(element.iD));
+      }
       onSetSelect();
     }
 
   }
 
   void removeItemInList(int index){
-    listNotificationDeleted.add(listNotification[index].iD ?? '');
-    listNotification.removeAt(index);
     SharedConfigName.addUserDeletedNotificationID(listNotificationDeleted);
   }
 
