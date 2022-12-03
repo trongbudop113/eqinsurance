@@ -30,11 +30,11 @@ class SettingsController extends GetxController{
     SharedConfigName.setRegisteredUserType('');
     await ConfigButton.singleton.showHideButton();
     isLoading.value = false;
-    Get.back();
+    Get.back(result: true);
   }
 
   void onCLickNo(){
-    Get.back();
+    Get.back(result: false);
   }
 
   Future<void> getNotificationItemCount() async {

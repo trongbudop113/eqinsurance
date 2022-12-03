@@ -44,7 +44,7 @@ class HomePage extends GetView<HomeController>{
                           child: Image.asset(ImageResource.ic_settings, width: 20, height: 20)
                       ),
                       onTap: (){
-                        Get.toNamed(GetListPages.SETTINGS);
+                        controller.goToSetting();
                       },
                     ),
                     SizedBox(width: 10),
@@ -60,7 +60,7 @@ class HomePage extends GetView<HomeController>{
                     SizedBox(width: 10),
                     Obx(() => IconNotificationWidget(
                       onTap: (){
-                        Get.toNamed(GetListPages.NOTIFICATION);
+                        controller.goToNotification();
                       },
                       count: controller.countNotify.value,
                       isShowNotification: controller.isShowNotification.value,

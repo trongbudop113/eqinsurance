@@ -156,6 +156,20 @@ class HomeController extends GetxController{
     //Get.toNamed(GetListPages.AUTHENTICATION);
   }
 
+  Future<void> goToSetting() async {
+    var isUpdate = await Get.toNamed(GetListPages.SETTINGS);
+    if(isUpdate ?? false){
+      refreshNotificationCount();
+    }
+  }
+
+  Future<void> goToNotification() async {
+    var isUpdate = await Get.toNamed(GetListPages.NOTIFICATION);
+    if(isUpdate ?? false){
+      refreshNotificationCount();
+    }
+  }
+
   void goToPartnerCustomer(){
     if(SharedConfigName.getCurrentUserType == ConfigData.PROMO && SharedConfigName.getPhone != ''){
       showPartnerCustomerWebsite();
