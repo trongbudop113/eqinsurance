@@ -58,17 +58,17 @@ class HomeController extends GetxController{
     // print("end encrypt.....");
   }
 
-  void initFirebaseMessage(){
+  Future<void> initFirebaseMessage() async {
     print("initFirebaseMessage....");
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
       Get.toNamed(GetListPages.AUTHENTICATION);
     });
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
-      Get.toNamed(GetListPages.AUTHENTICATION);
-    });
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+    //   Get.toNamed(GetListPages.AUTHENTICATION);
+    // });
   }
 
 

@@ -111,8 +111,8 @@ class PartnerController extends GetxController{
       updateDeviceReq.RequestKey = requestKeyCopy;
       updateDeviceReq.Username = userID;
 
-      //var response = await apiProvider.fetchDataUpdateDevice(reQuestUrl + "/UpdateUserDevice", updateDeviceReq);
-      var response = await apiProvider.fetchDataUpdateDevice("http://eq.verzview.com:8090", updateDeviceReq);
+      var response = await apiProvider.fetchDataUpdateDevice(reQuestUrl + "/UpdateUserDevice", updateDeviceReq);
+      //var response = await apiProvider.fetchDataUpdateDevice("http://eq.verzview.com:8090", updateDeviceReq);
       if(response != null){
         print("data....." + response);
 
