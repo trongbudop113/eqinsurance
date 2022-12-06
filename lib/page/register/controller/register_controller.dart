@@ -137,7 +137,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     showLoading();
     try{
 
-      if(textCountryCodePhone.value.trim() != '' || phoneNumberText.text.trim() != ''){
+      if(textCountryCodePhone.value.trim() == '' || phoneNumberText.text.trim() == ''){
         showErrorMessage("Please enter your mobile number and select country");
       }else{
         final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
@@ -214,10 +214,16 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     try{
       if(sc.isEmpty || confirmSc.isEmpty){
         showErrorMessage("Please enter Security Code and Confirm Security Code.");
+        hideLoading();
+        return;
       }else if(sc.length != 6 || confirmSc.length != 6){
         showErrorMessage("Security Code must contain 6 digits.");
+        hideLoading();
+        return;
       }else if(!(sc == confirmSc)){
         showErrorMessage("Security Code does not match the Confirm Security Code.");
+        hideLoading();
+        return;
       }else{
         final String _MobileNo = countryCode + phoneNumber;
 
@@ -229,9 +235,9 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
         inputCodeReq.sOTP = otp;
         inputCodeReq.sPin = sc;
 
-        inputCodeReq.sManufacturer = null;
-        inputCodeReq.sModel = null;
-        inputCodeReq.sOsName = null;
+        inputCodeReq.sManufacturer = "";
+        inputCodeReq.sModel = "";
+        inputCodeReq.sOsName = "";
         inputCodeReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -245,6 +251,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
             doWhenVerifySCSuccess(sc);
           }else{
             showErrorMessage("Invalid Security Code!");
+            hideLoading();
           }
         }
       }
@@ -262,9 +269,9 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
       loginReq.sUserID = userID;
       loginReq.sPin = scCode;
 
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
+      loginReq.sManufacturer = "";
+      loginReq.sModel = "";
+      loginReq.sOsName = "";
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -275,10 +282,13 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
         String data = root.children[2].children.first.toString();
 
         if(CheckError.isSuccess(data)){
-          doWhenSuccessLoginWithSecurityCode();
+          doWhenSuccessLoginWithSecurityCode(data);
         }else{
           showErrorMessage("Cannot login. Please contact website admin!");
+          hideLoading();
         }
+      }else{
+        hideLoading();
       }
     }catch(e){
       hideLoading();
@@ -286,7 +296,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     }
   }
 
-  Future<void> onSubmitLoginAgentCode() async {
+  Future<void> onSubmitLoginAgentCode(String link) async {
     try{
       Login2Req loginReq = Login2Req();
       loginReq.sUserName = ConfigData.CONSUMER_KEY;
@@ -294,9 +304,9 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
       loginReq.sUserID = userID;
       loginReq.sUserPass = userPassword;
 
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
+      loginReq.sManufacturer = "";
+      loginReq.sModel = "";
+      loginReq.sOsName = "";
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -308,7 +318,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
 
         if(CheckError.isSuccess(data)){
           await ConfigButton.singleton.showHideButton();
-          doWhenLoginSuccess(data);
+          doWhenLoginSuccess(link);
         }else{
           showErrorMessage("Cannot get AgentCode!");
         }
@@ -321,28 +331,33 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
   }
 
   Future<void> onSubmitResendCode() async {
+    showLoading();
+    try{
+      final String _MobileNo = countryCode + phoneNumber;
 
-    final String _MobileNo = textCountryCodePhone.value + phoneNumberText.text.trim();
-
-    PhoneNumberReq phoneNumberReq = PhoneNumberReq();
-    phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
-    phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
-    phoneNumberReq.sUserID = userID;
-    phoneNumberReq.sMobileNo = _MobileNo;
+      PhoneNumberReq phoneNumberReq = PhoneNumberReq();
+      phoneNumberReq.sUserName = ConfigData.CONSUMER_KEY;
+      phoneNumberReq.sPassword = ConfigData.CONSUMER_SECRET;
+      phoneNumberReq.sUserID = userID;
+      phoneNumberReq.sMobileNo = _MobileNo;
 
 
-    var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.SendSMSWithOTP, phoneNumberReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        showErrorMessage("New OTP has been sent to you.");
-      }else{
-        showErrorMessage("Cannot send SMS to your mobile number!");
+        if(CheckError.isSuccess(data)){
+          showErrorMessage("New OTP has been sent to you.");
+        }else{
+          showErrorMessage("Cannot send SMS to your mobile number!");
+        }
       }
-
+      hideLoading();
+    }catch(e){
+      hideLoading();
+      showErrorMessage("Cannot send SMS to your mobile number!");
     }
   }
 
@@ -375,7 +390,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
 
   String otp = "";
   void doWhenVerifyOTPSuccess(String _otp){
-    this.otp = otp;
+    this.otp = _otp;
 
     pinCodeText = '';
     onFocusPage(3);
@@ -387,7 +402,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     onSubmitLogin();
   }
 
-  Future<void> doWhenSuccessLoginWithSecurityCode() async {
+  Future<void> doWhenSuccessLoginWithSecurityCode(String data) async {
     String currentUserType = await SharedConfigName.getCurrentUserType();
     if(currentUserType != ConfigData.AGENT){
       await SharedConfigName.clearUserNotificationCache();
@@ -396,12 +411,12 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     SharedConfigName.setSC(scCode);
     SharedConfigName.setRegisteredUserType("AGENT");
     SharedConfigName.setPhone(countryCode + phoneNumber);
-    onSubmitLoginAgentCode();
+    onSubmitLoginAgentCode(data);
   }
 
   void doWhenLoginSuccess(String data){
     SharedConfigName.setAgentCode(data);
-    Get.offAndToNamed(GetListPages.PARTNER, arguments: {"res" : data});
+    Get.offAndToNamed(GetListPages.PARTNER, arguments: {"link" : data});
   }
 
   void showErrorMessage(String message){
@@ -418,20 +433,33 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
     );
   }
 
-  void onChangeSearchCountry(int index){
+  void onChangeSearchCountry(CountryCode? countryCodeSelect){
     try{
-      CountryCode countryCode = listCountryCodeGen.where((e) => e.id == textCountryCodePhone.value).first;
-      countryCode.isChecked.value = false;
+      CountryCode? countryCode;
+      for(var item in listCountryCodeGen){
+        if(item.id == textCountryCodePhone.value && item.name!.toLowerCase() == textLocationPhone.value.toLowerCase()){
+          item.isChecked.value = false;
+        }
 
-      CountryCode countryCodeNew = listCountryCodeGen[index];
-      countryCodeNew.isChecked.value = true;
-      textCountryCodePhone.value = countryCodeNew.id ?? '';
-      textLocationPhone.value = countryCodeNew.name ?? '';
+        if(item.id == countryCodeSelect!.id && item.name!.toLowerCase() == countryCodeSelect.name!.toLowerCase()){
+          item.isChecked.value = true;
+          countryCode = item;
+        }
+      }
+      if(countryCode == null){
+        return;
+      }
+      textCountryCodePhone.value = countryCode.id ?? '';
+      textLocationPhone.value = countryCode.name ?? '';
 
       listCountryCode.value = listCountryCodeGen;
     }catch(e){
 
     }
+  }
+
+  void onCloseDialog(){
+    listCountryCode.value = listCountryCodeGen;
   }
 
   Widget getWidgetContent(){

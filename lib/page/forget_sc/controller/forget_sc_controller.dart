@@ -41,8 +41,16 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
     currentIndex.value = i;
   }
 
-  Future<void> onSubmitUserAccount() async {
+  void showLoading(){
     isLoading.value = true;
+  }
+
+  void hideLoading(){
+    isLoading.value = false;
+  }
+
+  Future<void> onSubmitUserAccount() async {
+    showLoading();
     try{
       UserAccountReq userAccountReq = UserAccountReq();
       userAccountReq.sUserName = ConfigData.CONSUMER_KEY;
@@ -63,15 +71,15 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
           showErrorMessage('User ID or Password is wrong!');
         }
       }
-      isLoading.value = false;
+      hideLoading();
     }catch(e){
+      hideLoading();
       showErrorMessage("Error, Please try again!");
-      isLoading.value = false;
     }
   }
 
   Future<void> onSubmitSCCode() async {
-    isLoading.value = true;
+    showLoading();
     try{
       String userID = await SharedConfigName.getUserID();
       var sc = scText.text.trim().toString();
@@ -79,10 +87,14 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
 
       if(sc.isEmpty || confirmSc.isEmpty){
         showErrorMessage("Please enter Security Code and Confirm Security Code.");
+        hideLoading();
       }else if(sc.length != 6 || confirmSc.length!=6){
         showErrorMessage("Security Code must contain 6 digits.");
+        hideLoading();
+        hideLoading();
       }else if(!(sc == confirmSc)){
         showErrorMessage("Security Code does not match the Confirm Security Code.");
+        hideLoading();
       }else{
 
         Login1Req inputCodeReq = Login1Req();
@@ -91,8 +103,9 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
         inputCodeReq.sUserID = userID;
         inputCodeReq.sPin = sc;
 
-        inputCodeReq.sManufacturer = null;
-        inputCodeReq.sModel = null;
+        inputCodeReq.sManufacturer = "";
+        inputCodeReq.sModel = "";
+        inputCodeReq.sOsName = "";
         inputCodeReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -105,13 +118,14 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
           if(CheckError.isSuccess(data)){
             onSubmitLogin(sc);
           }else{
+            hideLoading();
             showErrorMessage("Cannot reset Security Code. Please contact website admin!");
           }
         }
       }
     }catch(e){
+      hideLoading();
       showErrorMessage("Error, Please try again!");
-      isLoading.value = false;
     }
   }
 
@@ -125,9 +139,9 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
       loginReq.sUserID = userID;
       loginReq.sPin = sc;
 
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
+      loginReq.sManufacturer = "";
+      loginReq.sModel = "";
+      loginReq.sOsName = "";
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -143,10 +157,10 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
           showErrorMessage("Cannot login. Please contact website admin!");
         }
       }
-      isLoading.value = false;
+      hideLoading();
     }catch(e){
+      hideLoading();
       showErrorMessage("Error, Please try again!");
-      isLoading.value = false;
     }
   }
 

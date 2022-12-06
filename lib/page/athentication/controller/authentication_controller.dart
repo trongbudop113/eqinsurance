@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:eqinsurance/configs/configs_data.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
+import 'package:eqinsurance/network/aes_encrypt.dart';
 import 'package:eqinsurance/network/api_name.dart';
 import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
@@ -45,12 +46,13 @@ class AuthenticationController extends GetxController{
 
   Future<void> checkAuthentication() async {
     String userId =  await SharedConfigName.getUserID();
-    if (userId.isNotEmpty) {
-      requestToGetAPIInfo();
+    String token =  await SharedConfigName.getTokenFirebase();
+    if (userId != '' && !userId.isEmpty){
+      requestToGetAPIInfo(token);
     }
   }
 
-  Future<void> requestToGetAPIInfo() async {
+  Future<void> requestToGetAPIInfo(String token) async {
     isLoading.value = true;
     try{
       GetAPIInfoReq getAPIInfoReq = GetAPIInfoReq();
@@ -72,7 +74,9 @@ class AuthenticationController extends GetxController{
           completeTokenUrl = temValues[2];
           apiUsername = temValues[3];
           apiKey = temValues[4];
-          getInstanceToken();
+          if(token != ""){
+            getInstanceToken(token);
+          }
 
           print("data....." + requestTokenUrl + "...." + fireBaseKey);
         }else{
@@ -91,11 +95,10 @@ class AuthenticationController extends GetxController{
     }
   }
 
-  void getInstanceToken(){
-    // String token = task.getResult().getToken();
-    // byte[] IV = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    // final String requestKey = base64Encode(Encryption.encrypt((apiUsername + "|" + token).getBytes(), apiKey, IV), Base64.DEFAULT);
-    // requestToUpdateDeviceAPI(requestKey);
+  void getInstanceToken(String token){
+    String input = apiUsername + "|" + token;
+    String requestKey = AesHelper.encryptString(input, apiKey);
+    requestToUpdateDeviceAPI(requestKey);
   }
 
   Future<void> requestToUpdateDeviceAPI(String requestKey) async {

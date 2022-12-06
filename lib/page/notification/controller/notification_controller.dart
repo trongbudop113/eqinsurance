@@ -31,6 +31,7 @@ class NotificationController extends GetxController{
 
   final RxBool isLoading = true.obs;
   final RxBool isLoadMore = true.obs;
+  bool isDeleteNotification = false;
 
   int page = 0;
   int limit = 10;
@@ -52,6 +53,11 @@ class NotificationController extends GetxController{
   Future<void> initData() async {
     limit = await SharedConfigName.getNotificationsPerPage();
 //
+  }
+
+  void onBack(){
+    print("isDeleteNotification..." + isDeleteNotification.toString());
+    Get.back(result: isDeleteNotification);
   }
 
   Future<void> getNotification() async {
@@ -187,10 +193,17 @@ class NotificationController extends GetxController{
       if(listNotificationRead.contains(listNotification[i].iD)){
         listNotification[i].isRead.value = true;
       }
-      if(listNotificationDeleted.contains(listNotification[i].iD)){
-        listNotification.removeAt(i);
-      }
     }
+    if(listNotificationDeleted.length > 0) {
+      listNotification.removeWhere((element) => listNotificationDeleted.contains(element.iD));
+    }
+  }
+
+  void onSelectListener(){
+    if(listNotification.length == 0){
+      return;
+    }
+    onSetSelect();
   }
 
   void onSetSelect(){
@@ -209,10 +222,13 @@ class NotificationController extends GetxController{
       listNotification[index].isRead.value = true;
       listNotificationRead.add(listNotification[index].iD ?? '');
       if(isDelete){
+        listNotificationDeleted.add(listNotification[index].iD ?? '');
+        listNotification.removeWhere((element) => listNotification[index].iD == element.iD);
         removeItemInList(index);
       }else{
         SharedConfigName.addUserReadNotificationID(listNotification[index].iD ?? '');
       }
+      isDeleteNotification = true;
     }
   }
 
@@ -220,28 +236,33 @@ class NotificationController extends GetxController{
   List<String> listNotificationRead = [];
 
   Future<void> onDeleteNotificationItem(BuildContext context) async {
-
+    for(int i = 0; i < listNotification.length; i++){
+      if(listNotification[i].isCheck.value){
+        listNotificationDeleted.add(listNotification[i].iD ?? '');
+        removeItemInList(i);
+      }
+    }
+    if(listNotificationDeleted.length == 0){
+      onSetSelect();
+      return;
+    }
     bool isOk = await showDialog(
       context: context,
       builder: (_) => ConfirmDialog(message: "Delete Notification?"),
     );
 
     if(isOk){
-      for(int i = 0; i < listNotification.length; i++){
-        if(listNotification[i].isCheck.value){
-          listNotificationDeleted.add(listNotification[i].iD ?? '');
-          removeItemInList(i);
-        }
+
+      if(listNotificationDeleted.length > 0){
+        listNotification.removeWhere((element) => listNotificationDeleted.contains(element.iD));
       }
-      //SharedConfigName.addUserDeletedNotificationID(listNotificationDeleted);
       onSetSelect();
+      isDeleteNotification = true;
     }
 
   }
 
   void removeItemInList(int index){
-    listNotificationDeleted.add(listNotification[index].iD ?? '');
-    listNotification.removeAt(index);
     SharedConfigName.addUserDeletedNotificationID(listNotificationDeleted);
   }
 

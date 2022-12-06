@@ -35,9 +35,16 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
   }
 
+  Future<void> initFirebaseBackground() async {
+    print('aaaaaa');
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    await setupFlutterNotifications();
+  }
+
   Future<void> initGoToPage() async {
     isLoading.value = true;
     if(await CheckConnect.hasNetwork()){
+      await initFirebaseBackground();
       String? token = await initFirebase();
       print("token....."+ token);
       if(token.isNotEmpty){
@@ -62,13 +69,6 @@ class _SplashPageState extends State<SplashPage> {
   //late final FirebaseMessaging _firebaseMessaging;
   Future<String> initFirebase() async {
     var _firebaseMessaging = FirebaseMessaging.instance;
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    await setupFlutterNotifications();
-    // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    //   alert: true,
-    //   badge: true,
-    //   sound: true,
-    // );
     String? token = await _firebaseMessaging.getToken();
     if((token ?? '').isNotEmpty){
       return token!;
@@ -117,13 +117,13 @@ class _SplashPageState extends State<SplashPage> {
   }
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //print('Message title: ${message.notification?.title}');
   await setupFlutterNotifications();
   showFlutterNotification(message);
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-  print('Handling a background message ${message.messageId}');
+  //print('Handling a background message ${message.messageId}');
 }
 
 /// Create a [AndroidNotificationChannel] for heads up notifications

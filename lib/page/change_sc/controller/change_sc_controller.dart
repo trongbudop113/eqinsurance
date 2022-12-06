@@ -32,8 +32,16 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
 
   final RxBool isLoading = false.obs;
 
-  Future<void> onSubmitChangeSC() async {
+  void showLoading(){
     isLoading.value = true;
+  }
+
+  void hideLoading(){
+    isLoading.value = false;
+  }
+
+  Future<void> onSubmitChangeSC() async {
+    showLoading();
     try{
       String userID = await SharedConfigName.getUserID();
 
@@ -43,10 +51,13 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
 
       if(currentSc.isEmpty || newSc.isEmpty || confirmSc.isEmpty){
         showErrorMessage("Please enter all security codes.");
+        hideLoading();
       }else if(currentSc.length != 6 || newSc.length != 6 || confirmSc.length != 6){
         showErrorMessage("Security Code must contain 6 digits.");
+        hideLoading();
       }else if(newSc != confirmSc){
         showErrorMessage("New Security Code does not match the Confirm Security Code.");
+        hideLoading();
       }else{
         ChangeSCReq changeSCReq = ChangeSCReq();
         changeSCReq.sUserName = ConfigData.CONSUMER_KEY;
@@ -55,9 +66,9 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
         changeSCReq.sOldPin = currentSc;
         changeSCReq.sNewPin = newSc;
 
-        changeSCReq.sManufacturer = null;
-        changeSCReq.sModel = null;
-        changeSCReq.sOsName = null;
+        changeSCReq.sManufacturer = "";
+        changeSCReq.sModel = "";
+        changeSCReq.sOsName = "";
         changeSCReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
         var response = await apiProvider.fetchData(ApiName.ChangePin, changeSCReq);
@@ -69,12 +80,13 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
           if(CheckError.isSuccess(data)){
             onSubmitLogin(newSc);
           }else{
+            hideLoading();
             showErrorMessage("Old Security Code is wrong!");
           }
         }
       }
     }catch(e){
-      isLoading.value = false;
+      hideLoading();
       showErrorMessage("Error, Please try again!");
     }
 
@@ -91,9 +103,9 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
       loginReq.sUserID = userID;
       loginReq.sPin = sc;
 
-      loginReq.sManufacturer = null;
-      loginReq.sModel = null;
-      loginReq.sOsName = null;
+      loginReq.sManufacturer = "";
+      loginReq.sModel = "";
+      loginReq.sOsName = "";
       loginReq.sOsVersion = Platform.isAndroid ? 'android' : 'ios';
 
 
@@ -108,10 +120,10 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
         }else{
           showErrorMessage("Cannot login. Please contact website admin!");
         }
-        isLoading.value = false;
       }
+      hideLoading();
     }catch(e){
-      isLoading.value = false;
+      hideLoading();
       showErrorMessage("Error, Please try again!");
     }
   }

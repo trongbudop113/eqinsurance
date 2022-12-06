@@ -57,7 +57,7 @@ class HomeController extends GetxController {
     // print("end encrypt.....");
   }
 
-  void initFirebaseMessage() async {
+  Future<void> initFirebaseMessage() async {
     print("initFirebaseMessage....");
 
     NotificationSettings settings =
@@ -88,8 +88,7 @@ class HomeController extends GetxController {
       Get.toNamed(GetListPages.AUTHENTICATION);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print(
-          'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+      print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
       Get.toNamed(GetListPages.AUTHENTICATION);
     });
   }
