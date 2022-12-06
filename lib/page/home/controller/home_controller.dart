@@ -93,6 +93,21 @@ class HomeController extends GetxController {
     });
   }
 
+  Future<void> goToSetting() async {
+    var isUpdate = await Get.toNamed(GetListPages.SETTINGS);
+    if(isUpdate ?? false){
+      refreshNotificationCount();
+    }
+  }
+
+  Future<void> goToNotification() async {
+    var isUpdate = await Get.toNamed(GetListPages.NOTIFICATION);
+    if(isUpdate ?? false){
+      refreshNotificationCount();
+    }
+  }
+
+
   Future<void> openPopupNotification() async {
     try {
       GetNotificationReq getNotificationReq = GetNotificationReq();
