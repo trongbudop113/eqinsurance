@@ -97,7 +97,7 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
         hideLoading();
       }else{
 
-        Login1Req inputCodeReq = Login1Req();
+        Login3Req inputCodeReq = Login3Req();
         inputCodeReq.sUserName = ConfigData.CONSUMER_KEY;
         inputCodeReq.sPassword = ConfigData.CONSUMER_SECRET;
         inputCodeReq.sUserID = userID;

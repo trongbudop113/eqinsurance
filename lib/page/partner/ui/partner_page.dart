@@ -54,26 +54,35 @@ class PartnerPage extends GetView<PartnerController>{
                         Spacer(flex: 1),
                         Text("EQ Insurance", style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 19, color: ColorResource.color_content_popup, fontWeight: FontWeight.bold)),
                         Spacer(flex: 1),
-                        GestureDetector(
-                          child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
-                          onTap: (){
-                            controller.getContactInfo();
-                          },
-                        ),
-                        SizedBox(width: 8),
-                        Obx(() => IconNotificationWidget(
-                          onTap: (){
-                            Get.toNamed(GetListPages.NOTIFICATION);
-                          },
-                          count: controller.countNotify.value,
-                          isShowNotification: controller.isShowNotification.value,
-                        )),
-                        SizedBox(width: 8),
-                        GestureDetector(
-                          child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),
-                          onTap: (){
-                            controller.reloadHome();
-                          },
+                        Container(
+                          margin: EdgeInsets.only(bottom: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                child: Image.asset(ImageResource.ic_call, width: 20, height: 20),
+                                onTap: (){
+                                  controller.getContactInfo();
+                                },
+                              ),
+                              SizedBox(width: 8),
+                              Obx(() => IconNotificationWidget(
+                                onTap: (){
+                                  Get.toNamed(GetListPages.NOTIFICATION);
+                                },
+                                count: controller.countNotify.value,
+                                isShowNotification: controller.isShowNotification.value,
+                              )),
+                              SizedBox(width: 5),
+                              GestureDetector(
+                                child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),
+                                onTap: (){
+                                  controller.reloadHome();
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(width: 15),
                       ],
