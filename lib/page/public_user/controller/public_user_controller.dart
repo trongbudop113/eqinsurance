@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/device_info_config.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/aes_encrypt.dart';
@@ -28,7 +29,7 @@ class PublicUserBinding extends Bindings{
 
 class PublicUserController extends GetxController{
   final Completer<WebViewController> webViewController = Completer<WebViewController>();
-
+  final HeightAppbar heightAppbar = DeviceInfoConfig.singleton.heightAppbar;
 
   ApiProvider apiProvider = ApiProvider();
 

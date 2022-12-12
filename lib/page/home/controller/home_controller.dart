@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:eqinsurance/configs/config_button.dart';
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/device_info_config.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
@@ -31,6 +32,7 @@ class HomeController extends GetxController {
   final RxInt countNotify = 0.obs;
   final RxBool isShowNotification = false.obs;
 
+  final HeightAppbar heightAppbar = DeviceInfoConfig.singleton.heightAppbar;
   final RxBool isLoading = true.obs;
 
   @override

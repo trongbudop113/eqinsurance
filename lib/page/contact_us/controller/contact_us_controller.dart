@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:eqinsurance/configs/device_info_config.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -16,6 +17,7 @@ class ContactUsBinding extends Bindings{
 class ContactUsController extends GetxController{
 
   final Completer<WebViewController> webViewController = Completer<WebViewController>();
+  final HeightAppbar heightAppbar = DeviceInfoConfig.singleton.heightAppbar;
 
   String url = "";
 

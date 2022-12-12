@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:eqinsurance/configs/check_network.dart';
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/device_info_config.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_provider.dart';
@@ -31,8 +33,22 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
+    checkDeviceInfo();
     initGoToPage();
     super.initState();
+  }
+
+  Future<void> checkDeviceInfo() async {
+    try{
+      final deviceInfoPlugin = DeviceInfoPlugin();
+      final deviceInfo = await deviceInfoPlugin.deviceInfo;
+      final allInfo = deviceInfo.data;
+      if(allInfo['name'] != null && allInfo['name'] != '' && allInfo['name'].toString().toLowerCase().contains('iphone 14')){
+        DeviceInfoConfig.singleton.heightAppbar = HeightAppbar(heightTop: 35, heightBody: 65);
+      }
+    }catch(e){
+      print(e);
+    }
   }
 
   Future<void> initFirebaseBackground() async {

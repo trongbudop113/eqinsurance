@@ -32,10 +32,10 @@ class PublicUserPage extends GetView<PublicUserController>{
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                SizedBox(height: 25),
+                SizedBox(height: controller.heightAppbar.heightTop),
                 Container(
                     width: double.maxFinite,
-                    height: 56,
+                    height: controller.heightAppbar.heightBody,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,

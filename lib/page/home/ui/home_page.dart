@@ -32,7 +32,7 @@ class HomePage extends GetView<HomeController>{
             padding: EdgeInsets.all(15),
             child: Column(
               children: [
-                SizedBox(height: 25),
+                SizedBox(height: controller.heightAppbar.heightTop),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/device_info_config.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
@@ -29,6 +30,7 @@ class WebViewAppBinding extends Bindings{
 class WebViewAppController extends GetxController{
 
   final Completer<WebViewController> webViewController = Completer<WebViewController>();
+  final HeightAppbar heightAppbar = DeviceInfoConfig.singleton.heightAppbar;
 
   ApiProvider apiProvider = ApiProvider();
 
