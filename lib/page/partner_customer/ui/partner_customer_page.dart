@@ -33,7 +33,7 @@ class PartnerCustomerPage extends GetView<PartnerCustomerController>{
               padding: EdgeInsets.all(15),
               child: Column(
                 children: [
-                  SizedBox(height: 25),
+                  SizedBox(height: 30),
                   Container(
                       width: double.maxFinite,
                       child: Row(
