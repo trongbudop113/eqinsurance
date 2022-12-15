@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>939188506398-6tg2735ik5ehnqfm8c43rfpphht67q15.apps.googleusercontent.com</string>
+	<string>323842693046-r4nsa17sih3crooco496hpp1b4e3pdtj.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.939188506398-6tg2735ik5ehnqfm8c43rfpphht67q15</string>
+	<string>com.googleusercontent.apps.323842693046-r4nsa17sih3crooco496hpp1b4e3pdtj</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>323842693046-vm90bar1jr5u960rd0mstpie6vr7ag26.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAPExo_R-PRxu5pqZqvsyh5sM0FH8gNrbY</string>
+	<string>AIzaSyDtazHI4LOEuYBJG25d-FTatGqEQj01B_c</string>
 	<key>GCM_SENDER_ID</key>
-	<string>939188506398</string>
+	<string>323842693046</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.verz.eqinsurance</string>
+	<string>com.eqinsurance.app</string>
 	<key>PROJECT_ID</key>
-	<string>miniapp-c50dd</string>
+	<string>eqiapp-e33c4</string>
 	<key>STORAGE_BUCKET</key>
-	<string>miniapp-c50dd.appspot.com</string>
+	<string>eqiapp-e33c4.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:939188506398:ios:d67330f9176c211475430f</string>
+	<string>1:323842693046:ios:399fc06c87edb06a095317</string>
+	<key>DATABASE_URL</key>
+	<string>https://eqiapp-e33c4.firebaseio.com</string>
 </dict>
 </plist>
