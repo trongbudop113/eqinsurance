@@ -7,6 +7,7 @@ import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/button_widget.dart';
 import 'package:eqinsurance/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class PartnerCustomerPage extends GetView<PartnerCustomerController>{
@@ -92,6 +93,12 @@ class PartnerCustomerPage extends GetView<PartnerCustomerController>{
                                 onSubmit: (value){
 
                                 },
+                                textInputType: TextInputType.number,
+                                inputFormatter: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                  FilteringTextInputFormatter.digitsOnly
+
+                                ],
                                 controller: controller.phoneText,
                                 hint: "Enter phone number",
                               ),
