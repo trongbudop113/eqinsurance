@@ -43,12 +43,21 @@ class _SplashPageState extends State<SplashPage> {
       final deviceInfoPlugin = DeviceInfoPlugin();
       final deviceInfo = await deviceInfoPlugin.deviceInfo;
       final allInfo = deviceInfo.data;
-      if(allInfo['name'] != null && allInfo['name'] != '' && allInfo['name'].toString().toLowerCase().contains('iphone 14')){
+      if(allInfo['name'] != null && allInfo['name'] != '' && checkInvalidDevice(allInfo['name'].toString().toLowerCase())){
         DeviceInfoConfig.singleton.heightAppbar = HeightAppbar(heightTop: 35, heightBody: 65);
       }
     }catch(e){
       print(e);
     }
+  }
+
+  List<String> device = ['iphone x', 'iphone xs', 'iphone xs', 'iphone 11', 'iphone 12', 'iphone 13', 'iphone 14', 'iphone 15'];
+
+  bool checkInvalidDevice(String name){
+    if(device.contains(name)){
+      return true;
+    }
+    return false;
   }
 
   Future<void> initFirebaseBackground() async {

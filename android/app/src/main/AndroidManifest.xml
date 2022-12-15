@@ -68,5 +68,9 @@
        <meta-data
            android:name="com.google.firebase.messaging.default_notification_channel_id"
            android:value="high_importance_channel" />
-    </application>
+
+       <meta-data
+           android:name="onesignal_google_project_number"
+           android:value="str:323842693046" />
+   </application>
 </manifest>
