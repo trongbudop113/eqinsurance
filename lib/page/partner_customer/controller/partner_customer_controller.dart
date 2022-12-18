@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:eqinsurance/configs/config_button.dart';
 import 'package:eqinsurance/configs/configs_data.dart';
+import 'package:eqinsurance/configs/device_info_config.dart';
 import 'package:eqinsurance/configs/hide_keyboard.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/network/api_name.dart';
 import 'package:eqinsurance/network/api_provider.dart';
+import 'package:eqinsurance/page/notification/models/notification_req.dart';
 import 'package:eqinsurance/page/partner_customer/models/login_hp_number_req.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
 import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
@@ -80,6 +82,7 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
       SharedConfigName.clearUserNotificationCache();
     }
 
+    refreshNotificationCount();
     SharedConfigName.setAgentCode(_AgentCode);
     SharedConfigName.setPhone(phone);
     SharedConfigName.setRegisteredUserType("PROMO");
@@ -93,5 +96,56 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
       context: Get.context!,
       builder: (_) => ErrorDialog(message: message),
     );
+  }
+
+  Future<void> refreshNotificationCount() async {
+    isLoading.value = true;
+    try {
+      String agentCode = await SharedConfigName.getAgentCode();
+      String userType = await SharedConfigName.getCurrentUserType();
+
+      GetNotificationReq getNotificationReq = GetNotificationReq();
+      getNotificationReq.sUserName = ConfigData.CONSUMER_KEY;
+      getNotificationReq.sPassword = ConfigData.CONSUMER_SECRET;
+      getNotificationReq.sType = userType;
+      getNotificationReq.sAgentCode = agentCode;
+
+      var response = await apiProvider.fetchData(
+          ApiName.NotificationCount, getNotificationReq);
+      if (response != null) {
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
+
+        if (CheckError.isSuccess(data)) {
+          if (data != "" && data != "0" && data != 0) {
+            int apiCount = int.tryParse(data) ?? 0;
+            List<String> readAndDeletedNotificationIDs =
+            await SharedConfigName.getUserReadNotificationIDs();
+            var listDataDeleted =
+            await SharedConfigName.getUserDeletedNotificationIDs();
+            for (var element in listDataDeleted) {
+              if (!readAndDeletedNotificationIDs.contains(element))
+                readAndDeletedNotificationIDs.add(element);
+            }
+
+            //String jsonText = jsonEncode(readAndDeletedNotificationIDs);
+
+            int localCacheCount = readAndDeletedNotificationIDs.length;
+            int totalCount = apiCount - localCacheCount;
+
+            if (totalCount > 0) {
+              DeviceInfoConfig.singleton.countNotification.value = totalCount;
+            } else {
+              DeviceInfoConfig.singleton.countNotification.value = 0;
+            }
+          }
+        }
+      }
+
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+    }
   }
 }

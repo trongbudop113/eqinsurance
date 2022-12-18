@@ -36,9 +36,6 @@ class PartnerController extends GetxController{
 
   String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
 
-  final RxInt countNotify = 0.obs;
-  final RxBool isShowNotification = false.obs;
-
   final RxBool isLoading = true.obs;
 
   @override
@@ -161,47 +158,56 @@ class PartnerController extends GetxController{
     await web.loadUrl(url);
   }
 
+  Future<void> goToNotification() async {
+    var isUpdate = await Get.toNamed(GetListPages.NOTIFICATION);
+    if(isUpdate ?? false){
+      refreshNotificationCount();
+    }
+  }
+
   Future<void> refreshNotificationCount() async {
 
-    String agentCode = await SharedConfigName.getAgentCode();
-    String userType = await SharedConfigName.getCurrentUserType();
+    try{
+      String agentCode = await SharedConfigName.getAgentCode();
+      String userType = await SharedConfigName.getCurrentUserType();
 
-    GetNotificationReq getNotificationReq = GetNotificationReq();
-    getNotificationReq.sUserName = ConfigData.CONSUMER_KEY;
-    getNotificationReq.sPassword = ConfigData.CONSUMER_SECRET;
-    getNotificationReq.sType = userType;
-    getNotificationReq.sAgentCode = agentCode;
+      GetNotificationReq getNotificationReq = GetNotificationReq();
+      getNotificationReq.sUserName = ConfigData.CONSUMER_KEY;
+      getNotificationReq.sPassword = ConfigData.CONSUMER_SECRET;
+      getNotificationReq.sType = userType;
+      getNotificationReq.sAgentCode = agentCode;
 
-    var response = await apiProvider.fetchData(ApiName.NotificationCount, getNotificationReq);
-    if(response != null){
-      var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
-      String data = root.children[2].children.first.toString();
+      var response = await apiProvider.fetchData(ApiName.NotificationCount, getNotificationReq);
+      if(response != null){
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String data = root.children[2].children.first.toString();
 
-      if(CheckError.isSuccess(data)){
-        if(data != "" && data != "0" && data != 0){
-          int apiCount = int.tryParse(data) ?? 0;
-          List<String> readAndDeletedNotificationIDs = await SharedConfigName.getUserReadNotificationIDs();
-          var listDataDeleted = await SharedConfigName.getUserDeletedNotificationIDs();
-          for(var element in listDataDeleted){
-            if(!readAndDeletedNotificationIDs.contains(element))
-              readAndDeletedNotificationIDs.add(element);
-          }
+        if(CheckError.isSuccess(data)){
+          if(data != "" && data != "0" && data != 0){
+            int apiCount = int.tryParse(data) ?? 0;
+            List<String> readAndDeletedNotificationIDs = await SharedConfigName.getUserReadNotificationIDs();
+            var listDataDeleted = await SharedConfigName.getUserDeletedNotificationIDs();
+            for(var element in listDataDeleted){
+              if(!readAndDeletedNotificationIDs.contains(element))
+                readAndDeletedNotificationIDs.add(element);
+            }
 
-          //String jsonText = jsonEncode(readAndDeletedNotificationIDs);
+            //String jsonText = jsonEncode(readAndDeletedNotificationIDs);
 
-          int localCacheCount = readAndDeletedNotificationIDs.length;
-          int totalCount = apiCount - localCacheCount;
+            int localCacheCount = readAndDeletedNotificationIDs.length;
+            int totalCount = apiCount - localCacheCount;
 
-          if(totalCount >0){
-            countNotify.value = totalCount;
-            isShowNotification.value = true;
-          }else{
-            countNotify.value = 0;
-            isShowNotification.value = false;
+            if(totalCount >0){
+              DeviceInfoConfig.singleton.countNotification.value = totalCount;
+            }else{
+              DeviceInfoConfig.singleton.countNotification.value = 0;
+            }
           }
         }
       }
+    }catch(e){
+      DeviceInfoConfig.singleton.countNotification.value = 0;
     }
   }
 

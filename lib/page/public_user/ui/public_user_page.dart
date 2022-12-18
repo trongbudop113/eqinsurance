@@ -69,13 +69,11 @@ class PublicUserPage extends GetView<PublicUserController>{
                                 },
                               ),
                               SizedBox(width: 10),
-                              Obx(() => IconNotificationWidget(
+                              IconNotificationWidget(
                                 onTap: (){
-                                  Get.toNamed(GetListPages.NOTIFICATION);
+                                  controller.goToNotification();
                                 },
-                                count: controller.countNotify.value,
-                                isShowNotification: controller.isShowNotification.value,
-                              )),
+                              ),
                               SizedBox(width: 5),
                               GestureDetector(
                                 child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),

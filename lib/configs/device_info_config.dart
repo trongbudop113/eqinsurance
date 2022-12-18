@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class DeviceInfoConfig {
   static final DeviceInfoConfig singleton = DeviceInfoConfig._internal();
 
@@ -8,6 +10,8 @@ class DeviceInfoConfig {
   DeviceInfoConfig._internal();
 
   HeightAppbar heightAppbar = HeightAppbar(heightTop: 25, heightBody: 56);
+
+  final RxInt countNotification = 0.obs;
 }
 
 class HeightAppbar {

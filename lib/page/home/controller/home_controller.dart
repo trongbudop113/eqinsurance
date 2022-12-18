@@ -29,8 +29,6 @@ class HomeBinding extends Bindings {
 
 class HomeController extends GetxController {
   ApiProvider apiProvider = ApiProvider();
-  final RxInt countNotify = 0.obs;
-  final RxBool isShowNotification = false.obs;
 
   final HeightAppbar heightAppbar = DeviceInfoConfig.singleton.heightAppbar;
   final RxBool isLoading = true.obs;
@@ -63,7 +61,7 @@ class HomeController extends GetxController {
     print("initFirebaseMessage....");
 
     NotificationSettings settings =
-        await FirebaseMessaging.instance.requestPermission(
+    await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -119,7 +117,7 @@ class HomeController extends GetxController {
       getNotificationReq.sAgentCode = "";
 
       var response =
-          await apiProvider.fetchData(ApiName.Notification, getNotificationReq);
+      await apiProvider.fetchData(ApiName.Notification, getNotificationReq);
       if (response != null) {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
@@ -127,7 +125,7 @@ class HomeController extends GetxController {
         if (CheckError.isSuccess(jsonString)) {
           if (jsonString != '' && jsonString != '0' && jsonString != 0) {
             NotificationDataRes notificationDataRes =
-                NotificationDataRes.fromJson(jsonDecode(jsonString));
+            NotificationDataRes.fromJson(jsonDecode(jsonString));
             print("data....." + notificationDataRes.data!.length.toString());
             showHomeDialog(notificationDataRes.data![0]);
           }
@@ -153,7 +151,7 @@ class HomeController extends GetxController {
       getContactReq.sHpNumber = _HpNumber;
 
       var response =
-          await apiProvider.fetchData(ApiName.ContactUs, getContactReq);
+      await apiProvider.fetchData(ApiName.ContactUs, getContactReq);
       if (response != null) {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
@@ -177,7 +175,7 @@ class HomeController extends GetxController {
       getPublicUserReq.sPassword = ConfigData.CONSUMER_SECRET;
 
       var response =
-          await apiProvider.fetchData(ApiName.PublicLink, getPublicUserReq);
+      await apiProvider.fetchData(ApiName.PublicLink, getPublicUserReq);
       if (response != null) {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
@@ -270,9 +268,9 @@ class HomeController extends GetxController {
           if (data != "" && data != "0" && data != 0) {
             int apiCount = int.tryParse(data) ?? 0;
             List<String> readAndDeletedNotificationIDs =
-                await SharedConfigName.getUserReadNotificationIDs();
+            await SharedConfigName.getUserReadNotificationIDs();
             var listDataDeleted =
-                await SharedConfigName.getUserDeletedNotificationIDs();
+            await SharedConfigName.getUserDeletedNotificationIDs();
             for (var element in listDataDeleted) {
               if (!readAndDeletedNotificationIDs.contains(element))
                 readAndDeletedNotificationIDs.add(element);
@@ -284,11 +282,9 @@ class HomeController extends GetxController {
             int totalCount = apiCount - localCacheCount;
 
             if (totalCount > 0) {
-              countNotify.value = totalCount;
-              isShowNotification.value = true;
+              DeviceInfoConfig.singleton.countNotification.value = totalCount;
             } else {
-              countNotify.value = 0;
-              isShowNotification.value = false;
+              DeviceInfoConfig.singleton.countNotification.value = 0;
             }
           }
         }

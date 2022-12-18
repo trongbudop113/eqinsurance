@@ -1,5 +1,6 @@
 
 import 'package:eqinsurance/configs/config_button.dart';
+import 'package:eqinsurance/configs/device_info_config.dart';
 import 'package:eqinsurance/get_pages.dart';
 import 'package:eqinsurance/page/home/controller/home_controller.dart';
 import 'package:eqinsurance/page/loading/loading_page.dart';
@@ -23,11 +24,11 @@ class HomePage extends GetView<HomeController>{
             width: double.maxFinite,
             height: double.maxFinite,
             decoration: BoxDecoration(
-              color: Colors.black,
-              image: DecorationImage(
-                image: AssetImage(ImageResource.bg),
-                fit: BoxFit.fill
-              )
+                color: Colors.black,
+                image: DecorationImage(
+                    image: AssetImage(ImageResource.bg),
+                    fit: BoxFit.fill
+                )
             ),
             padding: EdgeInsets.all(15),
             child: Column(
@@ -40,7 +41,7 @@ class HomePage extends GetView<HomeController>{
                     Spacer(flex: 1),
                     GestureDetector(
                       child: Container(
-                        color: Colors.transparent,
+                          color: Colors.transparent,
                           child: Image.asset(ImageResource.ic_settings, width: 20, height: 20)
                       ),
                       onTap: (){
@@ -58,13 +59,11 @@ class HomePage extends GetView<HomeController>{
                       },
                     ),
                     SizedBox(width: 10),
-                    Obx(() => IconNotificationWidget(
+                    IconNotificationWidget(
                       onTap: (){
                         controller.goToNotification();
                       },
-                      count: controller.countNotify.value,
-                      isShowNotification: controller.isShowNotification.value,
-                    ),)
+                    )
                   ],
                 ),
                 SizedBox(height: 20),
@@ -86,44 +85,44 @@ class HomePage extends GetView<HomeController>{
                       child: Container(
                         margin: EdgeInsets.only(top: 15),
                         child: Visibility(
-                          visible: ConfigButton.singleton.isPublicUserType.value == 0,
-                          child: ButtonWidget.buttonBorder(context, "Public Users", onTap: (){
-                            controller.getPublicUser();
-                          }),
-                          replacement: ButtonWidget.buttonNormal(context, "Public Users", onTap: (){
-                            controller.getPublicUser();
-                          })
+                            visible: ConfigButton.singleton.isPublicUserType.value == 0,
+                            child: ButtonWidget.buttonBorder(context, "Public Users", onTap: (){
+                              controller.getPublicUser();
+                            }),
+                            replacement: ButtonWidget.buttonNormal(context, "Public Users", onTap: (){
+                              controller.getPublicUser();
+                            })
                         ),
                       ),
                     ),
                     Visibility(
                         visible: ConfigButton.singleton.isPartner.value,
-                      child: Container(
-                        margin: EdgeInsets.only(top: 10),
-                        child: Visibility(
-                          visible: ConfigButton.singleton.isPartnerType.value == 0,
-                          child: ButtonWidget.buttonBorder(context,  "Partners", onTap: (){
-                            controller.goToPartnerPage();
-                          }),
-                          replacement: ButtonWidget.buttonNormal(context, "Partners", onTap: (){
-                            controller.goToPartnerPage();
-                          }),
-                        ),
-                      )
+                        child: Container(
+                          margin: EdgeInsets.only(top: 10),
+                          child: Visibility(
+                            visible: ConfigButton.singleton.isPartnerType.value == 0,
+                            child: ButtonWidget.buttonBorder(context,  "Partners", onTap: (){
+                              controller.goToPartnerPage();
+                            }),
+                            replacement: ButtonWidget.buttonNormal(context, "Partners", onTap: (){
+                              controller.goToPartnerPage();
+                            }),
+                          ),
+                        )
                     ),
                     Visibility(
                         visible: ConfigButton.singleton.isPartnerCustomer.value,
                         child: Container(
-                          margin: EdgeInsets.only(top: 10),
-                          child: Visibility(
-                            visible: ConfigButton.singleton.isPartnerCustomerType.value == 0,
-                            child: ButtonWidget.buttonBorder(context,  "Partner Customer", onTap: (){
-                              controller.goToPartnerCustomer();
-                            }),
-                            replacement: ButtonWidget.buttonNormal(context, "Partner Customer", onTap: (){
-                              controller.goToPartnerCustomer();
-                            }),
-                          )
+                            margin: EdgeInsets.only(top: 10),
+                            child: Visibility(
+                              visible: ConfigButton.singleton.isPartnerCustomerType.value == 0,
+                              child: ButtonWidget.buttonBorder(context,  "Partner Customer", onTap: (){
+                                controller.goToPartnerCustomer();
+                              }),
+                              replacement: ButtonWidget.buttonNormal(context, "Partner Customer", onTap: (){
+                                controller.goToPartnerCustomer();
+                              }),
+                            )
                         )
                     ),
                   ],

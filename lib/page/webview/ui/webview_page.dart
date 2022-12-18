@@ -71,13 +71,11 @@ class WebViewPage extends GetView<WebViewAppController>{
                                 },
                               ),
                               SizedBox(width: 8),
-                              Obx(() => IconNotificationWidget(
+                              IconNotificationWidget(
                                 onTap: (){
-                                  Get.toNamed(GetListPages.NOTIFICATION);
+                                  controller.goToNotification();
                                 },
-                                count: controller.countNotify.value,
-                                isShowNotification: controller.isShowNotification.value,
-                              )),
+                              ),
                               SizedBox(width: 8),
                               GestureDetector(
                                 child: Image.asset(ImageResource.home2, height: 18, fit: BoxFit.fitHeight,),
