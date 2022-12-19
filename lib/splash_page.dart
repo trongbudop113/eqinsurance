@@ -43,7 +43,8 @@ class _SplashPageState extends State<SplashPage> {
       final deviceInfoPlugin = DeviceInfoPlugin();
       final deviceInfo = await deviceInfoPlugin.deviceInfo;
       final allInfo = deviceInfo.data;
-      if(allInfo['name'] != null && allInfo['name'] != '' && checkInvalidDevice(allInfo['name'].toString().toLowerCase())){
+      print('name....' + allInfo.toString());
+      if(allInfo['utsname'] != null && checkInvalidDevice(allInfo['utsname']['machine'].toString().toLowerCase())){
         DeviceInfoConfig.singleton.heightAppbar = HeightAppbar(heightTop: 35, heightBody: 65);
       }
     }catch(e){
@@ -51,13 +52,19 @@ class _SplashPageState extends State<SplashPage> {
     }
   }
 
-  List<String> device = ['iphone x', 'iphone xs', 'iphone xs', 'iphone 11', 'iphone 12', 'iphone 13', 'iphone 14', 'iphone 15'];
+  List<String> device = ['iphonexr', 'iphonex', 'iphonexs', 'iphonexs', 'iphone11', 'iphone12', 'iphone13', 'iphone14', 'iphone15'];
 
   bool checkInvalidDevice(String name){
-    if(device.contains(name)){
-      return true;
+    bool isDone = false;
+    for(String item in device){
+      if(name.contains(item)){
+        isDone = true;
+      }
     }
-    return false;
+    // if(device.contains(name)){
+    //   return true;
+    // }
+    return isDone;
   }
 
   Future<void> initFirebaseBackground() async {
