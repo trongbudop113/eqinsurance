@@ -224,7 +224,7 @@ class NotificationController extends GetxController{
       if(isDelete){
         listNotificationDeleted.add(listNotification[index].iD ?? '');
         listNotification.removeWhere((element) => listNotification[index].iD == element.iD);
-        removeItemInList(index);
+        removeItemInList();
       }else{
         SharedConfigName.addUserReadNotificationID(listNotification[index].iD ?? '');
       }
@@ -239,7 +239,6 @@ class NotificationController extends GetxController{
     for(int i = 0; i < listNotification.length; i++){
       if(listNotification[i].isCheck.value){
         listNotificationDeleted.add(listNotification[i].iD ?? '');
-        removeItemInList(i);
       }
     }
     if(listNotificationDeleted.length == 0){
@@ -256,13 +255,14 @@ class NotificationController extends GetxController{
       if(listNotificationDeleted.length > 0){
         listNotification.removeWhere((element) => listNotificationDeleted.contains(element.iD));
       }
+      removeItemInList();
       onSetSelect();
       isDeleteNotification = true;
     }
 
   }
 
-  void removeItemInList(int index){
+  void removeItemInList(){
     SharedConfigName.addUserDeletedNotificationID(listNotificationDeleted);
   }
 
