@@ -1,5 +1,6 @@
 import 'package:eqinsurance/resource/color_resource.dart';
 import 'package:eqinsurance/resource/style_resource.dart';
+import 'package:eqinsurance/widgets/safe_button.dart';
 import 'package:flutter/material.dart';
 
 class ButtonWidget{
@@ -7,9 +8,9 @@ class ButtonWidget{
       {Color textColor = Colors.white,
         Color buttonColor = ColorResource.color_button_user,
         double radius = 18,
-        VoidCallback? onTap}){
-    return GestureDetector(
-      onTap: onTap,
+        required VoidCallback onTap}){
+    return SafeOnTap(
+      onSafeTap: onTap,
       child: Container(
         width: double.maxFinite,
         decoration: BoxDecoration(
@@ -35,8 +36,8 @@ class ButtonWidget{
       {Color textColor = ColorResource.color_button_partner,
         Color buttonColor = Colors.transparent,
         Color borderColor = ColorResource.color_button_partner,
-        VoidCallback? onTap}){
-    return GestureDetector(
+        required VoidCallback onTap}){
+    return SafeOnTap(
       child: Container(
         width: double.maxFinite,
         decoration: BoxDecoration(
@@ -48,7 +49,7 @@ class ButtonWidget{
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: 15),
       ),
-      onTap: onTap,
+      onSafeTap: onTap,
     );
   }
 }

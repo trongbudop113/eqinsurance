@@ -45,7 +45,7 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
       showErrorMessage("Please enter your mobile number and country code.");
     }
     try{
-      String hpNumber = phoneText.text.trim().toString();
+      String hpNumber = countryCode + phoneText.text.trim().toString();
 
       LoginHpNumberReq loginReq = LoginHpNumberReq();
       loginReq.sUserName = ConfigData.CONSUMER_KEY;
@@ -62,13 +62,13 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
         if(CheckError.isSuccess(data)){
           doWhenSuccess(data, hpNumber);
         }else{
-          showErrorMessage("Cannot get AgentCode!");
+          showErrorMessage("Cannot verify your mobile number!");
         }
       }
       isLoading.value = false;
     }catch(e){
       isLoading.value = false;
-      showErrorMessage("Cannot get AgentCode!");
+      showErrorMessage("Cannot verify your mobile number!");
     }
   }
 

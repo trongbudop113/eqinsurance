@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:eqinsurance/configs/check_network.dart';
 import 'package:eqinsurance/configs/configs_data.dart';
 import 'package:eqinsurance/configs/shared_config_name.dart';
 import 'package:eqinsurance/get_pages.dart';
@@ -8,6 +9,7 @@ import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/page/notification/models/notification_req.dart';
 import 'package:eqinsurance/page/notification/models/notification_res.dart';
 import 'package:eqinsurance/widgets/dialog/confirm_dialog.dart';
+import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xml/xml.dart';
@@ -46,13 +48,24 @@ class NotificationController extends GetxController{
   @override
   void onInit() {
     initData();
-    getNotification();
     super.onInit();
   }
 
   Future<void> initData() async {
     limit = await SharedConfigName.getNotificationsPerPage();
-//
+    if(await CheckConnect.hasNetwork()){
+      getNotification();
+    }else{
+      isLoading.value = false;
+      showErrorMessage("Network Error, Please try again!");
+    }
+  }
+
+  Future<void> showErrorMessage(String message) async {
+    await showDialog(
+      context: Get.context!,
+      builder: (_) => ErrorDialog(message: message),
+    );
   }
 
   void onBack(){
@@ -106,6 +119,10 @@ class NotificationController extends GetxController{
   }
 
   Future<void> refreshNotification() async {
+    if(!(await CheckConnect.hasNetwork())){
+      showErrorMessage("Network Error, Please try again!");
+      return;
+    }
     isLoading.value = true;
     try{
       page = 0;
@@ -275,7 +292,7 @@ class NotificationController extends GetxController{
         width: size,
         height: size,
         decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.grey)
+            border: Border.all(width: 1, color: Colors.grey)
         ),
         child: Icon(Icons.check, color: Colors.black, size: 10),
       ),
