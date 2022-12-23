@@ -182,10 +182,10 @@ class VerifyPhonePage extends StatelessWidget {
             bottom: 40,
             left: 15,
             right: 15,
-            child: ButtonWidget.buttonNormal(context, 'Next', onTap: (){
+            child: Obx(() => ButtonWidget.buttonNormal(context, 'Next', onTap: (){
               controller.onSubmitVerifyPhoneNumber();
               //controller.onFocusPage(2);
-            }),
+            }, isDisable: controller.isDisable.value)),
           )
         ],
       ),

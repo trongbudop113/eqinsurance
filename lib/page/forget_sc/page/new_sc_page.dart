@@ -6,6 +6,7 @@ import 'package:eqinsurance/widgets/button_widget.dart';
 import 'package:eqinsurance/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class NewSCPage extends StatelessWidget {
   final ForgetSCController controller;
@@ -144,9 +145,9 @@ class NewSCPage extends StatelessWidget {
               bottom: 15,
               left: 15,
               right: 15,
-              child: ButtonWidget.buttonNormal(context, "Next", onTap: (){
+              child: Obx(() => ButtonWidget.buttonNormal(context, "Next", onTap: (){
                 controller.onSubmitSCCode();
-              }),
+              }, isDisable: controller.isDisable.value)),
             )
           ],
         )

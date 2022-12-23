@@ -135,12 +135,12 @@ class VerifyUserPage extends StatelessWidget {
             bottom: 40,
             left: 15,
             right: 15,
-            child: Container(
+            child: Obx(() => Container(
               child: ButtonWidget.buttonNormal(context, 'Next', onTap: (){
                 controller.onSubmitUserAccount();
                 //controller.onFocusPage(1);
-              }),
-            ),
+              }, isDisable: controller.isDisable.value),
+            )),
           )
         ],
       ),

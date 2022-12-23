@@ -5,6 +5,7 @@ import 'package:eqinsurance/resource/style_resource.dart';
 import 'package:eqinsurance/widgets/button_widget.dart';
 import 'package:eqinsurance/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class VerifyUserPage extends StatelessWidget {
   final ForgetSCController controller;
@@ -128,9 +129,9 @@ class VerifyUserPage extends StatelessWidget {
             bottom: 15,
             left: 15,
             right: 15,
-            child: ButtonWidget.buttonNormal(context, 'Next', onTap: (){
+            child: Obx(() => ButtonWidget.buttonNormal(context, 'Next', onTap: (){
               controller.onSubmitUserAccount();
-            }),
+            }, isDisable: controller.isDisable.value)),
           )
         ],
       ),

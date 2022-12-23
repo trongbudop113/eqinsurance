@@ -149,9 +149,9 @@ class ChangeSCPage extends GetView<ChangeSCController>{
                   ),
 
                   Spacer(flex: 1),
-                  ButtonWidget.buttonNormal(context, 'Update', onTap: (){
+                  Obx(() => ButtonWidget.buttonNormal(context, 'Update', onTap: (){
                     controller.onSubmitChangeSC();
-                  })
+                  }, isDisable: controller.isDisable.value))
                 ],
               ),
             ),

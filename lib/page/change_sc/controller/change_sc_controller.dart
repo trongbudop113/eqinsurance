@@ -31,12 +31,15 @@ class ChangeSCController extends GetxController with KeyboardHiderMixin{
   TextEditingController confirmScText = TextEditingController();
 
   final RxBool isLoading = false.obs;
+  final RxBool isDisable = false.obs;
 
   void showLoading(){
+    isDisable.value = true;
     isLoading.value = true;
   }
 
   void hideLoading(){
+    isDisable.value = false;
     isLoading.value = false;
   }
 

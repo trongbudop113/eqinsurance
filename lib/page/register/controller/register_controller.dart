@@ -60,6 +60,7 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
   final formKey = GlobalKey<FormState>();
 
   final RxBool isLoading = false.obs;
+  final RxBool isDisable = false.obs;
 
   @override
   void onInit() {
@@ -95,10 +96,12 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
   }
 
   void showLoading(){
+    isDisable.value = true;
     isLoading.value = true;
   }
 
   void hideLoading(){
+    isDisable.value = false;
     isLoading.value = false;
   }
 

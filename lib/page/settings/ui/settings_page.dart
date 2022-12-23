@@ -83,7 +83,7 @@ class SettingsPage extends GetView<SettingsController>{
                   SizedBox(height: 15),
                   ButtonWidget.buttonNormal(context, "Yes", onTap: (){
                     controller.onClickYes();
-                  }),
+                  }, isDisable: false),
                   SizedBox(height: 10),
                   ButtonWidget.buttonBorder(context, "No", onTap: (){
                     controller.onCLickNo();

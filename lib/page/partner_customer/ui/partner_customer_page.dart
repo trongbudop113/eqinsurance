@@ -115,9 +115,9 @@ class PartnerCustomerPage extends GetView<PartnerCustomerController>{
               bottom: Get.height * 0.2,
               left: 15,
               right: 15,
-              child: ButtonWidget.buttonNormal(context, 'Next', onTap: (){
+              child: Obx(() => ButtonWidget.buttonNormal(context, 'Next', onTap: (){
                 controller.onSubmitCheckPhone();
-              }),
+              }, isDisable: controller.isDisable.value)),
             ),
             Obx(() => LoadingPage(isLoading: controller.isLoading.value))
           ],

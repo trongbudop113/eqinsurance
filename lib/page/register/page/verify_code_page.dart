@@ -182,10 +182,10 @@ class _VerifyCodePageState extends State<VerifyCodePage> {
                   ),
                 ),
                 SizedBox(height: 10),
-                ButtonWidget.buttonNormal(context, 'Next', onTap: (){
+                Obx(() => ButtonWidget.buttonNormal(context, 'Next', onTap: (){
                   widget.controller.onSubmitVerifyCodeOTP();
                   //controller.onFocusPage(3);
-                }),
+                }, isDisable: widget.controller.isDisable.value)),
               ],
             )
           )

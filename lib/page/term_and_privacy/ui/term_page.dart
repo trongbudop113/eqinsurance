@@ -64,7 +64,7 @@ class TermPage extends GetView<TermController>{
 
             ButtonWidget.buttonNormal(context, "Agree and Continue", onTap: (){
               controller.setAgreeTerm();
-            })
+            }, isDisable: false)
           ],
         ),
       ),

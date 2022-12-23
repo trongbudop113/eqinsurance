@@ -73,6 +73,7 @@ class _PortalDialogState extends State<PortalDialog> with SingleTickerProviderSt
                       ButtonWidget.buttonNormal(
                           context,
                           "Done",
+                        isDisable: false,
                         radius: 30,
                         onTap: (){
                             rs = true;

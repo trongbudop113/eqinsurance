@@ -8,6 +8,7 @@ class ButtonWidget{
       {Color textColor = Colors.white,
         Color buttonColor = ColorResource.color_button_user,
         double radius = 18,
+        required bool isDisable,
         required VoidCallback onTap}){
     return SafeOnTap(
       onSafeTap: onTap,

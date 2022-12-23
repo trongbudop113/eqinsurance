@@ -145,9 +145,9 @@ class InputCodePage extends StatelessWidget {
             bottom: 40,
             right: 15,
             left: 15,
-            child: ButtonWidget.buttonNormal(context, "Next", onTap: (){
-                controller.onSubmitSCCode();
-              }),
+            child: Obx(() => ButtonWidget.buttonNormal(context, "Next", onTap: (){
+              controller.onSubmitSCCode();
+            }, isDisable: controller.isDisable.value)),
           )
         ],
       )

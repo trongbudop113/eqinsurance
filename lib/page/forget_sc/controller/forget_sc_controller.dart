@@ -35,6 +35,7 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
 
   final RxInt currentIndex = 0.obs;
 
+  final RxBool isDisable = false.obs;
   final RxBool isLoading = false.obs;
 
   void onFocusPage(int i) {
@@ -42,10 +43,12 @@ class ForgetSCController extends GetxController with KeyboardHiderMixin{
   }
 
   void showLoading(){
+    isDisable.value = true;
     isLoading.value = true;
   }
 
   void hideLoading(){
+    isDisable.value = false;
     isLoading.value = false;
   }
 

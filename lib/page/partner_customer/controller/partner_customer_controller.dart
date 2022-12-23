@@ -33,14 +33,25 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
   String countryCode = "65";
 
   final RxBool isLoading = false.obs;
+  final RxBool isDisable = false.obs;
 
   @override
   void onInit() {
     super.onInit();
   }
 
-  Future<void> onSubmitCheckPhone() async {
+  void showLoading(){
+    isDisable.value = true;
     isLoading.value = true;
+  }
+
+  void hideLoading(){
+    isDisable.value = false;
+    isLoading.value = false;
+  }
+
+  Future<void> onSubmitCheckPhone() async {
+    showLoading();
     if(countryCode.isEmpty || phoneText.text.trim().isEmpty){
       showErrorMessage("Please enter your mobile number and country code.");
     }
@@ -65,9 +76,9 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
           showErrorMessage("Cannot verify your mobile number!");
         }
       }
-      isLoading.value = false;
+      hideLoading();;
     }catch(e){
-      isLoading.value = false;
+      hideLoading();;
       showErrorMessage("Cannot verify your mobile number!");
     }
   }
@@ -99,7 +110,7 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
   }
 
   Future<void> refreshNotificationCount() async {
-    isLoading.value = true;
+    showLoading();
     try {
       String agentCode = await SharedConfigName.getAgentCode();
       String userType = await SharedConfigName.getCurrentUserType();
@@ -143,9 +154,9 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
         }
       }
 
-      isLoading.value = false;
+      hideLoading();;
     } catch (e) {
-      isLoading.value = false;
+      hideLoading();;
     }
   }
 }

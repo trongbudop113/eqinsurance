@@ -27,6 +27,7 @@ class InputCodeController extends GetxController with KeyboardHiderMixin{
   TextEditingController scText = TextEditingController();
 
   final RxBool isLoading = false.obs;
+  final RxBool isDisable = false.obs;
 
   @override
   void onInit() {
@@ -35,10 +36,12 @@ class InputCodeController extends GetxController with KeyboardHiderMixin{
   }
 
   void showLoading(){
+    isDisable.value = true;
     isLoading.value = true;
   }
 
   void hideLoading(){
+    isDisable.value = false;
     isLoading.value = false;
   }
 

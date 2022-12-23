@@ -138,9 +138,9 @@ class InputCodePage extends GetView<InputCodeController>{
                     ],
                   ),
                   SizedBox(height: 10),
-                  ButtonWidget.buttonNormal(context, "Next", onTap: (){
+                  Obx(() => ButtonWidget.buttonNormal(context, "Next", onTap: (){
                     controller.onSubmitLoginAgentCode();
-                  }),
+                  }, isDisable: controller.isDisable.value)),
                 ],
               ),
             ),

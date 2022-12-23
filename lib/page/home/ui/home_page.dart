@@ -91,7 +91,7 @@ class HomePage extends GetView<HomeController>{
                             }),
                             replacement: ButtonWidget.buttonNormal(context, "Public Users", onTap: (){
                               controller.getPublicUser();
-                            })
+                            }, isDisable: false)
                         ),
                       ),
                     ),
@@ -106,7 +106,7 @@ class HomePage extends GetView<HomeController>{
                             }),
                             replacement: ButtonWidget.buttonNormal(context, "Partners", onTap: (){
                               controller.goToPartnerPage();
-                            }),
+                            }, isDisable: false),
                           ),
                         )
                     ),
@@ -121,7 +121,7 @@ class HomePage extends GetView<HomeController>{
                               }),
                               replacement: ButtonWidget.buttonNormal(context, "Partner Customer", onTap: (){
                                 controller.goToPartnerCustomer();
-                              }),
+                              }, isDisable: false),
                             )
                         )
                     ),
