@@ -88,7 +88,11 @@ class NotificationController extends GetxController{
     var response = await apiProvider.fetchData(ApiName.Notification, getNotificationReq);
     if(response != null){
       var root = XmlDocument.parse(response);
-      print("data....." + root.children[2].children.first.toString());
+      //print("data....." + root.children[2].children.first.toString());
+      if(root.children[2].children.length == 0){
+        isLoading.value = false;
+        return;
+      }
       String jsonString = root.children[2].children.first.toString();
       NotificationDataRes notificationDataRes = NotificationDataRes.fromJson(jsonDecode(jsonString));
       print("data....." + notificationDataRes.data!.length.toString());
@@ -101,7 +105,7 @@ class NotificationController extends GetxController{
         totalPages = (totalItems/limit + (totalItems % limit == 0 ? 0 : 1)).toInt();
         listNotification.clear();
         if(totalItems >=  limit){
-          var newList = listNotificationTemp.getRange(page * limit, limit);
+          var newList =  listNotificationTemp.getRange(page * limit, limit);
           listNotification.addAll(newList);
           isLoadMore.value = true;
           page++;
