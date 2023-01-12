@@ -323,7 +323,8 @@ class RegisterController extends GetxController with KeyboardHiderMixin{
 
         if(CheckError.isSuccess(data)){
           await ConfigButton.singleton.showHideButton();
-          doWhenLoginSuccess(link);
+          var newLink = link.replaceAll("amp;", "");
+          doWhenLoginSuccess(newLink);
         }else{
           showErrorMessage("Cannot get AgentCode!");
         }

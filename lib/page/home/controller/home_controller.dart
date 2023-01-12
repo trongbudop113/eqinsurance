@@ -180,7 +180,8 @@ class HomeController extends GetxController {
         var root = XmlDocument.parse(response);
         print("data....." + root.children[2].children.first.toString());
         String link = root.children[2].children.first.toString();
-        Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": link});
+        var newLink = link.replaceAll("amp;", "");
+        Get.toNamed(GetListPages.PUBLIC_USER, arguments: {"link": newLink});
       }
       isLoading.value = false;
     } catch (e) {

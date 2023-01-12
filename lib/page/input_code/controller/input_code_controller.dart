@@ -69,11 +69,12 @@ class InputCodeController extends GetxController with KeyboardHiderMixin{
         var response = await apiProvider.fetchData(ApiName.LoginWithSecurityCode, loginReq);
         if(response != null){
           var root = XmlDocument.parse(response);
-          print("data....." + root.children[2].children.first.toString());
           String data = root.children[2].children.first.toString();
+          print("data1....." + data.toString());
 
           if(CheckError.isSuccess(data)){
-            doWhenLoginSuccess(data);
+            var newLink = data.replaceAll("amp;", "");
+            doWhenLoginSuccess(newLink);
           }else{
             showErrorMessage("Cannot login. Security Code is wrong!");
           }

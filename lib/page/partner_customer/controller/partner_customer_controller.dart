@@ -87,6 +87,7 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
     var separateResult = response.split("\|");
     final String _AgentCode = separateResult[0];
     final String URL = separateResult[1];
+    var newLink = URL.replaceAll("amp;", "");
 
     String currentUserType = await SharedConfigName.getCurrentUserType();
     if(currentUserType != ConfigData.PROMO){
@@ -98,7 +99,7 @@ class PartnerCustomerController extends GetxController with KeyboardHiderMixin{
     SharedConfigName.setPhone(phone);
     SharedConfigName.setRegisteredUserType("PROMO");
     ConfigButton.singleton.showHideButton();
-    Get.offAndToNamed(GetListPages.PARTNER, arguments: {'link', URL});
+    Get.offAndToNamed(GetListPages.PARTNER, arguments: {'link', newLink});
 
   }
 
