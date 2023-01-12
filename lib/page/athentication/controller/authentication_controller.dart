@@ -203,8 +203,8 @@ class AuthenticationController extends GetxController{
         try{
           var jsonObject = jsonDecode(response);
           if(jsonObject != null){
-            String status = jsonObject["status"] ?? '';
-            if(status != "" && status == "1"){
+            String status = jsonObject["status"].toString();
+            if (status != '' && status != 'null' && status == '1') {
               showHideApproveArea(false);
               imageApproved.value = ImageResource.ic_warning_yellow;
               textAuthenticated.value = "Rejected";
