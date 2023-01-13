@@ -165,7 +165,6 @@ class VerifyPhonePage extends StatelessWidget {
                               inputFormatter: <TextInputFormatter>[
                                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                 FilteringTextInputFormatter.digitsOnly
-
                               ],
                               hint: "Enter phone number",
                             ),

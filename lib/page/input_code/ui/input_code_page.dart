@@ -79,8 +79,8 @@ class InputCodePage extends GetView<InputCodeController>{
                             textInputType: TextInputType.number,
                             inputFormatter: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                              FilteringTextInputFormatter.digitsOnly
-
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(6)
                             ],
                             controller: controller.scText,
                             isShowLeftIcon: true,

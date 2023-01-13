@@ -103,8 +103,8 @@ class NewSCPage extends StatelessWidget {
                            textInputType: TextInputType.number,
                            inputFormatter: <TextInputFormatter>[
                              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                             FilteringTextInputFormatter.digitsOnly
-
+                             FilteringTextInputFormatter.digitsOnly,
+                             LengthLimitingTextInputFormatter(6)
                            ],
                            controller: controller.scText,
                            isShowLeftIcon: true,
@@ -127,8 +127,8 @@ class NewSCPage extends StatelessWidget {
                            textInputType: TextInputType.number,
                            inputFormatter: <TextInputFormatter>[
                              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                             FilteringTextInputFormatter.digitsOnly
-
+                             FilteringTextInputFormatter.digitsOnly,
+                             LengthLimitingTextInputFormatter(6)
                            ],
                            controller: controller.confirmSCText,
                            isShowLeftIcon: true,
