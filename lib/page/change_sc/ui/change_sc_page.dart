@@ -98,8 +98,8 @@ class ChangeSCPage extends GetView<ChangeSCController>{
                     textInputType: TextInputType.number,
                     inputFormatter: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                      FilteringTextInputFormatter.digitsOnly
-
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(6)
                     ],
                     controller: controller.currentScText,
                   ),
@@ -120,8 +120,8 @@ class ChangeSCPage extends GetView<ChangeSCController>{
                     textInputType: TextInputType.number,
                     inputFormatter: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                      FilteringTextInputFormatter.digitsOnly
-
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(6)
                     ],
                     controller: controller.newScText,
                   ),
@@ -142,7 +142,8 @@ class ChangeSCPage extends GetView<ChangeSCController>{
                     textInputType: TextInputType.number,
                     inputFormatter: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                      FilteringTextInputFormatter.digitsOnly
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(6)
 
                     ],
                     controller: controller.confirmScText,

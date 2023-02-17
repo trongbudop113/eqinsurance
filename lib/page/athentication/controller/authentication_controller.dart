@@ -33,6 +33,9 @@ class AuthenticationController extends GetxController{
 
   String authenticateKey = "";
 
+  final String callBackLinkMode = 'https://internet.eqinsurance.com.sg/test/SRServer/Login.aspx?key=';
+  //String callBackLinkMode = 'https://internet.eqinsurance.com.sg/eqwap/SRServer/Login.aspx?key=';
+
   String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
 
   final RxBool isLoading = false.obs;
@@ -160,6 +163,7 @@ class AuthenticationController extends GetxController{
             if (status != '' && status != 'null' && status == '1') {
               showHideApproveArea(false);
               isAuthorized = true;
+              await callBackApi(true, requestToken: authenticateKey);
               showAuthenticationPortal();
             } else if (status != "" && status == "2") {
               showHideApproveArea(false);
@@ -208,6 +212,7 @@ class AuthenticationController extends GetxController{
               showHideApproveArea(false);
               imageApproved.value = ImageResource.ic_warning_yellow;
               textAuthenticated.value = "Rejected";
+              callBackApi(false, requestToken: authenticateKey);
             }else{
               showHideApproveArea(true);
               showErrorMessage('"Reject failed. Please try again"');
@@ -238,6 +243,18 @@ class AuthenticationController extends GetxController{
       isShowView.value = true;
     } else {
       isShowView.value = false;
+    }
+  }
+
+  Future<void> callBackApi(bool isApprove, {required String requestToken}) async {
+    try {
+      if(isApprove){
+        await apiProvider.getCallBack(callBackLinkMode + requestToken);
+      }else{
+        await apiProvider.getCallBack(callBackLinkMode + requestToken + "&r=1");
+      }
+    }catch (e) {
+      print(e);
     }
   }
 
