@@ -8,12 +8,11 @@ class ApiProvider {
   final String _baseUrl = "https://internet.eqinsurance.com.sg/test/testwebMobile/eqws.asmx/";
   //final String _baseUrl = "http://eq.verzview.com:8090/";
 
-  Future<dynamic> get(String url) async {
+  Future<dynamic> getCallBack(String url) async {
     var responseJson;
     try {
-      var link = _baseUrl + url;
-      print("call API $link");
-      final response = await http.get(Uri.tryParse(link)!);
+      print("call API $url");
+      final response = await http.get(Uri.tryParse(url)!);
       responseJson = _response(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
