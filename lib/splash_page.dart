@@ -31,6 +31,8 @@ class _SplashPageState extends State<SplashPage> {
 
   final RxBool isLoading = true.obs;
 
+  bool isFromMessage = false;
+
   @override
   void initState() {
     checkDeviceInfo();
@@ -69,6 +71,11 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> initFirebaseBackground() async {
     print('aaaaaa');
+    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) async {
+      if(message != null){
+        isFromMessage = true;
+      }
+    });
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     await setupFlutterNotifications();
   }
@@ -113,7 +120,7 @@ class _SplashPageState extends State<SplashPage> {
     var sharedPreferences = await SharedPreferences.getInstance();
     bool isAgree = sharedPreferences.getBool(ConfigData.IS_AGREE_TERM) ?? false;
     if(isAgree){
-      Get.offAndToNamed(GetListPages.HOME);
+      Get.offAndToNamed(GetListPages.HOME, arguments: isFromMessage);
     }else{
       Get.offAndToNamed(GetListPages.TERM_AND_PRIVACY);
     }

@@ -47,6 +47,7 @@ class HomeController extends GetxController {
     print("onReady :...");
 
     initFirebaseMessage();
+    initDataFromBackgroundApp();
     // print("start encrypt.....");
     // var text = 'mobileapi|cauugf6ORCafNuvfhBNxLg:APA91bGWk7S0Z1we_YrKm9Hc-FVG04230kodgyuQftmKL7mf4Stwt-hypkYzSzJH19emDxnKdEQN1IclTyCfGCWAN--5qasNLr3Dxski9IcEt3WXLmN2heDG1BWZboD_Vphq3Jx7f_TG';
     // String key = "28103264-9141-4540-a55b-c4ec6596ee2d"; //
@@ -55,6 +56,14 @@ class HomeController extends GetxController {
     // String test3 = AesHelper.decryptString("fmoY5Setq7hJyBNnous+v/5kbU3cHSyQzFigAGOa4zxS6iux2mpUBT6GMwsZU+F0aNtt3u5ngxl7yN28MRo3zjneVkQ3iPBXZfe4KGQyoQxR/r8isolBsigA5ZK+EAuJJWJLjeMAIqaSz6p0Y+MwSmxgARIRfmgjou15A4xDEFro3UkKRySA040NWQRdLuoZbbXYQP0gaCaDc9ItzW0oCT+l2vM2RNGmbQty0zylW0w=", key);
     // print("decrpyted 2....." + test3);
     // print("end encrypt.....");
+  }
+
+  void initDataFromBackgroundApp(){
+    bool isShow = Get.arguments;
+    print("isShow......$isShow");
+    if(isShow){
+      Get.toNamed(GetListPages.AUTHENTICATION);
+    }
   }
 
   Future<void> initFirebaseMessage() async {
