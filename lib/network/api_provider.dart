@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:eqinsurance/configs/configs_data.dart';
 import 'package:eqinsurance/network/custom_exception.dart';
 import 'package:http/http.dart' as http;
 
 class ApiProvider {
-  final String _baseUrl = "https://internet.eqinsurance.com.sg/test/testwebMobile/eqws.asmx/";
-  //final String _baseUrl = "http://eq.verzview.com:8090/";
+
+  final String _baseUrl = ConfigData.BASE_URL;
 
   Future<dynamic> getCallBack(String url) async {
     var responseJson;
@@ -24,7 +25,7 @@ class ApiProvider {
     http.Response response;
     var responseJson;
     var body = data.toMap();
-    var link = _baseUrl+uri;
+    var link = _baseUrl + uri;
     try {
       response = await http.post(
         Uri.parse(link),

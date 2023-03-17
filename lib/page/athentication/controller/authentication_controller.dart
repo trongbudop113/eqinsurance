@@ -33,8 +33,8 @@ class AuthenticationController extends GetxController{
 
   String authenticateKey = "";
 
-  final String callBackLinkMode = 'https://internet.eqinsurance.com.sg/test/SRServer/Login.aspx?key=';
-  //String callBackLinkMode = 'https://internet.eqinsurance.com.sg/eqwap/SRServer/Login.aspx?key=';
+  //final String callBackLinkMode = 'https://internet.eqinsurance.com.sg/test/SRServer/Login.aspx?key=';
+  String callBackLinkMode = 'https://internet.eqinsurance.com.sg/eqwap/SRServer/Login.aspx?key=';
 
   String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
 
