@@ -13,6 +13,7 @@ import 'package:eqinsurance/widgets/dialog/error_dialog.dart';
 import 'package:eqinsurance/widgets/dialog/portal_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:xml/xml.dart';
 
 class AuthenticationBinding extends Bindings{
@@ -35,6 +36,7 @@ class AuthenticationController extends GetxController{
 
   //final String callBackLinkMode = 'https://internet.eqinsurance.com.sg/test/SRServer/Login.aspx?key=';
   String callBackLinkMode = 'https://internet.eqinsurance.com.sg/eqwap/SRServer/Login.aspx?key=';
+  String authenLink = 'https://internet.eqinsurance.com.sg/eqwap/2fa/apiendpoint/RequestToken';
 
   String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
 
@@ -273,4 +275,7 @@ class AuthenticationController extends GetxController{
     Get.back();
   }
 
+  String get currentDate {
+    return DateFormat('dd MMMM yyyy, hh:mmaa').format(DateTime.now());
+  }
 }

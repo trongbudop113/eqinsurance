@@ -45,7 +45,6 @@ class HomeController extends GetxController {
   void onReady() {
     super.onReady();
     print("onReady :...");
-
     initFirebaseMessage();
     initDataFromBackgroundApp();
     // print("start encrypt.....");
@@ -59,10 +58,14 @@ class HomeController extends GetxController {
   }
 
   void initDataFromBackgroundApp(){
-    bool isShow = Get.arguments;
-    print("isShow......$isShow");
-    if(isShow){
-      Get.toNamed(GetListPages.AUTHENTICATION);
+    try{
+      bool isShow = Get.arguments;
+      print("isShow......$isShow");
+      if(isShow){
+        Get.toNamed(GetListPages.AUTHENTICATION);
+      }
+    }catch(e){
+
     }
   }
 

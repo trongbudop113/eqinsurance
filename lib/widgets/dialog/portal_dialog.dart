@@ -65,9 +65,12 @@ class _PortalDialogState extends State<PortalDialog> with SingleTickerProviderSt
                     children: [
                       Image.asset(ImageResource.ic_complete_step_3, width: 70),
                       SizedBox(height: 10),
-                      Text("You have successfully Authorized", style: StyleResource.TextStyleBlack(context)
+                      Text("Logged in!", style: StyleResource.TextStyleBlack(context)
                           .copyWith(fontSize: 18, color: ColorResource.color_title_authen, fontWeight: FontWeight.bold)),
-                      Text("Please return to Customer Portal", style: StyleResource.TextStyleBlack(context)
+                      Text("You have successfully logged in.", style: StyleResource.TextStyleBlack(context)
+                          .copyWith(fontSize: 16, color: ColorResource.color_title_authen)),
+                      SizedBox(height: 15),
+                      Text(widget.authenticationController.currentDate, style: StyleResource.TextStyleBlack(context)
                           .copyWith(fontSize: 16, color: ColorResource.color_title_authen)),
                       SizedBox(height: 40),
                       ButtonWidget.buttonNormal(

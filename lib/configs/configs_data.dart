@@ -17,7 +17,7 @@ class ConfigData{
   // static const String CONSUMER_SECRET = "V3r\$2017";
 
   //static const String EVR_CODE = "TEST";
-  static const String EVR_CODE = "PRODUCTION";
+  static const String EVR_CODE = "LIVE";
 
 
   static final oCcy = new NumberFormat("# ###", "en_US");

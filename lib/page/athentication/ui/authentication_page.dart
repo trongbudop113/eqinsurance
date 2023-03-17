@@ -70,8 +70,8 @@ class AuthenticationPage extends GetView<AuthenticationController>{
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('You\'re Accessing our ', style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 30, color: ColorResource.color_title_authen)),
-                        Text('Customer Portal', style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 30, fontWeight: FontWeight.bold, color: ColorResource.color_title_authen)),
+                        Text('You\'re accessing our ', style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 30, color: ColorResource.color_title_authen)),
+                        Text('Partner Portal', style: StyleResource.TextStyleBlack(context).copyWith(fontSize: 30, fontWeight: FontWeight.bold, color: ColorResource.color_title_authen)),
                         SizedBox(height: 30),
                         GestureDetector(
                           onTap: (){
