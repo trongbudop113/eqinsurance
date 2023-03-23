@@ -14,4 +14,5 @@ class ApiName {
   static const ChangePin = "ChangePin";
   static const GetNotificationDetails = "GetNotificationDetails";
   static const NotificationCount = "NotificationCount";
+  static const TwoFA = "URL2FA";
 }

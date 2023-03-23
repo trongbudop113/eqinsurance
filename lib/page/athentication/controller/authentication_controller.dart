@@ -6,6 +6,7 @@ import 'package:eqinsurance/network/aes_encrypt.dart';
 import 'package:eqinsurance/network/api_name.dart';
 import 'package:eqinsurance/network/api_provider.dart';
 import 'package:eqinsurance/page/register/controller/check_error.dart';
+import 'package:eqinsurance/page/webview/model/get_contact_req.dart';
 import 'package:eqinsurance/page/webview/models/notification_detail_req.dart';
 import 'package:eqinsurance/page/webview/models/update_device_req.dart';
 import 'package:eqinsurance/resource/image_resource.dart';
@@ -34,8 +35,6 @@ class AuthenticationController extends GetxController{
 
   String authenticateKey = "";
 
-  //final String callBackLinkMode = 'https://internet.eqinsurance.com.sg/test/SRServer/Login.aspx?key=';
-  String callBackLinkMode = 'https://internet.eqinsurance.com.sg/eqwap/SRServer/Login.aspx?key=';
   String authenLink = 'https://internet.eqinsurance.com.sg/eqwap/2fa/apiendpoint/RequestToken';
 
   String fireBaseKey = "", requestTokenUrl = "", completeTokenUrl = "", apiUsername = "", apiKey = "";
@@ -250,10 +249,23 @@ class AuthenticationController extends GetxController{
 
   Future<void> callBackApi(bool isApprove, {required String requestToken}) async {
     try {
-      if(isApprove){
-        await apiProvider.getCallBack(callBackLinkMode + requestToken);
-      }else{
-        await apiProvider.getCallBack(callBackLinkMode + requestToken + "&r=1");
+      TwoFAReq req = TwoFAReq();
+      req.sUserName = ConfigData.CONSUMER_KEY;
+      req.sPassword = ConfigData.CONSUMER_SECRET;
+      var response = await apiProvider.fetchData(ApiName.TwoFA, req);
+      if (response != null) {
+        var root = XmlDocument.parse(response);
+        print("data....." + root.children[2].children.first.toString());
+        String jsonString = root.children[2].children.first.toString();
+        if (CheckError.isSuccess(jsonString)) {
+          if (jsonString != '' && jsonString != '0' && jsonString != 0) {
+            String newLink = jsonString + requestToken;
+            if(!isApprove){
+              newLink = newLink + "&r=1";
+            }
+            await apiProvider.getCallBack(newLink);
+          }
+        }
       }
     }catch (e) {
       print(e);
