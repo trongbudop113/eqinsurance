@@ -9,18 +9,13 @@ class ConfigData{
   static const String PROMO = "PROMO";
 
   ///Test mode
-  static final  String BASE_URL = "https://internet.eqinsurance.com.sg/test/testwebMobile/eqws.asmx/";
-  static const String CONSUMER_KEY = "verz";
-  static const String CONSUMER_SECRET = "V3r\$2017";
+  static final  String BASE_URL = "";
+  static const String CONSUMER_KEY = "";
+  static const String CONSUMER_SECRET = "";
   static const String EVR_CODE = "TEST";
-  static const String callBackLinkMode = 'https://internet.eqinsurance.com.sg/test/SRServer/Login.aspx?key=';
+  static const String callBackLinkMode = '';
 
-  ///Live mode
-  //static final String BASE_URL = "https://internet.eqinsurance.com.sg/eqwap/webmobile/EQWS.asmx/";
-  // static final String CONSUMER_KEY = "EQI";
-  // static final String CONSUMER_SECRET = "3Q!\$!ng@p0rE";
-  //static const String EVR_CODE = "LIVE";
-  //static const String callBackLinkMode = 'https://internet.eqinsurance.com.sg/eqwap/SRServer/Login.aspx?key=';
+  
 
 
   static final oCcy = new NumberFormat("# ###", "en_US");
